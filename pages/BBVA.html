@@ -605,15 +605,15 @@
       </header>
 
       <!-- SCROLLABLE CONTENT AREA -->
-      <div id="scroll-container" class="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth custom-scrollbar">
+      <div id="scroll-container" class="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 scroll-smooth custom-scrollbar">
 
         <!-- Section: About / Mission / Vision -->
         <section class="mb-12 section-fade">
-          <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-xl md:text-2xl font-tech flex-wrap font-bold text-white mb-6 flex items-center gap-3">
             <span data-i18n="bbva.about.title">Sobre <span class="text-nvidia-accent">BBVA</span></span>
           </h2>
 
-          <div class="grid grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <!-- Card: ¿Qué es? -->
             <div
@@ -676,8 +676,8 @@
 
         <!-- Section: History Timeline -->
         <section class="mb-12 section-fade">
-          <div class="flex justify-between items-end mb-6">
-            <h2 class="text-2xl font-tech font-bold text-white flex items-center gap-3">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-3">
+            <h2 class="text-xl md:text-2xl font-tech flex-wrap font-bold text-white flex items-center gap-3">
               <span data-i18n="bbva.hist.title">Historia de <span class="text-nvidia-accent">BBVA</span></span>
             </h2>
             <a href="../assets/bbva.pdf" download
@@ -692,14 +692,14 @@
               class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-nvidia-accent to-transparent opacity-20">
             </div>
 
-            <div class="grid grid-cols-4 gap-8 relative z-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
 
               <!-- Timeline Item 1 -->
               <div class="timeline-item group">
                 <span
                   class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500"
                   data-i18n="bbva.hist.y1">1857</span>
-                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden hidden sm:block">
                   <div
                     class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out">
                   </div>
@@ -714,7 +714,7 @@
                 <span
                   class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-100"
                   data-i18n="bbva.hist.y2">1988</span>
-                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden hidden sm:block">
                   <div
                     class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-100">
                   </div>
@@ -729,7 +729,7 @@
                 <span
                   class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-200"
                   data-i18n="bbva.hist.y3">1999</span>
-                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden hidden sm:block">
                   <div
                     class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-200">
                   </div>
@@ -744,7 +744,7 @@
                 <span
                   class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-300"
                   data-i18n="bbva.hist.y4">2026</span>
-                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden hidden sm:block">
                   <div
                     class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-300">
                   </div>
@@ -761,11 +761,11 @@
 
         <!-- Section: Areas -->
         <section class="mb-12 section-fade">
-          <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-xl md:text-2xl font-tech flex-wrap font-bold text-white mb-6 flex items-center gap-3">
             <span data-i18n="section.areas">Ãreas</span> <span class="text-nvidia-accent"
               data-i18n="section.main">Principales</span>
           </h2>
-          <div class="grid grid-cols-4 gap-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Card 1 -->
             <div class="relative group cursor-pointer duration-500 hover:-translate-y-2">
               <!-- Animated Glow Background -->
@@ -866,11 +866,11 @@
 
         <!-- Section: Tech Stack -->
         <section class="mb-12 section-fade">
-          <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-xl md:text-2xl font-tech flex-wrap font-bold text-white mb-6 flex items-center gap-3">
             <span data-i18n="section.tech">Tecnologías</span> <span class="text-nvidia-accent"
               data-i18n="section.key">Clave</span>
           </h2>
-          <div class="grid grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <!-- Tech Card 1 -->
             <div
@@ -931,11 +931,11 @@
 
         <!-- Section: Featured Products -->
         <section class="section-fade pb-10">
-          <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-xl md:text-2xl font-tech flex-wrap font-bold text-white mb-6 flex items-center gap-3">
             <span data-i18n="section.products">Productos</span><span class="text-nvidia-accent"
               data-i18n="section.featured2">Destacados</span>
           </h2>
-          <div class="grid grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <!-- Hero Card 1 -->
             <div
