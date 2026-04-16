@@ -1,6 +1,8 @@
 /* ============================================================
    SOVEREIGN AI — FULL RESPONSIVE, SIN ESPACIOS VACÍOS
-   BOTÓN HAMBURGUESA NO TAPA TEXTO
+   BOTÓN HAMBRUGUESA NO TAPA TEXTO
+   CARRUSEL CORREGIDO Y CENTRADO
+   SCROLL AQUA EN DETAIL CARD
    ============================================================ */
 * {
   margin: 0;
@@ -58,8 +60,6 @@ body {
   backdrop-filter: blur(12px);
   border-right: 1px solid var(--border);
   z-index: 200;
-  display: flex;
-  flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -113,8 +113,8 @@ body {
 }
 
 .sidebar-nav {
-  flex: 1;
-  padding: 32px 16px;
+  flex: 1 0 auto;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -155,8 +155,90 @@ body {
 }
 
 .nav-item.active {
-  background: var(--accent-dim);
+  background: transparent;
   color: var(--accent);
+}
+
+.profile-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-caret {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--accent);
+  transition: transform 0.25s ease;
+}
+
+.profile-toggle.open .profile-caret {
+  transform: rotate(180deg);
+}
+
+.profile-toggle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(circle at center, rgba(0, 230, 180, 0.18), transparent 60%);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.profile-toggle:active::after,
+.profile-toggle.open::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.profile-submenu {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 8px 4px 34px;
+  animation: submenuIn 0.22s ease;
+}
+
+.profile-submenu.open {
+  display: flex;
+}
+
+.nav-subitem {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  text-align: left;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-display);
+}
+
+.nav-subitem:hover {
+  color: var(--accent);
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.nav-subitem.active {
+  color: var(--accent);
+  border-color: var(--border-hover);
+}
+
+@keyframes submenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-label {
@@ -164,11 +246,19 @@ body {
 }
 
 .sidebar-footer {
-  padding: 20px 16px 28px;
+  position: absolute;
+  bottom: 20px;
+  left: 16px;
+  right: 16px;
+  padding: 20px 16px 8px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.sidebar-footer:hover {
+  background: transparent !important;
 }
 
 .avatar-sm {
@@ -176,7 +266,7 @@ body {
   height: 40px;
   border-radius: 50%;
   border: 2px solid var(--border);
-  background: var(--bg-card);
+  background: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,7 +308,7 @@ body {
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 32px 60px 32px;
+  padding: 32px 24px 44px 24px;
   display: flex;
   flex-direction: column;
   gap: 48px;
@@ -266,32 +356,165 @@ body {
   background: var(--accent-dim);
 }
 
-/* CARDS CAROUSEL */
+/* CARRUSEL CORREGIDO */
 .cards-wrapper {
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 .cards-track {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
 .intel-card {
-  flex: 0 0 calc(33.333% - 14px);
-  min-width: 260px;
+  flex: 0 0 calc(33.333% - 16px);
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 22px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   box-shadow: var(--shadow-card);
   transition: border-color 0.25s ease, transform 0.25s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 280px;
+}
+
+.company-trigger {
+  cursor: pointer;
+}
+
+.company-trigger:hover {
+  color: var(--accent);
+}
+
+.detail-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card-inner);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.98);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* SCROLL AQUA PARA EL DETAIL CARD */
+.detail-card::-webkit-scrollbar {
+  width: 4px;
+}
+
+.detail-card::-webkit-scrollbar-track {
+  background: var(--bg-card);
+  border-radius: 10px;
+}
+
+.detail-card::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+  box-shadow: 0 0 4px var(--accent-glow);
+}
+
+.detail-card {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-card);
+}
+
+.detail-card.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.company-logo {
+  background: var(--accent);
+  color: #0a0c0f;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.company-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.detail-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-body p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.detail-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.detail-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.detail-footer .solution-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.detail-footer .solution-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-top: 5px;
 }
 
 .intel-card:hover {
@@ -408,6 +631,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-top: 4px;
 }
 
 .chat-window {
@@ -417,6 +641,7 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-card);
   width: 100%;
+  max-width: 1120px;
 }
 
 .chat-header {
@@ -494,7 +719,6 @@ body {
   overflow-y: auto;
 }
 
-/* SCROLL AQUA NEON */
 .chat-messages::-webkit-scrollbar {
   width: 5px;
 }
@@ -631,7 +855,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ========= RESPONSIVE MÓVIL - PANTALLA COMPLETA SIN ESPACIOS VACÍOS ========= */
+/* ========= RESPONSIVE MÓVIL ========= */
 @media (max-width: 768px) {
 
   body,
@@ -643,11 +867,22 @@ body {
 
   /* Sidebar drawer */
   .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 260px;
     z-index: 1000;
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-footer {
+    position: static;
+    margin-top: auto;
+    padding: 20px 16px 28px;
   }
 
   .sidebar.mobile-open {
@@ -663,7 +898,6 @@ body {
     width: 100%;
   }
 
-  /* Botón hamburguesa elegante, sin fondo negro, no tapa texto */
   .mobile-menu-btn {
     display: flex;
     flex-direction: column;
@@ -692,7 +926,6 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Animación del botón hamburguesa ('X') */
   .mobile-menu-btn.is-active .line:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
@@ -705,7 +938,6 @@ body {
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* Overlay oscuro */
   .menu-overlay {
     position: fixed;
     top: 0;
@@ -722,35 +954,19 @@ body {
     display: block;
   }
 
-  /* Ajuste del contenido principal para ocupar toda la pantalla y evitar espacios vacíos */
   .main-content {
-    padding: 80px 16px 40px 16px;
-    /* padding-top extra para que el botón no tape texto */
-    gap: 32px;
-    min-height: 100vh;
-    justify-content: flex-start;
-  }
-
-  /* Asegurar que el último elemento (chat) no deje espacio vacío abajo */
-  .section-chat {
-    margin-bottom: 0;
-  }
-
-  .chat-window {
-    margin-bottom: 0;
-  }
-
-  /* Las tarjetas ocupan todo el ancho */
-  .intel-card {
-    flex: 0 0 100%;
-    min-width: 100%;
+    padding: 74px 14px 24px 14px;
+    gap: 22px;
   }
 
   .cards-track {
-    gap: 16px;
+    gap: 14px;
   }
 
-  /* Chat más compacto pero sin perder funcionalidad */
+  .intel-card {
+    flex: 0 0 100%;
+  }
+
   .chat-messages {
     max-height: 320px;
     padding: 16px;
@@ -762,17 +978,12 @@ body {
     padding: 12px 14px;
   }
 
-  .section-header {
-    margin-top: 0;
-  }
-
   .ctrl-btn {
     width: 32px;
     height: 32px;
     font-size: 1rem;
   }
 
-  /* Ajuste para que no haya scroll horizontal */
   body {
     overflow-x: hidden;
   }
@@ -780,8 +991,26 @@ body {
 
 /* Tablet landscape */
 @media (min-width: 769px) and (max-width: 1024px) {
+  .main-content {
+    max-width: 980px;
+    padding: 26px 20px 34px 20px;
+    gap: 30px;
+  }
+
+  .cards-track {
+    gap: 20px;
+  }
+
   .intel-card {
     flex: 0 0 calc(50% - 10px);
+    padding: 22px;
+    height: 268px;
+  }
+
+  .chat-messages {
+    min-height: 250px;
+    max-height: 340px;
+    padding: 18px;
   }
 
   .mobile-menu-btn,

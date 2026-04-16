@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animateRings();
   }
 
-  // CAROUSEL
+  // CAROUSEL (corregido)
   const track = document.getElementById('cardsTrack');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -38,15 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getVisibleCount() {
     const w = wrapper.offsetWidth;
-    if (w >= 960) return 3;
-    if (w >= 600) return 2;
+    if (w >= 1024) return 3;
+    if (w >= 768) return 2;
     return 1;
   }
 
   function getCardWidth() {
     const cards = track.querySelectorAll('.intel-card');
     if (!cards.length) return 0;
-    return cards[0].offsetWidth + 20;
+    const cardWidth = cards[0].offsetWidth;
+    const gap = parseInt(getComputedStyle(track).gap) || 24;
+    return cardWidth + gap;
   }
 
   function totalCards() {
@@ -57,7 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const visible = getVisibleCount();
     const maxIndex = Math.max(0, totalCards() - visible);
     currentIndex = Math.min(currentIndex, maxIndex);
-    track.style.transform = `translateX(-${currentIndex * getCardWidth()}px)`;
+    const translate = -currentIndex * getCardWidth();
+    track.style.transform = `translateX(${translate}px)`;
+
     prevBtn.disabled = currentIndex === 0;
     nextBtn.disabled = currentIndex >= maxIndex;
     prevBtn.style.opacity = prevBtn.disabled ? '0.35' : '1';
@@ -157,12 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (overlay) overlay.addEventListener('click', closeSidebar);
-
-    document.querySelectorAll('.nav-item').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (window.innerWidth <= 768) closeSidebar();
-      });
-    });
   }
 
   window.addEventListener('resize', () => {
@@ -173,12 +171,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Navegación activa
+  // COMPANY DETAIL CARDS - NUEVO: CLIC EN TODA LA TARJETA
+  let activeDetailCard = null;
+
+  function hideAllDetailCards() {
+    document.querySelectorAll('.detail-card').forEach(card => {
+      card.classList.remove('active');
+    });
+    activeDetailCard = null;
+  }
+
+  // Escuchar clics en cada tarjeta
+  document.querySelectorAll('.intel-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      // Si el clic ocurre dentro de un detail-card activo, no hacer nada (para permitir interacción)
+      if (activeDetailCard && activeDetailCard.contains(e.target)) {
+        return;
+      }
+
+      const detail = card.querySelector('.detail-card');
+      if (!detail) return;
+
+      // Si este detail ya está activo, lo cerramos; si no, cerramos todos y abrimos este
+      if (activeDetailCard === detail) {
+        hideAllDetailCards();
+      } else {
+        hideAllDetailCards();
+        detail.classList.add('active');
+        activeDetailCard = detail;
+      }
+    });
+  });
+
+  // Cerrar detalle al hacer clic fuera de cualquier tarjeta
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.intel-card')) {
+      hideAllDetailCards();
+    }
+  });
+
+  // Navegación activa + toggle perfiles
   const navItems = document.querySelectorAll('.nav-item');
+  const profileToggleBtn = document.getElementById('profileToggleBtn');
+  const profileSubmenu = document.getElementById('profileSubmenu');
+  const profileSubItems = document.querySelectorAll('.nav-subitem');
+
   navItems.forEach(item => {
     item.addEventListener('click', () => {
+      const isProfileToggle = item.id === 'profileToggleBtn';
+
+      if (isProfileToggle) {
+        item.classList.toggle('open');
+        if (profileSubmenu) profileSubmenu.classList.toggle('open');
+        return;
+      }
+
       navItems.forEach(nav => nav.classList.remove('active'));
       item.classList.add('active');
+
       if (item.getAttribute('data-nav') === 'reset') {
         const msg = document.createElement('div');
         msg.className = 'message ai-message';
@@ -187,6 +237,24 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
         setTimeout(() => msg.remove(), 2500);
       }
+
+      if (window.innerWidth <= 768) closeSidebar();
     });
+  });
+
+  profileSubItems.forEach(sub => {
+    sub.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileSubItems.forEach(i => i.classList.remove('active'));
+      sub.classList.add('active');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.sidebar') && !e.target.closest('.mobile-menu-btn')) {
+      closeSidebar();
+      if (profileSubmenu) profileSubmenu.classList.remove('open');
+      if (profileToggleBtn) profileToggleBtn.classList.remove('open');
+    }
   });
 });
