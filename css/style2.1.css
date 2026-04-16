@@ -1,0 +1,1411 @@
+/* ===== VARIABLES ===== */
+:root {
+    --bg-dark: #0a0c10;
+    --card-bg: #11141a;
+    --card-border: #1f252e;
+    --accent: #01a982; /* The neon emerald green */
+    --accent-glow: rgba(0, 195, 137, 0.4);
+    --text-primary: #eff1f5;
+    --text-secondary: #8b949e;
+    --text-muted: #57606a;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif;
+    --border-radius: 12px;
+    --border-radius-sm: 6px;
+}
+
+/* ===== RESET & BASE ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    margin: 0;
+    /* Allow full-page scrolling so the dashboard is usable on all viewports */
+    overflow-y: auto;
+    display: block;
+    background-image: radial-gradient(circle at 50% 50%, rgba(20, 25, 35, 0.8) 0%, var(--bg-dark) 100%);
+    -webkit-font-smoothing: antialiased;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    height: auto;
+    min-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    height: 65px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-box {
+    width: 56px;
+    height: 28px;
+    border: 4px solid var(--hpe-green);
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.025em;
+}
+
+.logo-light {
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    margin-left: 8px;
+}
+
+
+.nav-link {
+    color: #71717a;
+    text-decoration: none;
+    position: relative;
+}
+
+.nav-link.active {
+    color: var(--hpe-green);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--hpe-green);
+}
+
+.nav-link:hover {
+    color: white;
+    transition: color 0.3s;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 9999px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--hpe-green);
+    box-shadow: 0 0 8px var(--hpe-green);
+}
+
+.status-text {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.8);
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon {
+    color: #a1a1aa;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: white;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: linear-gradient(to bottom right, #27272a, #18181b);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-small {
+    color: #a1a1aa;
+    font-size: 14px;
+}
+
+/* ===== DASHBOARD GRID ===== */
+
+/*ICONOS DE EL APARTADO DE EMPRESAS*/
+.company-tile i{
+    text-decoration: none;
+    margin-bottom: 8px;
+    display: block;
+    color: #01a982;
+
+}
+/*=== GRID ==========================*/
+
+
+/* ===== CARDS ===== */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: #2e3642;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-header-accent {
+    height: 2px;
+    width: 40px;
+    background: var(--element-gradient);
+    margin-bottom: 12px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+.card-subtitle {
+    font-size: 10px;
+    color: #71717a;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+}
+
+.icon-container {
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.icon-green-bg {
+    background: rgba(1, 169, 130, 0.1);
+}
+
+.icon-gray-bg {
+    background: rgba(255,255,255,0.05);
+}
+
+.text-green {
+    color: var(--hpe-green);
+    font-size: 20px;
+}
+
+.text-gray {
+    color: #a1a1aa;
+    font-size: 20px;
+}
+
+/* ===== COMPANY LIST ===== */
+.company-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.company-item {
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.02),
+        rgba(255,255,255,0.01)
+    );
+    border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.35s ease;
+        position: relative;
+    }
+
+/* Glow line */
+.company-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(0,195,137,0.15),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.company-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.company-rank {
+    font-size: 26px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.08);
+    min-width: 42px;
+    transition: all 0.35s ease;
+}
+
+.card:hover .company-rank {
+    color: rgba(1, 169, 130, 0.2);
+}
+
+.company-btn:hover .company-rank {
+    color: rgba(0,195,137,0.25);
+}
+
+.company-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.06),
+        transparent
+    );
+    transform: translateX(-100%);
+}
+
+.company-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.company-level {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.company-right {
+    text-align: right;
+}
+
+.company-percent {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--accent-glow);
+}
+
+.company-btn {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: 12px;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover FX */
+.company-btn:hover .company-item {
+    border-color: rgba(0,195,137,0.45);
+    background: rgba(0,195,137,0.03);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+        0 0 0 1px rgba(0,195,137,0.1),
+        0 10px 30px rgba(0,0,0,0.5),
+        0 0 15px var(--accent-glow);
+}
+
+.company-btn:hover .company-item::before {
+    opacity: 1;
+}
+
+.company-btn:hover::after {
+    animation: shine 1.1s ease;
+}
+
+.progress-bar {
+    width: 80px;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    margin-top: 6px;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--element-gradient);
+}
+
+/* ===== COMPANIES GRID ===== */
+.companies-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.company-tile {
+    background: rgba(24, 24, 27, 0.4);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.company-tile:hover {
+    background: rgba(11, 11, 12, 0.8);
+    
+}
+
+.company-tile i {
+    transition: all 0.3s ease;
+}
+
+.company-tile:hover i {
+    color: #01a982;
+    text-shadow: 0 0 8px #01a982;
+}
+
+
+.tile-icon {
+    color: #71717a;
+    margin-bottom: 12px;
+    transition: color 0.3s;
+}
+
+.company-tile:hover .tile-icon {
+    color: var(--hpe-green);
+}
+
+.tile-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #a1a1aa;
+}
+
+/* ===== BUTTONS ===== */
+.btn-outline {
+    margin-top: 32px;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: white;
+    padding: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    border-color: var(--hpe-green);
+}
+
+.btn-icon {
+    font-size: 14px;
+}
+
+.btn-gradient {
+    width: 100%;
+    background: var(--element-gradient);
+    color: white;
+    padding: 14px 0;
+    margin-top: 24px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: filter 0.3s;
+    box-shadow: 0 4px 15px rgba(1, 169, 130, 0.2);
+}
+
+.btn-gradient:hover {
+    filter: brightness(1.1);
+}
+
+/* ===== AI CARD ===== */
+/* Copilot (Side Panel) */
+
+/* ===== DASHBOARD GRID ===== */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;  /* Hace que todas las filas tengan la misma altura */
+    gap: 20px;
+    height: auto;
+}
+
+/* ===== AI CARD ===== */
+.copilot-card {
+    grid-column: auto;  /* Cambiado de 3 a auto */
+    grid-row: auto;     /* Cambiado de 1/3 a auto */
+    display: flex;
+    flex-direction: column;
+    height: 100%;       /* Asegura que ocupe toda la altura de la celda */
+}
+
+/* Ajustes para que el chat se expanda correctamente */
+.chat-interface {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 5px;
+    margin-bottom: 20px;
+    min-height: 250px;  /* Altura mínima para consistencia */
+    scrollbar-width: thin;
+    scrollbar-color: var(--card-border) transparent;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+    }
+    .copilot-card {
+        grid-column: auto;
+    }
+}
+
+.copilot-title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.ai-icon-box {
+    width: 36px;
+    height: 36px;
+    background-color: var(--accent);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 1.1rem;
+}
+
+.copilot-title h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 0.5px;
+}
+
+.status-text {
+    font-size: 0.65rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-top: 2px;
+}
+
+.chat-interface {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 5px;
+    margin-bottom: 20px;
+     /* Custom Scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--card-border) transparent;
+}
+
+.message {
+    display: flex;
+    gap: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+    animation: fadeIn 0.4s ease;
+}
+
+.message.ai .msg-icon {
+    width: 28px;
+    height: 28px;
+    background-color: rgba(0, 195, 137, 0.2);
+    color: var(--accent);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.user .msg-content {
+    background-color: var(--accent);
+    color: black;
+    padding: 12px 16px;
+    border-radius: 12px 0 12px 12px;
+    position: relative;
+    max-width: 90%;
+}
+
+.message.ai .msg-content {
+    background-color: #1a1f26;
+    padding: 12px 16px;
+    border-radius: 0 12px 12px;
+    border: 1px solid var(--card-border);
+}
+
+.user-avatar-small {
+    position: absolute;
+    right: -40px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background-color: #21262d; 
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.message .time {
+    display: block;
+    font-size: 0.65rem;
+    margin-top: 8px;
+    opacity: 0.6;
+}
+
+.insight-box {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(0, 195, 137, 0.1);
+    border-left: 2px solid var(--accent);
+    border-radius: 4px;
+}
+
+.insight-label {
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.insight-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.insight-value .unit {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+.chat-input-area {
+    display: flex;
+    background: #0d1117;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 8px;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--white);
+    padding: 8px;
+    font-family: var(--font-family);
+    outline: none;
+}
+
+.send-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.2s;
+}
+
+.send-btn:hover {
+    transform: translateX(3px);
+}
+
+.footer-note {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+
+
+/* ===== SERVICES ===== */
+.services-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-item {
+    padding: 16px;
+    background: rgba(24, 24, 27, 0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.service-item:hover {
+    border-color: rgba(1, 169, 130, 0.5);
+    background: rgba(1, 169, 130, 0.05);
+}
+
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.service-dot-green {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--hpe-green);
+}
+
+.service-dot-dim {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(1, 169, 130, 0.4);
+}
+
+.service-name {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+.service-arrow {
+    font-size: 12px;
+    color: #52525b;
+    transition: all 0.3s;
+}
+
+.service-item:hover .service-arrow {
+    color: var(--hpe-green);
+    transform: translateX(4px);
+}
+
+/* ===== PRODUCTS ===== */
+.products-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    background: rgba(24, 24, 27, 0.2);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.product-item:hover {
+    border-color: rgba(255,255,255,0.1);
+}
+
+.product-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-desc {
+    font-size: 9px;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ===== MATURITY CARD ===== */
+.maturity-card {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.maturity-header {
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+.maturity-chart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.progress-svg {
+    width: 224px;
+    height: 224px;
+}
+
+.progress-bg {
+    stroke: rgba(255,255,255,0.05);
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.maturity-score {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-number {
+    font-size: 60px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.05em;
+    transition: transform 0.3s;
+}
+
+.maturity-card:hover .score-number {
+    transform: scale(1.05);
+}
+
+.score-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #71717a;
+    font-weight: 700;
+}
+
+.maturity-footer {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #71717a;
+}
+
+.status-value {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--hpe-green);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot-small {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--hpe-green);
+}
+
+.progress-bar-full {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.maturity-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding: 0 4px;
+}
+
+.scale-label {
+    font-size: 8px;
+    color: #52525b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    20% { transform: translateX(100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* =================RESPONSIVE===================== */
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets pequeñas y laptops (1024px y menos) */
+@media (max-width: 1024px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .copilot-card {
+        grid-column: span 2;
+        height: 450px; /* Un poco más alto para mejor experiencia */
+    }
+    
+    .dashboard-container {
+        padding: 15px;
+    }
+    
+    .header {
+        padding: 0 20px;
+    }
+    
+    .card-title {
+        font-size: 20px;
+    }
+    
+    .companies-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablets verticales y móviles grandes (768px y menos) */
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 16px;
+    }
+    
+    .copilot-card {
+        grid-column: span 1; /* Ocupa una columna */
+        height: 450px;
+    }
+    
+    .header {
+        padding: 10px 15px;
+    }
+    
+    .header-left {
+        gap: 15px;
+    }
+    
+    .hpe-logo-small {
+        width: 50px;
+    }
+    
+    .dashboard-container {
+        padding: 12px;
+    }
+    
+    .card {
+        padding: 18px;
+    }
+    
+    .card-title {
+        font-size: 18px;
+    }
+    
+    .company-item {
+        padding: 14px 16px;
+    }
+    
+    .company-rank {
+        font-size: 22px;
+        min-width: 35px;
+    }
+    
+    .companies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .company-tile {
+        padding: 16px;
+    }
+    
+    .maturity-chart {
+        margin: 20px 0;
+    }
+    
+    .progress-svg {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .score-number {
+        font-size: 48px;
+    }
+}
+
+/* Móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 12px;
+    }
+    
+    .header-left {
+        gap: 10px;
+    }
+    
+    .hpe-logo-small {
+        width: 40px;
+    }
+    
+    .user-menu {
+        gap: 10px;
+    }
+    
+    .avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .dashboard-container {
+        padding: 10px;
+    }
+    
+    .grid-layout {
+        gap: 12px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    .card-header {
+        margin-bottom: 15px;
+    }
+    
+    .card-title {
+        font-size: 16px;
+    }
+    
+    .card-subtitle {
+        font-size: 8px;
+    }
+    
+    .company-list {
+        gap: 12px;
+    }
+    
+    .company-item {
+        padding: 10px 12px;
+    }
+    
+    .company-left {
+        gap: 10px;
+    }
+    
+    .company-rank {
+        font-size: 18px;
+        min-width: 28px;
+    }
+    
+    .company-name {
+        font-size: 13px;
+    }
+    
+    .company-level {
+        font-size: 8px;
+    }
+    
+    .company-percent {
+        font-size: 12px;
+    }
+    
+    /* Companies Grid */
+    .companies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .company-tile {
+        padding: 12px;
+    }
+    
+    .company-tile i {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+    
+    .tile-label {
+        font-size: 8px;
+    }
+    
+    /* AI Copilot */
+    .copilot-card {
+        height: 400px;
+    }
+    
+    .copilot-title h3 {
+        font-size: 0.85rem;
+    }
+    
+    .status-text {
+        font-size: 0.6rem;
+    }
+    
+    .message {
+        font-size: 0.8rem;
+    }
+    
+    .message.user .msg-content,
+    .message.ai .msg-content {
+        padding: 10px 12px;
+    }
+    
+    .insight-value {
+        font-size: 1.2rem;
+    }
+    
+    .chat-input-area {
+        padding: 5px;
+    }
+    
+    .chat-input-area input {
+        padding: 6px;
+        font-size: 12px;
+    }
+    
+    .send-btn {
+        padding: 6px;
+    }
+    
+    /* Services */
+    .service-item {
+        padding: 12px;
+    }
+    
+    .service-name {
+        font-size: 11px;
+    }
+    
+    /* Products */
+    .product-item {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .product-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .product-name {
+        font-size: 12px;
+    }
+    
+    .product-desc {
+        font-size: 7px;
+    }
+    
+    /* Buttons */
+    .btn-outline {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 9px;
+    }
+    
+    .btn-gradient {
+        padding: 12px 0;
+        font-size: 9px;
+    }
+    
+    /* Maturity Card */
+    .maturity-header {
+        top: 20px;
+        left: 20px;
+    }
+    
+    .progress-svg {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .score-number {
+        font-size: 36px;
+    }
+    
+    .score-label {
+        font-size: 8px;
+    }
+    
+    .maturity-footer {
+        padding: 15px;
+    }
+    
+    .status-row {
+        margin-bottom: 8px;
+    }
+    
+    .status-label,
+    .status-value {
+        font-size: 8px;
+    }
+}
+
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+    .companies-grid {
+        grid-template-columns: 1fr; /* Una columna para los tiles */
+    }
+    
+    .company-tile {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 10px;
+    }
+    
+    .company-tile i {
+        margin-bottom: 0;
+        font-size: 18px;
+    }
+    
+    .copilot-card {
+        height: 380px;
+    }
+    
+    .header-left {
+        gap: 5px;
+    }
+    
+    .hpe-logo-small {
+        width: 35px;
+    }
+    
+    .avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .fa-bell {
+        font-size: 14px;
+    }
+    
+    .fa-user {
+        font-size: 12px;
+    }
+}
+
+/* Ajustes para landscape en móviles */
+@media (max-width: 900px) and (orientation: landscape) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .copilot-card {
+        grid-column: span 2;
+        height: 350px;
+    }
+    
+    .dashboard-container {
+        padding: 10px;
+    }
+    
+    .chat-interface {
+        min-height: 150px;
+    }
+}
+
+/* Asegura que el scroll funcione bien en móviles */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    }
+    
+    .dashboard-container {
+        min-height: 100vh;
+    }
+    
+    .chat-interface {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Mejora el touch en botones */
+    .company-tile,
+    .service-item,
+    .product-item,
+    .btn-outline,
+    .btn-gradient,
+    .send-btn {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Elimina el hover en móviles (no tiene sentido) */
+    .company-tile:hover {
+        background: rgba(24, 24, 27, 0.4);
+    }
+    
+    .company-tile:active {
+        background: rgba(1, 169, 130, 0.2);
+    }
+
+    
+}

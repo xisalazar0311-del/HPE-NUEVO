@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCL Technologies Corporate Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nvidia: {
+                            base: '#0a0c10',
+                            card: '#11141a',
+                            border: '#1f252e',
+                            accent: '#01a982',
+                            accent2: '#00c389',
+                            text: '#eff1f5',
+                            muted: '#8b949e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style_nvidia.css">
+
+    <style>
+        #lang-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: transparent;
+            border: 1.5px solid #01a982;
+            border-radius: 20px;
+            color: #01a982;
+            font-family: 'Rajdhani', 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        #lang-toggle-btn:hover {
+            background: #01a982;
+            color: #000;
+            box-shadow: 0 0 12px rgba(1, 169, 130, 0.55);
+            transform: scale(1.05);
+        }
+        @keyframes lang-pulse {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        .lang-btn--spinning { animation: lang-pulse 0.3s ease; }
+    </style>
+</head>
+
+<body class="bg-nvidia-base text-nvidia-text overflow-hidden font-sans selection:bg-nvidia-accent selection:text-black">
+
+    <div id="app" class="flex h-screen w-full relative">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar w-72 h-full z-50 relative">
+            <div class="sidebar-section">
+                <h3 data-i18n="menu.title">MENÚ</h3>
+                <ul class="nav-list">
+                    <li class="active"><i class="fa-solid fa-chart-line"></i> HCL Technologies</li>
+                    <li onclick="window.location.href='../panelh.php'"><i class="fa-solid fa-layer-group"></i> Dashboard</li>
+                    <li onclick="window.location.href='../dashboard.html'"><i class="fa-solid fa-microchip"></i>
+                        <span data-i18n="menu.technology">Tecnología</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 data-i18n="menu.company">EMPRESA</h3>
+                <div class="company-card glass-card-sm">
+                    <div class="company-icon"><i class="fa-solid fa-building"></i></div>
+                    <div class="company-info leading-tight">
+                        <span class="name">HCL Technologies</span>
+                        <span class="status text-[10px] mt-0.5" data-i18n="hcl.status">● Empresa líder mundial en servicios de TI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section chat-section mt-auto">
+                <div class="">
+                    <div class="">
+                        <div class="ai-avatar">
+                            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+                                <defs>
+                                    <linearGradient id="aiGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#01a982" />
+                                        <stop offset="100%" stop-color="#00c389" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 h-full relative flex flex-col overflow-hidden bg-gradient-radial">
+
+            <!-- HEADER -->
+            <header class="h-20 w-full glass-header flex items-center justify-between px-8 z-40">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <h1 class="font-tech text-xl font-semibold tracking-wide text-white">HPE</h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <!-- Status -->
+                    <div class="flex items-center gap-3 px-4 py-1.5 rounded-full border border-nvidia-border/30 bg-black/20 backdrop-blur-sm">
+                        <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
+                        <span class="text-[10px] font-bold tracking-widest text-green-400 uppercase" data-i18n="header.online">Sistemas Online</span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-6">
+                        <button id="lang-toggle-btn" title="Cambiar a inglés" aria-label="Toggle language">
+                            <span data-i18n="lang.btn.label">🌐 EN</span>
+                        </button>
+
+                        <button class="text-nvidia-muted hover:text-white transition-colors relative">
+                            <i class="fa-solid fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-nvidia-accent rounded-full"></span>
+                        </button>
+                        <button class="text-nvidia-muted hover:text-white transition-colors">
+                            <i class="fa-solid fa-moon text-lg"></i>
+                        </button>
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-nvidia-accent to-blue-600 p-[1px]">
+                            <a href="../user/userpage.html">
+                                <img src="https://ui-avatars.com/api/?name=Admin+User&background=000&color=fff" alt="User"
+                                    class="w-full h-full rounded-full border-2 border-black object-cover">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT AREA -->
+            <div id="scroll-container" class="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth custom-scrollbar">
+
+                <!-- Section: About / Mission / Vision -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.about">Sobre</span> <span class="text-nvidia-accent">HCL Technologies</span>
+                    </h2>
+
+                    <div class="grid grid-cols-3 gap-6">
+
+                        <!-- Card: ¿Qué es? -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-circle-info text-2xl text-blue-400 drop-shadow-[0_0_12px_rgba(96,165,250,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.what">¿Qué es?</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.what.body">HCL Technologies es una empresa multinacional india de servicios tecnológicos y consultoría, fundada en 1976. Se especializa en transformación digital, inteligencia artificial, cloud computing, ciberseguridad e ingeniería digital.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card: Misión -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-bullseye text-2xl text-orange-400 drop-shadow-[0_0_12px_rgba(251,146,60,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.mission">Misión</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.mission.body">Proporcionar soluciones tecnológicas innovadoras que permitan a las empresas crecer, modernizarse y ser más competitivas en la era digital.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card: Visión -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-eye text-2xl text-purple-400 drop-shadow-[0_0_12px_rgba(192,132,252,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.vision">Visión</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.vision.body">Ser una empresa líder mundial en tecnología, reconocida por su innovación, calidad, impacto social y excelencia en el servicio.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: History Timeline -->
+                <section class="mb-12 section-fade">
+                    <div class="flex justify-between items-end mb-6">
+                        <h2 class="text-2xl font-tech font-bold text-white flex items-center gap-3">
+                            <span data-i18n="section.history">Historia de</span> <span class="text-nvidia-accent">HCL Technologies</span>
+                        </h2>
+                        <a href="../assets/hcl.pdf" download
+                            class="text-xs text-nvidia-accent hover:text-white transition-colors flex items-center gap-2 group">
+                            <span data-i18n="section.full_traj">Ver trayectoria completa</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="w-full glass-panel p-8 rounded-2xl relative overflow-hidden border border-nvidia-border/20">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-nvidia-accent to-transparent opacity-20"></div>
+
+                        <div class="grid grid-cols-4 gap-8 relative z-10">
+
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500">1976</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="hcl.hist.y1">Fundación de HCL</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.hist.p1">HCL fue fundada por Shiv Nadar en India, impulsando la industria tecnológica del país.</p>
+                            </div>
+
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-100">1999</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-100"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="hcl.hist.y2">Creación de HCL Technologies</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.hist.p2">Se estableció oficialmente HCL Technologies Ltd., enfocada en servicios de TI y consultoría tecnológica.</p>
+                            </div>
+
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-200">2018</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-200"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="hcl.hist.y3">Adquisiciones</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.hist.p3">HCL adquirió importantes negocios tecnológicos de IBM, fortaleciendo su presencia en software empresarial y automatización.</p>
+                            </div>
+
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-300">2026</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-300"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="hcl.hist.y4">Actualidad</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="hcl.hist.p4">HCL Technologies es hoy una de las empresas globales líderes en servicios de TI, con presencia en más de 60 países y enfoque en IA, cloud, ciberseguridad e ingeniería digital.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Areas -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.areas">Áreas</span> <span class="text-nvidia-accent" data-i18n="section.main">Principales</span>
+                    </h2>
+                    <div class="grid grid-cols-4 gap-5">
+
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white group-hover:shadow-[0_0_15px_#3b82f6]">
+                                <i class="fa-solid fa-computer"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="hcl.area1.title">IA</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="hcl.area1.body">HCL desarrolla soluciones basadas en inteligencia artificial y machine learning para automatizar procesos y analizar grandes volúmenes de datos.</p>
+                        </div>
+
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-purple-500/10 text-purple-400 group-hover:bg-purple-500 group-hover:text-white group-hover:shadow-[0_0_15px_#a855f7]">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="hcl.area2.title">Computación en la nube</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="hcl.area2.body">HCL acompaña a las empresas en la migración, gestión y optimización de servicios en la nube, utilizando plataformas varias.</p>
+                        </div>
+
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-orange-500/10 text-orange-400 group-hover:bg-orange-500 group-hover:text-white group-hover:shadow-[0_0_15px_#f97316]">
+                                <i class="fa-solid fa-laptop-file"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="hcl.area3.title">Digitalización</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="hcl.area3.body">HCL ayuda a las empresas a modernizar sus procesos, sistemas y modelos de negocio mediante tecnologías digitales.</p>
+                        </div>
+
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-green-500/10 text-green-400 group-hover:bg-green-500 group-hover:text-white group-hover:shadow-[0_0_15px_#22c55e]">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="hcl.area4.title">Ciberseguridad</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="hcl.area4.body">HCL ofrece soluciones avanzadas para la protección de redes, sistemas y datos, incluyendo prevención de ataques.</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: Tech Stack -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.tech">Tecnologías</span> <span class="text-nvidia-accent" data-i18n="section.key">Clave</span>
+                    </h2>
+                    <div class="grid grid-cols-3 gap-6">
+
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-brands fa-google text-2xl text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="hcl.tech1.title">Google Cloud Platform</h3>
+                                <p class="text-xs text-gray-400" data-i18n="hcl.tech1.body">Esta plataforma permite migrar, gestionar y escalar sistemas empresariales de forma segura y eficiente.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-solid fa-brain text-2xl text-nvidia-accent drop-shadow-[0_0_12px_rgba(1,169,130,0.9)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="hcl.tech2.title">IA</h3>
+                                <p class="text-xs text-gray-400" data-i18n="hcl.tech2.body">HCL usa la IA para optimizar procesos, analizar datos y apoyar la toma de decisiones.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-solid fa-snowflake text-2xl text-nvidia-accent drop-shadow-[0_0_12px_rgba(1,169,130,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="hcl.tech3.title">Snowflake</h3>
+                                <p class="text-xs text-gray-400" data-i18n="hcl.tech3.body">Utilizan Snowflake para procesar, almacenar y analizar grandes volúmenes de datos empresariales.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: Featured Platforms -->
+                <section class="section-fade pb-10">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.platforms">Plataformas</span> <span class="text-nvidia-accent" data-i18n="section.featured">Destacadas</span>
+                    </h2>
+                    <div class="grid grid-cols-2 gap-6">
+
+                        <div class="hero-card h-80 rounded-2xl relative overflow-hidden border border-white/5 group items-start p-8 flex flex-col justify-end bg-[#0a0f18] hover:border-nvidia-accent/30 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                            <img src="../assets/dryice.png" alt="HCL DRYiCE"
+                                class="absolute inset-0 w-full h-full object-cover opacity-25 scale-110 group-hover:scale-125 transition-transform duration-[1200ms] ease-out">
+                            <div class="relative z-10 w-full">
+                                <h3 class="text-3xl font-tech font-bold text-white mb-2 leading-tight" data-i18n="hcl.prod1.title">HCL DRYiCE</h3>
+                                <p class="text-sm text-gray-400 mb-6 max-w-md" data-i18n="hcl.prod1.body">Es la plataforma de automatización inteligente y operaciones autónomas de HCL, enfocada en la IA.</p>
+                            </div>
+                        </div>
+
+                        <div class="hero-card h-80 rounded-2xl relative overflow-hidden border border-white/5 group items-start p-8 flex flex-col justify-end bg-[#0a0f18] hover:border-nvidia-accent/30 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                            <img src="../assets/volt.png" alt="HCL Volt MX"
+                                class="absolute inset-0 w-full h-full object-cover opacity-25 scale-110 group-hover:scale-125 transition-transform duration-[1200ms] ease-out">
+                            <div class="relative z-10 w-full">
+                                <h3 class="text-3xl font-tech font-bold text-white mb-2 leading-tight" data-i18n="hcl.prod2.title">HCL Volt MX</h3>
+                                <p class="text-sm text-gray-400 mb-6 max-w-md" data-i18n="hcl.prod2.body">Es la plataforma de desarrollo rápido de aplicaciones (low-code / no-code) de HCL, enfocada en el desarrollo fácil de aplicaciones.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="mt-12 py-8 border-t border-white/5 flex justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
+                    <div class="flex gap-8">
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.privacy">Privacidad</a>
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.legal">Legal</a>
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.cookies">Cookies</a>
+                    </div>
+                    <span data-i18n="footer.rights">© 2025 HPE. Todos los derechos reservados.</span>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="../js/translator.js"></script>
+    <script src="../js/script_nvidia.js"></script>
+
+</body>
+</html>

@@ -1,27 +1,384 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sovereign AI | Market Explorer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dashboard | Panel</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS (opcional, pero se usa en el sidebar de HPE) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hpe: {
+              base: '#0a0c0f',
+              card: '#161b22',
+              border: '#1e242e',
+              accent: '#00e6b4',
+              accent2: '#00cca0',
+              text: '#e8edf5',
+              muted: '#4a5568'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            tech: ['Rajdhani', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS (HPE theme) -->
+  <link rel="stylesheet" href="../css/style_hpe.css"> <!-- Ajusta la ruta según tu estructura -->
+
+  <style>
+    /* Ajustes adicionales para que el main content se comporte igual que en hpe.html */
+    body {
+      overflow-x: hidden;
+    }
+
+    #app {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      #app {
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+    }
+
+    .main-content-dashboard {
+      flex: 1;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--hpe-dark);
+    }
+
+    @media (max-width: 768px) {
+      .main-content-dashboard {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: visible;
+      }
+    }
+
+    /* Mantener las cards del dashboard con su diseño original, pero adaptadas al tema */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .card-btn {
+      position: relative;
+      display: block;
+      height: 200px;
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.85) 100%);
+      z-index: 1;
+      transition: opacity 0.35s ease;
+    }
+
+    .card-btn .bg-image {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.5s ease;
+    }
+
+    .card-btn .content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 1.25rem 1.5rem;
+      z-index: 2;
+    }
+
+    .card-btn .content h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.25rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-btn .content span {
+      font-size: 0.85rem;
+      color: var(--hpe-accent);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .card-btn:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--hpe-accent);
+      box-shadow: 0 12px 40px rgba(0, 210, 200, 0.3);
+    }
+
+    .card-btn:hover .bg-image {
+      transform: scale(1.08);
+    }
+
+    .fa-solid fa-shirt {
+      padding: 20px;
+    }
+
+    .text-glow-cyan {
+      transition: text-shadow 0.3s ease;
+    }
+
+    .text-glow-cyan:hover {
+      text-shadow:
+        0 0 5px #0ff,
+        0 0 10px #0ff,
+        0 0 20px #0ff,
+        0 0 40px #0ff;
+    }
+
+    /* Estilo para botones tipo menú (usado en header) */
+    .nav-btn {
+      display: inline-flex;
+      /* Para alinear ícono si se agrega después */
+      align-items: center;
+      padding: 12px 16px;
+      color: #94a3b8;
+      /* Mismo color que los items del menú */
+      font-weight: 600;
+      text-decoration: none;
+      /* Quitar subrayado */
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      color: var(--text-primary);
+      /* Blanco al hacer hover */
+    }
+
+    /* Opcional: si quieres que tenga el mismo efecto en el texto que en el icono del menú */
+    .nav-btn:hover {
+      text-shadow: 0 0 8px var(--hpe-accent);
+    }
+
+    /* Para mantener consistencia con el estado active (si se necesita) */
+    .nav-btn.active {
+      color: var(--text-primary);
+      border-left: 3px solid var(--hpe-accent);
+      padding-left: 13px;
+      /* Compensar el borde para que no se mueva el texto */
+    }
+
+    /* ===== MEJORA DEL MENÚ CON EFECTO NEON ===== */
+    .nav-list li {
+      /* Mantén los estilos existentes y añade transiciones suaves */
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-list li:hover {
+      background: rgba(0, 243, 255, 0.25) !important;
+      /* Más opaco */
+      color: white !important;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+      /* Resplandor exterior */
+      transform: translateX(5px);
+      /* Ligero movimiento */
+    }
+
+    .nav-list li:hover i {
+      color: #0ff !important;
+      transform: scale(1.2);
+      text-shadow: 0 0 12px #0ff, 0 0 25px #0ff;
+      /* Efecto neon en el icono */
+    }
+
+    .nav-list li:hover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0, 243, 255, 0.3) 0%, transparent 70%);
+      z-index: -1;
+      border-radius: 8px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===== BOTÓN DE CAMBIO DE IDIOMA - translator.js ===== */
+    #lang-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: transparent;
+      border: 1.5px solid #00e6b4;
+      border-radius: 20px;
+      color: #00e6b4;
+      font-family: 'Rajdhani', 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease,
+        box-shadow 0.25s ease, transform 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    #lang-toggle-btn:hover {
+      background: #00e6b4;
+      color: #000;
+      box-shadow: 0 0 12px rgba(1, 169, 130, 0.55);
+      transform: scale(1.05);
+    }
+
+    @keyframes lang-pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.08);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .lang-btn--spinning {
+      animation: lang-pulse 0.3s ease;
+    }
+
+    /* ===== HAMBURGUESA MOVIL - OVERRIDE TAILWIND ===== */
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        position: fixed !important;
+        top: 16px !important;
+        left: 16px !important;
+        z-index: 9999 !important;
+        width: 44px !important;
+        height: 44px !important;
+        background: rgba(22, 27, 34, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        border-radius: 12px !important;
+        border: 1px solid #1e242e !important;
+        cursor: pointer !important;
+        pointer-events: all !important;
+      }
+
+      .mobile-menu-btn .line {
+        display: block !important;
+        width: 22px !important;
+        height: 2px !important;
+        background: #00e6b4 !important;
+        margin: 3px 0 !important;
+        border-radius: 2px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+
+      .mobile-menu-btn.is-active .line:nth-child(1) {
+        transform: translateY(8px) rotate(45deg) !important;
+      }
+
+      .mobile-menu-btn.is-active .line:nth-child(2) {
+        opacity: 0 !important;
+      }
+
+      .mobile-menu-btn.is-active .line:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg) !important;
+      }
+
+      .menu-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        backdrop-filter: blur(3px) !important;
+        z-index: 9998 !important;
+        display: none !important;
+      }
+
+      .menu-overlay.active {
+        display: block !important;
+      }
+
+      .sidebar {
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9999 !important;
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0) !important;
+      }
+    }
+  </style>
 </head>
 
-<body>
-  <div class="app-layout">
-    <!-- Botón hamburguesa para móvil -->
-    <div class="mobile-menu-btn" id="mobileMenuBtn">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
-    <div class="menu-overlay" id="menuOverlay"></div>
+<body class="bg-hpe-base text-hpe-text font-sans">
+  <!-- Boton hamburguesa para movil (FUERA de #app, como en INDEX.HTML) -->
+  <div class="mobile-menu-btn" id="mobileMenuBtn">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div id="app">
 
     <!-- MENU LATERAL IZQUIERDO -->
     <aside class="sidebar" id="sidebar">
@@ -369,6 +726,10 @@
                   }
                 }
 
+                .hpe-logo.play.css-animation #hpe-logo-fade3 {
+                  animation: hpe-fade3-gradient 5s linear 0s forwards
+                }
+
                 @keyframes hpe-logo-dashoffset-reduce {
                   0% {
                     stroke-dashoffset: var(--_stroke-dashoffset, 0)
@@ -476,27 +837,103 @@
         </div>
       </div>
       <div class="sidebar-nav">
-        <button class="nav-item active" data-nav="strategy">
-          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <a class="nav-item" href="../INDEX.HTML">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
           <span class="nav-label">Chat</span>
-        </button>
-        <a class="nav-item" href="menu/menuaereo.html">
-          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-            <path d="M9 22v-4h6v4" />
-            <path d="M8 6h.01" />
-            <path d="M16 6h.01" />
-            <path d="M12 6h.01" />
-            <path d="M12 10h.01" />
-            <path d="M12 14h.01" />
-            <path d="M16 10h.01" />
-            <path d="M16 14h.01" />
-            <path d="M8 10h.01" />
-            <path d="M8 14h.01" />
+        </a>
+        <a class="nav-item" href="menuaereo.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l5 5-3.5 3.5L2 15l-1 1 4 2 2 4 1-1-1.5-2.5L10 16l5 5 1.2-.7c.4-.2.7-.6.6-1.1z" />
           </svg>
-          <span class="nav-label">Companies</span>
+          <span class="nav-label">Aviation</span>
+        </a>
+        <a class="nav-item active" href="menualim.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+            <path d="M7 2v20" />
+            <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+          </svg>
+          <span class="nav-label">Food</span>
+        </a>
+        <a class="nav-item" href="menuauto.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H8.3a2 2 0 0 0-1.6.8L4 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0m-5 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0" />
+          </svg>
+          <span class="nav-label">Automotive</span>
+        </a>
+        <a class="nav-item" href="menuedu.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          <span class="nav-label">Education</span>
+        </a>
+        <a class="nav-item" href="menufin.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+          <span class="nav-label">Finance</span>
+        </a>
+        <a class="nav-item" href="menumanu.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+            <path d="M17 18h1" />
+            <path d="M12 18h1" />
+            <path d="M7 18h1" />
+          </svg>
+          <span class="nav-label">Manufacturing</span>
+        </a>
+        <a class="nav-item" href="menuretail.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <span class="nav-label">Retail</span>
+        </a>
+        <a class="nav-item" href="menusalud.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+          <span class="nav-label">Health</span>
+        </a>
+        <a class="nav-item" href="menutex.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
+          </svg>
+          <span class="nav-label">Textile</span>
+        </a>
+        <a class="nav-item" href="menutec.html">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <line x1="9" y1="1" x2="9" y2="4" />
+            <line x1="15" y1="1" x2="15" y2="4" />
+            <line x1="9" y1="20" x2="9" y2="23" />
+            <line x1="15" y1="20" x2="15" y2="23" />
+            <line x1="20" y1="9" x2="23" y2="9" />
+            <line x1="20" y1="14" x2="23" y2="14" />
+            <line x1="1" y1="9" x2="4" y2="9" />
+            <line x1="1" y1="14" x2="4" y2="14" />
+          </svg>
+          <span class="nav-label">Technology</span>
         </a>
       </div>
       <div class="sidebar-footer">
@@ -508,138 +945,70 @@
       </div>
     </aside>
 
-    <div class="main-wrapper">
-      <main class="main-content">
-        <!-- MARKET INTEL (cards) -->
-        <section class="section-intel">
-          <div class="section-header">
-            <span class="section-label">Market Explorer · Intel</span>
-            <div class="carousel-controls">
-              <button class="ctrl-btn" id="prevBtn">‹</button>
-              <button class="ctrl-btn" id="nextBtn">›</button>
-            </div>
-          </div>
-          <div class="cards-wrapper">
-            <div class="cards-track" id="cardsTrack">
-              <div class="intel-card" data-score="64">
-                <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Global Tech</span><span
-                      class="card-company">Microsoft</span></div>
-                  <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
-                      <circle cx="24" cy="24" r="20" class="ring-bg" />
-                      <circle cx="24" cy="24" r="20" class="ring-fill" data-val="64" />
-                    </svg><span class="ring-value">64</span></div>
-                </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE GreenLake for LLMs</p>
-                </div>
-                <div class="card-footer"><span class="card-tag">Pipeline Velocity</span><svg class="tag-icon"
-                    viewBox="0 0 20 20" fill="none">
-                    <polyline points="2,14 7,8 12,11 18,4" stroke="currentColor" stroke-width="1.8" />
-                  </svg></div>
-              </div>
-              <div class="intel-card" data-score="88">
-                <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Semiconductors</span><span
-                      class="card-company">NVIDIA</span></div>
-                  <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
-                      <circle cx="24" cy="24" r="20" class="ring-bg" />
-                      <circle cx="24" cy="24" r="20" class="ring-fill" data-val="88" />
-                    </svg><span class="ring-value">88</span></div>
-                </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">Cray XD670 AI Infrastructure</p>
-                </div>
-                <div class="card-footer"><span class="card-tag">Compute Density</span><svg class="tag-icon"
-                    viewBox="0 0 20 20" fill="none">
-                    <polyline points="2,14 7,8 12,11 18,4" stroke="currentColor" />
-                  </svg></div>
-              </div>
-              <div class="intel-card" data-score="56">
-                <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Enterprise Cloud</span><span
-                      class="card-company">Snowflake</span></div>
-                  <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
-                      <circle cx="24" cy="24" r="20" class="ring-bg" />
-                      <circle cx="24" cy="24" r="20" class="ring-fill" data-val="56" />
-                    </svg><span class="ring-value">56</span></div>
-                </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE Ezmeral Data Fabric</p>
-                </div>
-                <div class="card-footer"><span class="card-tag">Data Sovereignty</span><svg class="tag-icon"
-                    viewBox="0 0 20 20" fill="none">
-                    <rect x="3" y="11" width="4" height="6" rx="1" stroke="currentColor" />
-                  </svg></div>
-              </div>
-              <div class="intel-card" data-score="72">
-                <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Hyperscalers</span><span
-                      class="card-company">AWS</span></div>
-                  <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
-                      <circle cx="24" cy="24" r="20" class="ring-bg" />
-                      <circle cx="24" cy="24" r="20" class="ring-fill" data-val="72" />
-                    </svg><span class="ring-value">72</span></div>
-                </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE Alletra Storage MP</p>
-                </div>
-                <div class="card-footer"><span class="card-tag">Cost Efficiency</span><svg class="tag-icon"
-                    viewBox="0 0 20 20" fill="none">
-                    <polyline points="2,14 7,8 12,11 18,4" />
-                  </svg></div>
-              </div>
-            </div>
-          </div>
-        </section>
+    <!-- MAIN CONTENT (con cabecera simple y las cards del dashboard) -->
+    <main class="main-content-dashboard overflow-y-auto custom-scrollbar">
 
-        <!-- CHAT -->
-        <section class="section-chat">
-          <div class="chat-window">
-            <div class="chat-header">
-              <div class="chat-icon"><svg viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
-                    stroke-width="1.8" />
-                </svg></div><span class="chat-title">Sovereign Intelligence</span>
-              <div class="chat-status"><span class="status-dot"></span>Live</div>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-              <div class="message ai-message">
-                <p>I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly
-                  with <a href="#" class="highlight-link">HPE GreenLake</a>. I recommend positioning our private cloud
-                  offering as a differentiated sovereign alternative to hyperscaler dependency.</p>
-              </div>
-              <div class="message user-message">
-                <p>What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?</p>
-              </div>
-            </div>
-            <div class="chat-input-area">
-              <button class="input-action" aria-label="Adjuntar"><svg viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="1.8">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="16" />
-                  <line x1="8" y1="12" x2="16" y2="12" />
-                </svg></button>
-              <input type="text" class="chat-input" id="chatInput" placeholder="Command Sovereign AI…" />
-              <button class="input-mic" aria-label="Micrófono"><svg viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="1.8">
-                  <rect x="9" y="2" width="6" height="12" rx="3" />
-                  <path d="M5 10a7 7 0 0014 0" />
-                  <line x1="12" y1="22" x2="12" y2="17" />
-                </svg></button>
-              <button class="send-btn" id="sendBtn" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg></button>
-            </div>
+      <!-- Header opcional (similar al de hpe pero simplificado) -->
+      <header class="glass-header h-20 flex items-center justify-end px-8 w-full">
+        <div class="flex items-center gap-6 ml-auto">
+          <!-- Botón cambio de idioma ES <-> EN -->
+          <button id="lang-toggle-btn" title="Cambiar a ingles" aria-label="Toggle language"><span
+              data-i18n="lang.btn.label">&#x1F310; EN</span></button>
+        </div>
+      </header>
+
+
+      <!-- Título de página -->
+      <div class="px-8 pt-6">
+        <h2 class="text-2xl font-tech font-bold text-white" data-i18n="menu.alim.title">ALIMENTARIO</h2>
+        <p class="text-hpe-muted text-sm" data-i18n="menu.alim.sub">Directorio Alimentario</p>
+      </div>
+
+      <!-- Grid de tarjetas (mismo contenido que tenías) -->
+      <div class="cards-grid">
+        <a href="../pages/bimbo.html" class="card-btn">
+          <div class="bg-image"
+            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHegLnXxVUUOD8EB5_EuQqnshVbk-ULC-Stw&s');">
           </div>
-        </section>
-      </main>
-    </div>
+          <div class="content">
+            <h3>Bimbo</h3>
+            <span data-i18n="card.see_more">Ver más →</span>
+          </div>
+        </a>
+
+        <a href="../pages/cocacola.html" class="card-btn">
+          <div class="bg-image"
+            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWoK2LIv5B-fPoqtlvkAX3b1ODfPBaYpxyDA&s');">
+          </div>
+          <div class="content">
+            <h3>Coca Cola</h3>
+            <span data-i18n="card.see_more">Ver más →</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Footer (opcional) -->
+    </main>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Script para la interactividad del menú (marcar activo) -->
+  <!-- Script de traducción ES ↔ EN -->
+  <script src="../js/translator.js"></script>
+
+  <!-- Script para la interactividad del menú -->
+  <script>
+    document.querySelectorAll('.nav-list li').forEach(item => {
+      item.addEventListener('click', function (e) {
+        document.querySelectorAll('.nav-list li').forEach(li => li.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+  </script>
+  <!-- Mobile hamburger menu -->
+  <script src="hamburger.js"></script>
+
 </body>
 
 </html>

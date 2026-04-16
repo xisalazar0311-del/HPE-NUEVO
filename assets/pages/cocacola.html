@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coca-Cola Corporate Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nvidia: {
+                            base: '#0a0c10',
+                            card: '#11141a',
+                            border: '#1f252e',
+                            accent: '#01a982',
+                            accent2: '#00c389',
+                            text: '#eff1f5',
+                            muted: '#8b949e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style_nvidia.css">
+    <style>
+        #lang-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: transparent;
+            border: 1.5px solid #01a982;
+            border-radius: 20px;
+            color: #01a982;
+            font-family: 'Rajdhani', 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease,
+                box-shadow 0.25s ease, transform 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        #lang-toggle-btn:hover {
+            background: #01a982;
+            color: #000;
+            box-shadow: 0 0 12px rgba(1, 169, 130, 0.55);
+            transform: scale(1.05);
+        }
+        @keyframes lang-pulse {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        .lang-btn--spinning {
+            animation: lang-pulse 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-nvidia-base text-nvidia-text overflow-hidden font-sans selection:bg-nvidia-accent selection:text-black">
+
+    <div id="app" class="flex h-screen w-full relative">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar w-72 h-full z-50 relative">
+            <div class="sidebar-section">
+                <h3 data-i18n="menu.title">MENÚ</h3>
+                <ul class="nav-list">
+                    <li class="active"><i class="fa-solid fa-chart-line"></i> Coca-Cola</li>
+                    <li onclick="window.location.href='../panelh.php'"><i class="fa-solid fa-layer-group"></i>
+                        Dashboard
+                    </li>
+                    <div>
+                        <li onclick="window.location.href='../menu/menualim.html'"><i class="fa-solid fa-utensils"></i>
+                            <span data-i18n="coke.menu.nav">Alimentaria</span>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 data-i18n="menu.company">EMPRESA</h3>
+                <div class="company-card glass-card-sm">
+                    <div class="company-icon"><i class="fa-solid fa-building"></i></div>
+                    <div class="company-info leading-tight">
+                        <span class="name">Coca-Cola</span>
+                        <span class="status text-[10px] mt-0.5" data-i18n="coke.status">● líder mundial en bebidas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section chat-section mt-auto">
+                <div class="">
+                    <div class="">
+                        <div class="ai-avatar">
+                            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+                                <defs>
+                                    <linearGradient id="aiGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#01a982" />
+                                        <stop offset="100%" stop-color="#00c389" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="chat-input-premium relative z-10"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 h-full relative flex flex-col overflow-hidden bg-gradient-radial">
+
+            <!-- HEADER -->
+            <header class="h-20 w-full glass-header flex items-center justify-between px-8 z-40">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <h1 class="font-tech text-xl font-semibold tracking-wide text-white">HPE</h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <div
+                        class="flex items-center gap-3 px-4 py-1.5 rounded-full border border-nvidia-border/30 bg-black/20 backdrop-blur-sm">
+                        <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
+                        <span class="text-[10px] font-bold tracking-widest text-green-400 uppercase" data-i18n="header.online">Sistemas Online</span>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <button
+                            id="lang-toggle-btn"
+                            title="Cambiar a inglés"
+                            aria-label="Toggle language"
+                        ><span data-i18n="lang.btn.label">&#x1F310; EN</span></button>
+
+                        <button class="text-nvidia-muted hover:text-white transition-colors relative">
+                            <i class="fa-solid fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-nvidia-accent rounded-full"></span>
+                        </button>
+                        <button class="text-nvidia-muted hover:text-white transition-colors">
+                            <i class="fa-solid fa-moon text-lg"></i>
+                        </button>
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-nvidia-accent to-blue-600 p-[1px]">
+                            <a href="../user/userpage.html">
+                                <img src="https://ui-avatars.com/api/?name=Admin+User&background=000&color=fff" alt="User"
+                                    class="w-full h-full rounded-full border-2 border-black object-cover">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT AREA -->
+            <div id="scroll-container"
+                class="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth custom-scrollbar">
+
+                <!-- Section: About / Mission / Vision -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="coke.about.title">Sobre <span class="text-nvidia-accent">Coca-Cola</span></span>
+                    </h2>
+
+                    <div class="grid grid-cols-3 gap-6">
+
+                        <!-- Card: ¿Qué es? -->
+                        <div
+                            class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-circle-info text-2xl text-blue-400 drop-shadow-[0_0_12px_rgba(96,165,250,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.what">¿Qué es?</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.what.body">Coca-Cola es una empresa multinacional estadounidense líder mundial en la industria de bebidas, fundada en 1886. Es reconocida por su bebida insignia, la Coca-Cola.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card: Misión -->
+                        <div
+                            class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-bullseye text-2xl text-orange-400 drop-shadow-[0_0_12px_rgba(251,146,60,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.mission">Misión</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.mission.body">"Refrescar al mundo en cuerpo, mente y espíritu. Inspirar momentos de optimismo y felicidad a través de nuestras marcas y acciones. Crear valor y marcar la diferencia."</p>
+                            </div>
+                        </div>
+
+                        <!-- Card: Visión -->
+                        <div
+                            class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:rotate-[360deg] transition-transform duration-700">
+                                    <i class="fa-solid fa-eye text-2xl text-purple-400 drop-shadow-[0_0_12px_rgba(192,132,252,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="section.vision">Visión</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.vision.body">"Ser una empresa total de bebidas, que impulse el crecimiento sostenible, cuide el planeta y mejore la calidad de vida de las personas."</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: History Timeline -->
+                <section class="mb-12 section-fade">
+                    <div class="flex justify-between items-end mb-6">
+                        <h2 class="text-2xl font-tech font-bold text-white flex items-center gap-3">
+                            <span data-i18n="coke.hist.title">Historia de <span class="text-nvidia-accent">Coca-Cola</span></span>
+                        </h2>
+                        <a href="../assets/cocacola.pdf" download
+                            class="text-xs text-nvidia-accent hover:text-white transition-colors flex items-center gap-2 group">
+                            <span data-i18n="coke.hist.full_traj">Ver trayectoria completa</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="w-full glass-panel p-8 rounded-2xl relative overflow-hidden border border-nvidia-border/20">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-nvidia-accent to-transparent opacity-20"></div>
+
+                        <div class="grid grid-cols-4 gap-8 relative z-10">
+
+                            <!-- Timeline Item 1 -->
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500" data-i18n="coke.hist.y1">1886</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="coke.hist.t1">Fundación</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.hist.p1">John Stith Pemberton crea Coca-Cola en Atlanta. Este año marca el nacimiento de la bebida más famosa del mundo.</p>
+                            </div>
+
+                            <!-- Timeline Item 2 -->
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-100" data-i18n="coke.hist.y2">1892</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-100"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="coke.hist.t2">Creación de The Coca-Cola Company</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.hist.p2">Asa Candler funda oficialmente The Coca-Cola Company, estableciendo las bases del crecimiento empresarial y la expansión global.</p>
+                            </div>
+
+                            <!-- Timeline Item 3 -->
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-200" data-i18n="coke.hist.y3">1915</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-200"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="coke.hist.t3">Diseño de la botella icónica</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.hist.p3">Se presenta la botella contour, que se convierte en un símbolo universal de la marca y un elemento clave de su identidad.</p>
+                            </div>
+
+                            <!-- Timeline Item 4 -->
+                            <div class="timeline-item group">
+                                <span class="text-4xl font-tech font-bold text-nvidia-accent/20 group-hover:text-nvidia-accent transition-colors duration-500 delay-300" data-i18n="coke.hist.y4">2025</span>
+                                <div class="h-1 w-full bg-white/5 mt-2 mb-4 relative overflow-hidden">
+                                    <div class="h-full bg-nvidia-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out delay-300"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2" data-i18n="coke.hist.t4">Liderazgo global</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="coke.hist.p4">Coca-Cola se consolida como líder mundial en bebidas, enfocada en innovación, sostenibilidad y productos más saludables.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Areas -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.areas">Áreas</span> <span class="text-nvidia-accent" data-i18n="section.main">Principales</span>
+                    </h2>
+                    <div class="grid grid-cols-4 gap-5">
+
+                        <!-- Card 1 -->
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white group-hover:shadow-[0_0_15px_#3b82f6]">
+                                <i class="fa-solid fa-bottle-water"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="coke.area1.title">Bebidas carbonatadas</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="coke.area1.body">Es el negocio principal y más tradicional de la empresa.</p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-purple-500/10 text-purple-400 group-hover:bg-purple-500 group-hover:text-white group-hover:shadow-[0_0_15px_#a855f7]">
+                                <i class="fa-solid fa-glass-water"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="coke.area2.title">Bebidas no carbonatadas</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="coke.area2.body">Área clave por la tendencia hacia bebidas más saludables.</p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-orange-500/10 text-orange-400 group-hover:bg-orange-500 group-hover:text-white group-hover:shadow-[0_0_15px_#f97316]">
+                                <i class="fa-solid fa-truck"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="coke.area3.title">Embotellado y distribución</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="coke.area3.body">Permite que Coca-Cola llegue a más de 200 países con su producción y envasado.</p>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="area-card group glass-panel hover:bg-white/5 transition-all">
+                            <div class="icon-box bg-green-500/10 text-green-400 group-hover:bg-green-500 group-hover:text-white group-hover:shadow-[0_0_15px_#22c55e]">
+                                <i class="fa-brands fa-adversal"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mt-4 mb-2 text-white" data-i18n="coke.area4.title">Marketing</h3>
+                            <p class="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors" data-i18n="coke.area4.body">Mantiene a Coca-Cola como una marca líder y moderna con su publicidad global y cuidado ambiental.</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: Tech Stack -->
+                <section class="mb-12 section-fade">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.tech">Tecnologías</span> <span class="text-nvidia-accent" data-i18n="section.key">Clave</span>
+                    </h2>
+                    <div class="grid grid-cols-3 gap-6">
+
+                        <!-- Tech Card 1 -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-solid fa-robot text-2xl text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="coke.tech1.title">Robótica</h3>
+                                <p class="text-xs text-gray-400" data-i18n="coke.tech1.body">Permiten producción rápida, segura y eficiente con sus robots industriales y sistemas de control de calidad.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tech Card 2 -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-regular fa-chart-bar text-2xl text-nvidia-accent drop-shadow-[0_0_12px_rgba(1,169,130,0.9)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="coke.tech2.title">Big Data</h3>
+                                <p class="text-xs text-gray-400" data-i18n="coke.tech2.body">Mejora la toma de decisiones y la estrategia comercial con su gran optimización de inventario.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tech Card 3 -->
+                        <div class="tech-card glass-panel p-6 rounded-xl border border-white/5 relative overflow-hidden group hover:border-nvidia-accent/50 transition-colors duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-nvidia-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-nvidia-base border border-nvidia-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fa-solid fa-brain text-2xl text-nvidia-accent drop-shadow-[0_0_12px_rgba(1,169,130,0.8)]"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2" data-i18n="coke.tech3.title">IA</h3>
+                                <p class="text-xs text-gray-400" data-i18n="coke.tech3.body">Aumenta la eficiencia operativa con la personalización de marketing y predicciones de ventas.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section: Featured Products -->
+                <section class="section-fade pb-10">
+                    <h2 class="text-2xl font-tech font-bold text-white mb-6 flex items-center gap-3">
+                        <span data-i18n="section.platforms">Plataformas</span><span class="text-nvidia-accent" data-i18n="section.featured">Destacadas</span>
+                    </h2>
+                    <div class="grid grid-cols-2 gap-6">
+
+                        <!-- Hero Card 1 -->
+                        <div class="hero-card h-80 rounded-2xl relative overflow-hidden border border-white/5 group items-start p-8 flex flex-col justify-end bg-[#0a0f18] hover:border-nvidia-accent/30 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                            <img src="../assets/cocacola.png" alt="Coca Cola"
+                                class="absolute inset-0 w-full h-full object-cover opacity-25 scale-110 group-hover:scale-125 transition-transform duration-[1200ms] ease-out">
+                            <div class="relative z-10 w-full">
+                                <h3 class="text-3xl font-tech font-bold text-white mb-2 leading-tight" data-i18n="coke.prod1.title">Coca Cola</h3>
+                                <p class="text-sm text-gray-400 mb-6 max-w-md" data-i18n="coke.prod1.body">Es el producto insignia y símbolo de la marca. Es la bebida más famosa del mundo.</p>
+                            </div>
+                        </div>
+
+                        <!-- Hero Card 2 -->
+                        <div class="hero-card h-80 rounded-2xl relative overflow-hidden border border-white/5 group items-start p-8 flex flex-col justify-end bg-[#0a0f18] hover:border-nvidia-accent/30 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                            <img src="../assets/fanta.png" alt="Fanta"
+                                class="absolute inset-0 w-full h-full object-cover opacity-25 scale-110 group-hover:scale-125 transition-transform duration-[1200ms] ease-out">
+                            <div class="relative z-10 w-full">
+                                <h3 class="text-3xl font-tech font-bold text-white mb-2 leading-tight" data-i18n="coke.prod2.title">Fanta</h3>
+                                <p class="text-sm text-gray-400 mb-6 max-w-md" data-i18n="coke.prod2.body">Es el segundo producto más importante de Coca-Cola. Es uno de los refrescos más vendidos a nivel mundial.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="mt-12 py-8 border-t border-white/5 flex justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
+                    <div class="flex gap-8">
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.privacy">Privacidad</a>
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.legal">Legal</a>
+                        <a href="#" class="hover:text-white transition-colors" data-i18n="footer.cookies">Cookies</a>
+                    </div>
+                    <span data-i18n="footer.rights">© 2025 HPE. Todos los derechos reservados.</span>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="../js/script_nvidia.js"></script>
+    <script src="../js/translator.js"></script>
+</body>
+
+</html>

@@ -78,37 +78,38 @@ body {
 }
 
 .sidebar-header {
-  padding: 24px 20px;
+  padding: 20px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 12px;
-  white-space: nowrap;
+  justify-content: center;
 }
 
-.brand-icon {
-  width: 32px;
-  height: 32px;
-  background: var(--accent);
-  border-radius: 8px;
+.header-left {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: #0a0c0f;
-  flex-shrink: 0;
 }
 
-.brand-text {
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+.header-left a.hpe-logo-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+  max-width: 220px;
+  transition: opacity 0.2s ease;
 }
 
-.brand-text span {
-  color: var(--accent);
+.header-left a.hpe-logo-small:hover {
+  opacity: 0.85;
+}
+
+.header-left .hpe-logo {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .sidebar-nav {
@@ -136,6 +137,7 @@ body {
   border: none;
   width: 100%;
   font-family: var(--font-display);
+  text-decoration: none;
 }
 
 .nav-item svg {
@@ -650,6 +652,10 @@ body {
 
   .sidebar.mobile-open {
     transform: translateX(0);
+  }
+
+  .header-left a.hpe-logo-small {
+    max-width: 160px;
   }
 
   .main-wrapper {
