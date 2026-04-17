@@ -83,6 +83,17 @@
             animation: lang-pulse 0.3s ease;
         }
     </style>
+
+    <!-- HPE Theme Loader (Anti-FOUC) -->
+    <script>
+      (function(){
+        try {
+          var pref = localStorage.getItem('hpe_theme_pref') || 'System';
+          var isLight = pref === 'Light' || (pref === 'System' && window.matchMedia('(prefers-color-scheme: light)').matches);
+          if (isLight) document.documentElement.classList.add('light-theme');
+        } catch(e) {}
+      })();
+    </script>
 </head>
 
 <body class="bg-nvidia-base text-nvidia-text overflow-hidden font-sans selection:bg-nvidia-accent selection:text-black">

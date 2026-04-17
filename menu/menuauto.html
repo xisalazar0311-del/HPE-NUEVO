@@ -367,6 +367,17 @@
       }
     }
   </style>
+
+    <!-- HPE Theme Loader (Anti-FOUC) -->
+    <script>
+      (function(){
+        try {
+          var pref = localStorage.getItem('hpe_theme_pref') || 'System';
+          var isLight = pref === 'Light' || (pref === 'System' && window.matchMedia('(prefers-color-scheme: light)').matches);
+          if (isLight) document.documentElement.classList.add('light-theme');
+        } catch(e) {}
+      })();
+    </script>
 </head>
 
 <body class="bg-hpe-base text-hpe-text font-sans">
@@ -949,12 +960,12 @@
           
           <button class="menu-item mt-1">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span>Add another account</span>
+            <span data-action="add-account">Add another account</span>
           </button>
           <div class="menu-divider"></div>
           <button class="menu-item">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle></svg>
-            <span>Personalization</span>
+            <span data-action="personalization">Personalization</span>
           </button>
           <button class="menu-item">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -974,7 +985,7 @@
           </button>
           <button class="menu-item">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            <span>Log out</span>
+            <span data-action="logout">Log out</span>
           </button>
         </div>
 

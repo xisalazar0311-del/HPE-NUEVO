@@ -243,18 +243,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = e.target.closest('button, .menu-item, a');
     if (!btn) return;
 
-    const text = btn.textContent.trim();
-    if (text === 'Add another account') {
+    // Use data-action attribute (translation-proof) with text fallback
+    const actionEl = btn.querySelector('[data-action]') || btn;
+    const action = actionEl.dataset && actionEl.dataset.action;
+
+    if (action === 'add-account') {
       e.preventDefault();
       openAuthModal();
-    } else if (text === 'Log out') {
+    } else if (action === 'logout') {
       e.preventDefault();
       setActiveUser(null);
       updateProfileUI();
 
       const popup = document.getElementById('userMenuPopup');
       if (popup) popup.classList.remove('active');
-    } else if (text === 'Personalization') {
+    } else if (action === 'personalization') {
       e.preventDefault();
       openSettingsModal();
 
@@ -301,29 +304,18 @@ document.addEventListener('DOMContentLoaded', () => {
           
           <div class="settings-row">
             <div class="settings-row-left">
-              <span class="settings-row-title">Contrast</span>
-            </div>
-            <div class="settings-row-right">
-              <div class="settings-dropdown">System <i class="fas fa-chevron-down"></i></div>
-            </div>
-          </div>
-          
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Accent color</span>
-            </div>
-            <div class="settings-row-right">
-              <span class="accent-dot"></span>
-              <div class="settings-dropdown">Default <i class="fas fa-chevron-down"></i></div>
-            </div>
-          </div>
-          
-          <div class="settings-row">
-            <div class="settings-row-left">
               <span class="settings-row-title">Language</span>
             </div>
             <div class="settings-row-right">
-              <div class="settings-dropdown">Auto-detect <i class="fas fa-chevron-down"></i></div>
+              <div class="settings-dropdown" id="languageDropdownBtn">
+                <span id="languageSelected">Auto-detect</span> <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="settings-dropdown-menu" id="languageDropdownMenu">
+                <div class="dropdown-item active" data-value="Auto-detect">Auto-detect <i class="fas fa-check" style="color: var(--text-primary)"></i></div>
+                <div class="dropdown-item" data-value="English">English <i></i></div>
+                <div class="dropdown-item" data-value="Spanish">Spanish <i></i></div>
+                <div class="dropdown-item" data-value="French">French <i></i></div>
+              </div>
             </div>
           </div>
           
@@ -409,26 +401,141 @@ document.addEventListener('DOMContentLoaded', () => {
         appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => {
           el.classList.remove('active');
           const icon = el.querySelector('i');
-          if(icon) {
+          if (icon) {
             icon.classList.remove('fa-check');
             icon.style.color = 'transparent';
           }
         });
-        
+
         item.classList.add('active');
         const icon = item.querySelector('i');
-        if(icon) {
+        if (icon) {
           icon.classList.add('fa-check');
           icon.style.color = 'var(--text-primary)';
         }
-        
+
         appearanceSelected.textContent = item.dataset.value;
+
+        // --- NATIVE THEME APPLY LOGIC ---
+        const theme = item.dataset.value;
+        localStorage.setItem('hpe_theme_pref', theme);
+        applyTheme(theme);
       }
     });
 
     document.addEventListener('click', () => {
       appearanceMenu.classList.remove('active');
     });
+
+    // Theme logic handler
+    function applyTheme(theme) {
+      if (theme === 'Light') {
+        document.documentElement.classList.add('light-theme');
+      } else if (theme === 'Dark') {
+        document.documentElement.classList.remove('light-theme');
+      } else {
+        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.classList.add('light-theme');
+        } else {
+          document.documentElement.classList.remove('light-theme');
+        }
+      }
+    }
+
+    // Initial setup of dropdown UI based on saved preference
+    const pref = localStorage.getItem('hpe_theme_pref') || 'System';
+    appearanceSelected.textContent = pref;
+    appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => {
+      el.classList.remove('active');
+      const icon = el.querySelector('i');
+      if (icon) {
+        icon.classList.remove('fa-check');
+        icon.style.color = 'transparent';
+      }
+    });
+    const activeItem = appearanceMenu.querySelector(`.dropdown-item[data-value="${pref}"]`);
+    if (activeItem) {
+      activeItem.classList.add('active');
+      const icon = activeItem.querySelector('i');
+      if (icon) {
+        icon.classList.add('fa-check');
+        icon.style.color = 'var(--text-primary)';
+      }
+    }
+
+    // Listen to OS-level theme changes natively
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+      if ((localStorage.getItem('hpe_theme_pref') || 'System') === 'System') {
+        document.documentElement.classList.toggle('light-theme', e.matches);
+      }
+    });
+  }
+
+  // --- LANGUAGE DROPDOWN LOGIC ---
+  const languageBtn = document.getElementById('languageDropdownBtn');
+  const languageMenu = document.getElementById('languageDropdownMenu');
+  const languageSelected = document.getElementById('languageSelected');
+
+  if (languageBtn && languageMenu) {
+    languageBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      languageMenu.classList.toggle('active');
+    });
+
+    languageMenu.addEventListener('click', (e) => {
+      const item = e.target.closest('.dropdown-item');
+      if (item) {
+        languageMenu.querySelectorAll('.dropdown-item').forEach(el => {
+          el.classList.remove('active');
+          const icon = el.querySelector('i');
+          if (icon) {
+            icon.classList.remove('fa-check');
+            icon.style.color = 'transparent';
+          }
+        });
+
+        item.classList.add('active');
+        const icon = item.querySelector('i');
+        if (icon) {
+          icon.classList.add('fa-check');
+          icon.style.color = 'var(--text-primary)';
+        }
+
+        languageSelected.textContent = item.dataset.value;
+
+        // Save preference and trigger translator engine
+        const lang = item.dataset.value;
+        localStorage.setItem('hpe_language_pref', lang);
+        if (typeof window.applyTranslation === 'function') {
+          window.applyTranslation(lang);
+        }
+      }
+    });
+
+    document.addEventListener('click', () => {
+      languageMenu.classList.remove('active');
+    });
+
+    // Initial setup of Language dropdown UI
+    const langPref = localStorage.getItem('hpe_language_pref') || 'Auto-detect';
+    languageSelected.textContent = langPref;
+    languageMenu.querySelectorAll('.dropdown-item').forEach(el => {
+      el.classList.remove('active');
+      const icon = el.querySelector('i');
+      if (icon) {
+        icon.classList.remove('fa-check');
+        icon.style.color = 'transparent';
+      }
+    });
+    const activeLangItem = languageMenu.querySelector(`.dropdown-item[data-value="${langPref}"]`);
+    if (activeLangItem) {
+      activeLangItem.classList.add('active');
+      const icon = activeLangItem.querySelector('i');
+      if (icon) {
+        icon.classList.add('fa-check');
+        icon.style.color = 'var(--text-primary)';
+      }
+    }
   }
 
 });
