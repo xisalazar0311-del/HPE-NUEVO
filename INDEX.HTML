@@ -12,17 +12,17 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 
-    <!-- HPE Theme Loader (Anti-FOUC) -->
-    <script>
-      (function(){
-        try {
-          var pref = localStorage.getItem('hpe_theme_pref') || 'System';
-          var isLight = pref === 'Light' || (pref === 'System' && window.matchMedia('(prefers-color-scheme: light)').matches);
-          if (isLight) document.documentElement.classList.add('light-theme');
-        } catch(e) {}
-      })();
-    </script>
-    <script src="js/translator.js" defer></script>
+  <!-- HPE Theme Loader (Anti-FOUC) -->
+  <script>
+    (function(){
+      try {
+        var pref = localStorage.getItem('hpe_theme_pref') || 'System';
+        var isLight = pref === 'Light' || (pref === 'System' && window.matchMedia('(prefers-color-scheme: light)').matches);
+        if (isLight) document.documentElement.classList.add('light-theme');
+      } catch(e) {}
+    })();
+  </script>
+  <script src="js/translator.js" defer></script>
 </head>
 
 <body>
@@ -44,6 +44,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" aria-label="Hewlett Packard Enterprise"
               class="hpe-logo gn-logo-animated css-animation gn-icon gn-icon-logo play" focusable="false"
               viewBox="0 0 630 180">
+              <!-- [CONTENIDO DEL LOGO HPE - MANTENIDO ÍNTEGRO] -->
               <style>
                 .hpe-logo {
                   --hpe-logo-bg: var(--bg-base, #0a0c0f);
@@ -493,60 +494,66 @@
             stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <span class="nav-label">Chat</span>
+          <span class="nav-label" data-i18n="Chat">Chat</span>
         </button>
-        <a class="nav-item" href="menu/menuaereo.html">
-          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-            <path d="M9 22v-4h6v4" />
-            <path d="M8 6h.01" />
-            <path d="M16 6h.01" />
-            <path d="M12 6h.01" />
-            <path d="M12 10h.01" />
-            <path d="M12 14h.01" />
-            <path d="M16 10h.01" />
-            <path d="M16 14h.01" />
-            <path d="M8 10h.01" />
-            <path d="M8 14h.01" />
-          </svg>
-          <span class="nav-label">Companies</span>
-        </a>
+        <!-- Companies con submenú desplegable -->
+        <div class="nav-item-wrapper">
+          <button class="nav-item" id="companiesBtn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+              <path d="M9 22v-4h6v4" />
+              <path d="M8 6h.01" />
+              <path d="M16 6h.01" />
+              <path d="M12 6h.01" />
+              <path d="M12 10h.01" />
+              <path d="M12 14h.01" />
+              <path d="M16 10h.01" />
+              <path d="M16 14h.01" />
+              <path d="M8 10h.01" />
+              <path d="M8 14h.01" />
+            </svg>
+            <span class="nav-label" data-i18n="Companies">Companies</span>
+          </button>
+          <div class="nav-submenu" id="companiesSubmenu">
+            <button class="nav-submenu-item" data-url="menu\menuaereo.html" data-i18n="All Companies">All Companies</button>
+            <button class="nav-submenu-item" data-i18n="Partners">Partners</button>
+            <button class="nav-submenu-item" data-i18n="Competitors">Competitors</button>
+          </div>
+        </div>
       </div>
       <div class="sidebar-footer-container"
         style="position: relative; padding: 16px; border-top: 1px solid rgba(255,255,255,0.07);">
         <!-- Popup Menu -->
         <div class="user-menu-popup" id="userMenuPopup">
           <div class="popup-header">
-            <div class="avatar-sm gold">X5</div>
+            <div class="avatar-sm" id="popupAvatar">GU</div>
             <div class="user-info">
-              <div class="user-name" style="color: #fff; font-weight: 600; font-size: 0.85rem;">XxLuisxX 5411</div>
-              <div class="user-role" style="color: #aaa; font-size: 0.75rem;">Free</div>
+              <div class="user-name" id="popupUserName" data-i18n="Guest">Guest</div>
+              <div class="user-role" id="popupUserRole" data-i18n="Visitor">Visitor</div>
             </div>
           </div>
-
           <button class="menu-item mt-1">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            <span data-action="add-account">Add another account</span>
+            <span data-action="add-account" data-i18n="Add another account">Add another account</span>
           </button>
           <div class="menu-divider"></div>
-
-          <button class="menu-item">
+          <button class="menu-item" data-action="personalization">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
               <circle cx="12" cy="12" r="10"></circle>
               <circle cx="12" cy="12" r="4"></circle>
             </svg>
-            <span data-action="personalization">Personalization</span>
+            <span data-i18n="Personalization">Personalization</span>
           </button>
           <button class="menu-item">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span>Profile</span>
+            <span data-i18n="Profile">Profile</span>
           </button>
           <button class="menu-item">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
@@ -555,7 +562,7 @@
                 d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
               </path>
             </svg>
-            <span>Settings</span>
+            <span data-i18n="Settings">Settings</span>
           </button>
           <div class="menu-divider"></div>
           <button class="menu-item menu-item-between">
@@ -569,48 +576,30 @@
                 <line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line>
                 <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
               </svg>
-              <span>Help</span>
+              <span data-i18n="Help">Help</span>
             </div>
             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
-          <button class="menu-item">
+          <button class="menu-item" data-action="logout">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
               <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
-            <span data-action="logout">Log out</span>
+            <span data-i18n="Log out">Log out</span>
           </button>
         </div>
 
         <button class="sidebar-footer-btn" id="sidebarFooterBtn">
-          <div class="avatar-sm gold" style="flex-shrink:0;">X5</div>
+          <div class="avatar-sm" id="footerAvatar">GU</div>
           <div class="user-info" style="flex-grow:1;">
-            <div class="user-name">XxLuisxX 5411</div>
-            <div class="user-role">Free</div>
+            <div class="user-name" id="footerUserName" data-i18n="Guest">Guest</div>
+            <div class="user-role" id="footerUserRole" data-i18n="Visitor">Visitor</div>
           </div>
         </button>
       </div>
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const btn = document.getElementById('sidebarFooterBtn');
-          const popup = document.getElementById('userMenuPopup');
-          if (btn && popup) {
-            btn.addEventListener('click', function (e) {
-              e.stopPropagation();
-              popup.classList.toggle('active');
-            });
-            document.addEventListener('click', function (e) {
-              if (!popup.contains(e.target) && !btn.contains(e.target)) {
-                popup.classList.remove('active');
-              }
-            });
-          }
-        });
-      </script>
     </aside>
 
     <div class="main-wrapper">
@@ -618,7 +607,7 @@
         <!-- MARKET INTEL (cards) -->
         <section class="section-intel">
           <div class="section-header">
-            <span class="section-label">DASHBOARD · TOP 5</span>
+            <span class="section-label" data-i18n="DASHBOARD · TOP 5">DASHBOARD · TOP 5</span>
             <div class="carousel-controls">
               <button class="ctrl-btn" id="prevBtn">‹</button>
               <button class="ctrl-btn" id="nextBtn">›</button>
@@ -628,27 +617,27 @@
             <div class="cards-track" id="cardsTrack">
               <div class="intel-card" data-score="64">
                 <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Global Tech</span><span
-                      class="card-company">Microsoft</span></div>
+                  <div class="card-meta"><span class="card-category" data-i18n="Global Tech">Global Tech</span><span
+                      class="card-company" data-i18n="Microsoft">Microsoft</span></div>
                   <div class="detail-card">
                     <div class="detail-header">
                       <div class="company-logo">MSFT</div>
                       <div class="company-stats">
-                        <span>Market Cap: $3.1T</span>
-                        <span>AI Spend: $12B Q3</span>
+                        <span data-i18n="Market Cap: $3.1T">Market Cap: $3.1T</span>
+                        <span data-i18n="AI Spend: $12B Q3">AI Spend: $12B Q3</span>
                       </div>
                     </div>
                     <div class="detail-body">
-                      <p>Microsoft's Azure AI push creates sovereign cloud opportunities. HPE GreenLake addresses data
+                      <p data-i18n="Microsoft's Azure AI push creates sovereign cloud opportunities. HPE GreenLake addresses data residency concerns with 40% lower TCO vs public cloud.">Microsoft's Azure AI push creates sovereign cloud opportunities. HPE GreenLake addresses data
                         residency concerns with 40% lower TCO vs public cloud.</p>
                       <div class="detail-metrics">
-                        <span class="metric">Edge Growth: +28%</span>
-                        <span class="metric">CapEx Shift: Hybrid</span>
+                        <span class="metric" data-i18n="Edge Growth: +28%">Edge Growth: +28%</span>
+                        <span class="metric" data-i18n="CapEx Shift: Hybrid">CapEx Shift: Hybrid</span>
                       </div>
                     </div>
                     <div class="detail-footer">
-                      <span class="solution-label">Optimal HPE Play</span>
-                      <p class="solution-name">GreenLake for LLMs + Ezmeral</p>
+                      <span class="solution-label" data-i18n="Optimal HPE Play">Optimal HPE Play</span>
+                      <p class="solution-name" data-i18n="GreenLake for LLMs + Ezmeral">GreenLake for LLMs + Ezmeral</p>
                     </div>
                   </div>
                   <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
@@ -656,37 +645,37 @@
                       <circle cx="24" cy="24" r="20" class="ring-fill" data-val="64" />
                     </svg><span class="ring-value">64</span></div>
                 </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE GreenLake for LLMs</p>
+                <div class="card-solution"><span class="solution-label" data-i18n="Target Solution">Target Solution</span>
+                  <p class="solution-name" data-i18n="HPE GreenLake for LLMs">HPE GreenLake for LLMs</p>
                 </div>
-                <div class="card-footer"><span class="card-tag">Pipeline Velocity</span><svg class="tag-icon"
+                <div class="card-footer"><span class="card-tag" data-i18n="Pipeline Velocity">Pipeline Velocity</span><svg class="tag-icon"
                     viewBox="0 0 20 20" fill="none">
                     <polyline points="2,14 7,8 12,11 18,4" stroke="currentColor" stroke-width="1.8" />
                   </svg></div>
               </div>
               <div class="intel-card" data-score="88">
                 <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Semiconductors</span><span
-                      class="card-company">NVIDIA</span></div>
+                  <div class="card-meta"><span class="card-category" data-i18n="Semiconductors">Semiconductors</span><span
+                      class="card-company" data-i18n="NVIDIA">NVIDIA</span></div>
                   <div class="detail-card">
                     <div class="detail-header">
                       <div class="company-logo">NVDA</div>
                       <div class="company-stats">
-                        <span>Revenue: $35B Q3</span>
-                        <span>GPU Demand: Peak</span>
+                        <span data-i18n="Revenue: $35B Q3">Revenue: $35B Q3</span>
+                        <span data-i18n="GPU Demand: Peak">GPU Demand: Peak</span>
                       </div>
                     </div>
                     <div class="detail-body">
-                      <p>NVIDIA GPU supply chain strain favors HPE Cray XD670. Sovereign AI clusters with HPE cooling
+                      <p data-i18n="NVIDIA GPU supply chain strain favors HPE Cray XD670. Sovereign AI clusters with HPE cooling reduce power by 25% vs air-cooled.">NVIDIA GPU supply chain strain favors HPE Cray XD670. Sovereign AI clusters with HPE cooling
                         reduce power by 25% vs air-cooled.</p>
                       <div class="detail-metrics">
-                        <span class="metric">Inference: 80% Load</span>
-                        <span class="metric">Power Draw: Critical</span>
+                        <span class="metric" data-i18n="Inference: 80% Load">Inference: 80% Load</span>
+                        <span class="metric" data-i18n="Power Draw: Critical">Power Draw: Critical</span>
                       </div>
                     </div>
                     <div class="detail-footer">
-                      <span class="solution-label">Optimal HPE Play</span>
-                      <p class="solution-name">Cray XD670 + Alletra</p>
+                      <span class="solution-label" data-i18n="Optimal HPE Play">Optimal HPE Play</span>
+                      <p class="solution-name" data-i18n="Cray XD670 + Alletra">Cray XD670 + Alletra</p>
                     </div>
                   </div>
                   <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
@@ -694,37 +683,37 @@
                       <circle cx="24" cy="24" r="20" class="ring-fill" data-val="88" />
                     </svg><span class="ring-value">88</span></div>
                 </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">Cray XD670 AI Infrastructure</p>
+                <div class="card-solution"><span class="solution-label" data-i18n="Target Solution">Target Solution</span>
+                  <p class="solution-name" data-i18n="Cray XD670 AI Infrastructure">Cray XD670 AI Infrastructure</p>
                 </div>
-                <div class="card-footer"><span class="card-tag">Compute Density</span><svg class="tag-icon"
+                <div class="card-footer"><span class="card-tag" data-i18n="Compute Density">Compute Density</span><svg class="tag-icon"
                     viewBox="0 0 20 20" fill="none">
                     <polyline points="2,14 7,8 12,11 18,4" stroke="currentColor" />
                   </svg></div>
               </div>
               <div class="intel-card" data-score="56">
                 <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Enterprise Cloud</span><span
-                      class="card-company">Snowflake</span></div>
+                  <div class="card-meta"><span class="card-category" data-i18n="Enterprise Cloud">Enterprise Cloud</span><span
+                      class="card-company" data-i18n="Snowflake">Snowflake</span></div>
                   <div class="detail-card">
                     <div class="detail-header">
                       <div class="company-logo">SNOW</div>
                       <div class="company-stats">
-                        <span>ARR Growth: +30%</span>
-                        <span>Data Volume: 10EB+</span>
+                        <span data-i18n="ARR Growth: +30%">ARR Growth: +30%</span>
+                        <span data-i18n="Data Volume: 10EB+">Data Volume: 10EB+</span>
                       </div>
                     </div>
                     <div class="detail-body">
-                      <p>Snowflake's multi-cloud data strategy aligns with HPE Ezmeral Data Fabric for sovereign
+                      <p data-i18n="Snowflake's multi-cloud data strategy aligns with HPE Ezmeral Data Fabric for sovereign analytics at edge locations.">Snowflake's multi-cloud data strategy aligns with HPE Ezmeral Data Fabric for sovereign
                         analytics at edge locations.</p>
                       <div class="detail-metrics">
-                        <span class="metric">Query Cost: High</span>
-                        <span class="metric">Sovereignty: Priority</span>
+                        <span class="metric" data-i18n="Query Cost: High">Query Cost: High</span>
+                        <span class="metric" data-i18n="Sovereignty: Priority">Sovereignty: Priority</span>
                       </div>
                     </div>
                     <div class="detail-footer">
-                      <span class="solution-label">Optimal HPE Play</span>
-                      <p class="solution-name">Ezmeral Data Fabric</p>
+                      <span class="solution-label" data-i18n="Optimal HPE Play">Optimal HPE Play</span>
+                      <p class="solution-name" data-i18n="Ezmeral Data Fabric">Ezmeral Data Fabric</p>
                     </div>
                   </div>
                   <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
@@ -732,37 +721,37 @@
                       <circle cx="24" cy="24" r="20" class="ring-fill" data-val="56" />
                     </svg><span class="ring-value">56</span></div>
                 </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE Ezmeral Data Fabric</p>
+                <div class="card-solution"><span class="solution-label" data-i18n="Target Solution">Target Solution</span>
+                  <p class="solution-name" data-i18n="HPE Ezmeral Data Fabric">HPE Ezmeral Data Fabric</p>
                 </div>
-                <div class="card-footer"><span class="card-tag">Data Sovereignty</span><svg class="tag-icon"
+                <div class="card-footer"><span class="card-tag" data-i18n="Data Sovereignty">Data Sovereignty</span><svg class="tag-icon"
                     viewBox="0 0 20 20" fill="none">
                     <rect x="3" y="11" width="4" height="6" rx="1" stroke="currentColor" />
                   </svg></div>
               </div>
               <div class="intel-card" data-score="72">
                 <div class="card-top">
-                  <div class="card-meta"><span class="card-category">Hyperscalers</span><span
-                      class="card-company">AWS</span></div>
+                  <div class="card-meta"><span class="card-category" data-i18n="Hyperscalers">Hyperscalers</span><span
+                      class="card-company" data-i18n="AWS">AWS</span></div>
                   <div class="detail-card">
                     <div class="detail-header">
                       <div class="company-logo">AWS</div>
                       <div class="company-stats">
-                        <span>EC2 Instances: 50M+</span>
-                        <span>Outages YTD: 3</span>
+                        <span data-i18n="EC2 Instances: 50M+">EC2 Instances: 50M+</span>
+                        <span data-i18n="Outages YTD: 3">Outages YTD: 3</span>
                       </div>
                     </div>
                     <div class="detail-body">
-                      <p>AWS reliability concerns open HPE Alletra MP for mission-critical workloads with 99.9999%
+                      <p data-i18n="AWS reliability concerns open HPE Alletra MP for mission-critical workloads with 99.9999% uptime guarantee.">AWS reliability concerns open HPE Alletra MP for mission-critical workloads with 99.9999%
                         uptime guarantee.</p>
                       <div class="detail-metrics">
-                        <span class="metric">Vendor Lock: High</span>
-                        <span class="metric">Cost Escalation: +15%</span>
+                        <span class="metric" data-i18n="Vendor Lock: High">Vendor Lock: High</span>
+                        <span class="metric" data-i18n="Cost Escalation: +15%">Cost Escalation: +15%</span>
                       </div>
                     </div>
                     <div class="detail-footer">
-                      <span class="solution-label">Optimal HPE Play</span>
-                      <p class="solution-name">Alletra Storage MP</p>
+                      <span class="solution-label" data-i18n="Optimal HPE Play">Optimal HPE Play</span>
+                      <p class="solution-name" data-i18n="Alletra Storage MP">Alletra Storage MP</p>
                     </div>
                   </div>
                   <div class="score-ring"><svg viewBox="0 0 48 48" class="ring-svg">
@@ -770,10 +759,10 @@
                       <circle cx="24" cy="24" r="20" class="ring-fill" data-val="72" />
                     </svg><span class="ring-value">72</span></div>
                 </div>
-                <div class="card-solution"><span class="solution-label">Target Solution</span>
-                  <p class="solution-name">HPE Alletra Storage MP</p>
+                <div class="card-solution"><span class="solution-label" data-i18n="Target Solution">Target Solution</span>
+                  <p class="solution-name" data-i18n="HPE Alletra Storage MP">HPE Alletra Storage MP</p>
                 </div>
-                <div class="card-footer"><span class="card-tag">Cost Efficiency</span><svg class="tag-icon"
+                <div class="card-footer"><span class="card-tag" data-i18n="Cost Efficiency">Cost Efficiency</span><svg class="tag-icon"
                     viewBox="0 0 20 20" fill="none">
                     <polyline points="2,14 7,8 12,11 18,4" />
                   </svg></div>
@@ -789,17 +778,17 @@
               <div class="chat-icon"><svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
                     stroke-width="1.8" />
-                </svg></div><span class="chat-title">Sovereign Intelligence</span>
-              <div class="chat-status"><span class="status-dot"></span>Live</div>
+                </svg></div><span class="chat-title" data-i18n="Sovereign Intelligence">Sovereign Intelligence</span>
+              <div class="chat-status"><span class="status-dot"></span><span data-i18n="Live">Live</span></div>
             </div>
             <div class="chat-messages" id="chatMessages">
               <div class="message ai-message">
-                <p>I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly
-                  with <a href="#" class="highlight-link">HPE GreenLake</a>. I recommend positioning our private cloud
+                <p data-i18n="I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly with HPE GreenLake. I recommend positioning our private cloud offering as a differentiated sovereign alternative to hyperscaler dependency.">I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly
+                  with <a href="#" class="highlight-link" data-i18n="HPE GreenLake">HPE GreenLake</a>. I recommend positioning our private cloud
                   offering as a differentiated sovereign alternative to hyperscaler dependency.</p>
               </div>
               <div class="message user-message">
-                <p>What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?</p>
+                <p data-i18n="What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?">What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?</p>
               </div>
             </div>
             <div class="chat-input-area">
@@ -809,7 +798,7 @@
                   <line x1="12" y1="8" x2="12" y2="16" />
                   <line x1="8" y1="12" x2="16" y2="12" />
                 </svg></button>
-              <input type="text" class="chat-input" id="chatInput" placeholder="Command Sovereign AI…" />
+              <input type="text" class="chat-input" id="chatInput" placeholder="Command Sovereign AI…" data-i18n-placeholder="Command Sovereign AI…" />
               <button class="input-mic" aria-label="Micrófono"><svg viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="1.8">
                   <rect x="9" y="2" width="6" height="12" rx="3" />

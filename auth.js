@@ -1,8 +1,9 @@
-// auth.js
-// Authentication System and UI Injector
+// auth.js - Authentication System + Settings Modal (corregido)
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Inyectar el Modal dinámicamente en el body
+  // ============================================================
+  // 1. INYECTAR MODAL DE AUTENTICACIÓN (login/register)
+  // ============================================================
   const modalHTML = `
     <div id="authModalOverlay" class="auth-overlay hidden">
       <div class="auth-modal">
@@ -10,97 +11,57 @@ document.addEventListener('DOMContentLoaded', () => {
           <button id="tabLogin" class="auth-tab active">Sign In</button>
           <button id="tabRegister" class="auth-tab">Create Account</button>
         </div>
-        
         <div class="auth-content">
-          <!-- FORMULARIO LOGIN -->
           <div id="loginForm" class="auth-form active">
             <div class="input-group">
               <label>Username</label>
-              <input type="text" id="loginUsername" required autocomplete="off" data-lpignore="true">
+              <input type="text" id="loginUsername" autocomplete="off">
             </div>
             <div class="input-group">
               <label>Password</label>
-              <input type="text" id="loginPassword" required autocomplete="off" data-lpignore="true" spellcheck="false" style="-webkit-text-security: disc;">
+              <input type="password" id="loginPassword" autocomplete="off">
             </div>
             <div id="loginError" class="auth-error"></div>
-            <button type="button" id="btnLoginSubmit" class="auth-submit mt-4">Login</button>
+            <button type="button" id="btnLoginSubmit" class="auth-submit">Login</button>
           </div>
-          
-          <!-- FORMULARIO REGISTRO -->
           <div id="registerForm" class="auth-form">
             <div class="input-group">
-              <label>Choose Username</label>
-              <input type="text" id="regUsername" required autocomplete="off" data-lpignore="true" spellcheck="false">
+              <label>Username</label>
+              <input type="text" id="regUsername" autocomplete="off">
             </div>
             <div class="input-group">
               <label>Password</label>
-              <input type="text" id="regPassword" required autocomplete="off" data-lpignore="true" spellcheck="false" style="-webkit-text-security: disc;">
+              <input type="password" id="regPassword" autocomplete="off">
             </div>
             <div id="regError" class="auth-error"></div>
-            <button type="button" id="btnRegSubmit" class="auth-submit mt-4">Sign Up</button>
+            <button type="button" id="btnRegSubmit" class="auth-submit">Sign Up</button>
           </div>
         </div>
-        
         <button id="authCloseBtn" class="auth-close">&times;</button>
       </div>
     </div>
   `;
-
-  // Agregar el modal al DOM
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-  // Referencias a elementos
+  // Elementos del modal de autenticación
   const authOverlay = document.getElementById('authModalOverlay');
-  const authCloseBtn = document.getElementById('authCloseBtn');
+  const authClose = document.getElementById('authCloseBtn');
   const tabLogin = document.getElementById('tabLogin');
   const tabRegister = document.getElementById('tabRegister');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
+  const loginUser = document.getElementById('loginUsername');
+  const loginPass = document.getElementById('loginPassword');
+  const regUser = document.getElementById('regUsername');
+  const regPass = document.getElementById('regPassword');
+  const loginError = document.getElementById('loginError');
+  const regError = document.getElementById('regError');
 
-  // 2. Lógica de UI del Modal
-  function closeAuthModal() {
-    authOverlay.classList.remove('active');
-    setTimeout(() => authOverlay.classList.add('hidden'), 300); // Esperar la transición css
-  }
-
-  function openAuthModal() {
-    authOverlay.classList.remove('hidden');
-    setTimeout(() => authOverlay.classList.add('active'), 10);
-    // Ocultar popup de usuario si está abierto
-    const popup = document.getElementById('userMenuPopup');
-    if (popup) popup.classList.remove('active');
-
-    // Resetear form a login por defecto
-    document.getElementById('loginUsername').value = '';
-    document.getElementById('loginPassword').value = '';
-    document.getElementById('regUsername').value = '';
-    document.getElementById('regPassword').value = '';
-    document.getElementById('loginError').textContent = '';
-    document.getElementById('regError').textContent = '';
-  }
-
-  authCloseBtn.addEventListener('click', closeAuthModal);
-  authOverlay.addEventListener('click', (e) => {
-    if (e.target === authOverlay) closeAuthModal();
-  });
-
-  tabLogin.addEventListener('click', () => {
-    tabLogin.classList.add('active');
-    tabRegister.classList.remove('active');
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-  });
-
-  tabRegister.addEventListener('click', () => {
-    tabRegister.classList.add('active');
-    tabLogin.classList.remove('active');
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
-  });
-
-  // 3. Lógica de Autenticación
-  const USERS_KEY = 'hpe_users';
-  const ACTIVE_USER_KEY = 'hpe_active_user';
+  // ============================================================
+  // 2. GESTIÓN DE USUARIOS (localStorage)
+  // ============================================================
+  const STORAGE_USERS = 'hpe_users';
+  const STORAGE_ACTIVE = 'hpe_active_user';
 
   const defaultGuest = {
     username: 'Guest',
@@ -110,40 +71,38 @@ document.addEventListener('DOMContentLoaded', () => {
     isGuest: true
   };
 
-  const defaultDB = {
-    "gael": { username: "Gael", password: "123", role: "Admin", initial: "GA", color: "#01a982", isGuest: false },
-    "admin": { username: "Admin", password: "admin", role: "Admin", initial: "AD", color: "#0070f8", isGuest: false }
+  const defaultUsers = {
+    gael: { username: 'Gael', password: '123', role: 'Admin', initial: 'GA', color: '#01a982', isGuest: false },
+    admin: { username: 'Admin', password: 'admin', role: 'Admin', initial: 'AD', color: '#0070f8', isGuest: false }
   };
 
   function getUsers() {
     try {
-      const stored = localStorage.getItem(USERS_KEY);
-      if (stored) {
-        return { ...defaultDB, ...JSON.parse(stored) };
-      }
-    } catch (e) { }
-    return defaultDB;
+      const stored = localStorage.getItem(STORAGE_USERS);
+      if (stored) return { ...defaultUsers, ...JSON.parse(stored) };
+    } catch (e) {}
+    return defaultUsers;
   }
 
   function saveUsers(users) {
     try {
-      localStorage.setItem(USERS_KEY, JSON.stringify(users));
-    } catch (e) {
-      console.warn("localStorage acts restricted on file://, user will not persist across reloads.");
-    }
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    } catch (e) {}
   }
 
   function getActiveUser() {
-    const user = localStorage.getItem(ACTIVE_USER_KEY);
-    return user ? JSON.parse(user) : defaultGuest;
+    try {
+      const raw = localStorage.getItem(STORAGE_ACTIVE);
+      return raw ? JSON.parse(raw) : defaultGuest;
+    } catch (e) {
+      return defaultGuest;
+    }
   }
 
   function setActiveUser(user) {
-    if (user === null) {
-      localStorage.removeItem(ACTIVE_USER_KEY);
-    } else {
-      localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(user));
-    }
+    if (!user) localStorage.removeItem(STORAGE_ACTIVE);
+    else localStorage.setItem(STORAGE_ACTIVE, JSON.stringify(user));
+    updateProfileUI();
   }
 
   function getRandomColor() {
@@ -151,327 +110,282 @@ document.addEventListener('DOMContentLoaded', () => {
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
+  // Actualizar perfil en la interfaz
   function updateProfileUI() {
     const user = getActiveUser();
-
-    const nameEls = document.querySelectorAll('.user-name');
-    const roleEls = document.querySelectorAll('.user-role');
-    const avatarEls = document.querySelectorAll('.avatar-sm');
-
-    nameEls.forEach(el => el.textContent = user.username);
-    roleEls.forEach(el => el.textContent = user.role);
-
-    avatarEls.forEach(el => {
-      el.textContent = user.initial;
-      el.style.backgroundColor = user.color;
-      el.style.color = '#fff';
-      el.style.backgroundImage = 'none'; // quitar estilos gold previos si es necesario
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = user.username);
+    document.querySelectorAll('.user-role').forEach(el => el.textContent = user.role);
+    document.querySelectorAll('.avatar-sm').forEach(avatar => {
+      avatar.textContent = user.initial;
+      avatar.style.backgroundColor = user.color;
+      avatar.style.color = '#fff';
+      avatar.classList.remove('gold');
     });
   }
 
-  // Helper to execute Login
-  function doLogin() {
-    const uName = document.getElementById('loginUsername').value.trim();
-    const key = uName.toLowerCase();
-    const pWord = document.getElementById('loginPassword').value;
-    const errorEl = document.getElementById('loginError');
-    if (!uName || !pWord) return;
+  // ============================================================
+  // 3. FUNCIONES DE AUTENTICACIÓN (login/register/logout)
+  // ============================================================
+  function openAuthModal() {
+    authOverlay.classList.remove('hidden');
+    setTimeout(() => authOverlay.classList.add('active'), 10);
+    loginUser.value = '';
+    loginPass.value = '';
+    regUser.value = '';
+    regPass.value = '';
+    loginError.textContent = '';
+    regError.textContent = '';
+    const popup = document.getElementById('userMenuPopup');
+    if (popup) popup.classList.remove('active');
+  }
 
+  function closeAuthModal() {
+    authOverlay.classList.remove('active');
+    setTimeout(() => authOverlay.classList.add('hidden'), 300);
+  }
+
+  function doLogin() {
+    const username = loginUser.value.trim();
+    const password = loginPass.value;
+    if (!username || !password) {
+      loginError.textContent = 'Enter username and password';
+      return;
+    }
+    const key = username.toLowerCase();
     const users = getUsers();
-    if (users[key] && users[key].password === pWord) {
+    if (users[key] && users[key].password === password) {
       setActiveUser(users[key]);
-      updateProfileUI();
       closeAuthModal();
-      errorEl.textContent = '';
+      loginError.textContent = '';
     } else {
-      errorEl.textContent = 'Invalid username or password.';
+      loginError.textContent = 'Invalid username or password';
     }
   }
 
-  // Handle Login Actions
-  document.getElementById('btnLoginSubmit').addEventListener('click', doLogin);
-  document.getElementById('loginForm').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') doLogin();
-  });
-
-  // Helper to execute Registration
   function doRegister() {
-    const uName = document.getElementById('regUsername').value.trim();
-    const key = uName.toLowerCase();
-    const pWord = document.getElementById('regPassword').value;
-    const errorEl = document.getElementById('regError');
-    if (!uName || !pWord) return;
-
-    if (uName.length < 3 || pWord.length < 3) {
-      errorEl.textContent = 'Username > 2 chars, Password > 2 chars.';
+    const username = regUser.value.trim();
+    const password = regPass.value;
+    if (!username || !password) {
+      regError.textContent = 'Fill all fields';
       return;
     }
-
+    if (username.length < 3 || password.length < 3) {
+      regError.textContent = 'Username and password must be at least 3 characters';
+      return;
+    }
+    const key = username.toLowerCase();
     const users = getUsers();
     if (users[key]) {
-      errorEl.textContent = 'Username already exists.';
+      regError.textContent = 'Username already exists';
       return;
     }
-
-    // Register User
     const newUser = {
-      username: uName,
-      password: pWord,
+      username: username,
+      password: password,
       role: 'User',
-      initial: uName.substring(0, 2).toUpperCase(),
+      initial: username.substring(0, 2).toUpperCase(),
       color: getRandomColor(),
       isGuest: false
     };
-
     users[key] = newUser;
     saveUsers(users);
-
     setActiveUser(newUser);
-    updateProfileUI();
     closeAuthModal();
-    errorEl.textContent = '';
+    regError.textContent = '';
   }
 
-  // Handle Registration Actions
-  document.getElementById('btnRegSubmit').addEventListener('click', doRegister);
-  document.getElementById('registerForm').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') doRegister();
+  // Eventos del modal de autenticación
+  authClose.addEventListener('click', closeAuthModal);
+  authOverlay.addEventListener('click', (e) => {
+    if (e.target === authOverlay) closeAuthModal();
   });
+  tabLogin.addEventListener('click', () => {
+    tabLogin.classList.add('active');
+    tabRegister.classList.remove('active');
+    loginForm.classList.add('active');
+    registerForm.classList.remove('active');
+  });
+  tabRegister.addEventListener('click', () => {
+    tabRegister.classList.add('active');
+    tabLogin.classList.remove('active');
+    registerForm.classList.add('active');
+    loginForm.classList.remove('active');
+  });
+  document.getElementById('btnLoginSubmit').addEventListener('click', doLogin);
+  document.getElementById('btnRegSubmit').addEventListener('click', doRegister);
+  loginForm.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  registerForm.addEventListener('keydown', (e) => { if (e.key === 'Enter') doRegister(); });
 
-  // 4. Hook up "Add Account" and "Logout" buttons globalmente
+  // Eventos globales para "Add account", "Logout" y "Personalization"
   document.addEventListener('click', (e) => {
-    const btn = e.target.closest('button, .menu-item, a');
+    const btn = e.target.closest('[data-action]');
     if (!btn) return;
-
-    // Use data-action attribute (translation-proof) with text fallback
-    const actionEl = btn.querySelector('[data-action]') || btn;
-    const action = actionEl.dataset && actionEl.dataset.action;
-
+    const action = btn.dataset.action;
     if (action === 'add-account') {
       e.preventDefault();
       openAuthModal();
     } else if (action === 'logout') {
       e.preventDefault();
       setActiveUser(null);
-      updateProfileUI();
-
       const popup = document.getElementById('userMenuPopup');
       if (popup) popup.classList.remove('active');
     } else if (action === 'personalization') {
       e.preventDefault();
-      openSettingsModal();
-
+      if (typeof window.openSettingsModal === 'function') {
+        window.openSettingsModal();
+      } else {
+        console.error('openSettingsModal no está definida');
+      }
       const popup = document.getElementById('userMenuPopup');
       if (popup) popup.classList.remove('active');
     }
   });
 
-  // Init UI on load
-  updateProfileUI();
-
-  // ========== SETTINGS MODAL INJECTION & LOGIC ==========
-
+  // ============================================================
+  // 4. INYECTAR MODAL DE CONFIGURACIÓN (SETTINGS)
+  // ============================================================
   const settingsModalHTML = `
   <div class="settings-overlay hidden" id="settingsModalOverlay">
-    <div class="settings-modal" id="settingsModalBody">
+    <div class="settings-modal">
       <button class="settings-close-btn" id="closeSettingsBtn"><i class="fas fa-times"></i></button>
-      
-      <!-- Lado Izquierdo: Sidebar -->
       <div class="settings-sidebar">
         <button class="settings-tab active"><i class="fas fa-paint-brush"></i> Personalization</button>
       </div>
-
-      <!-- Lado Derecho: Contenido -->
       <div class="settings-content-wrapper">
-        
-        
         <div class="settings-scroll-area">
           <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Appearance</span>
-            </div>
+            <div class="settings-row-left"><span class="settings-row-title">Appearance</span></div>
             <div class="settings-row-right">
               <div class="settings-dropdown" id="appearanceDropdownBtn">
                 <span id="appearanceSelected">System</span> <i class="fas fa-chevron-down"></i>
               </div>
               <div class="settings-dropdown-menu" id="appearanceDropdownMenu">
-                <div class="dropdown-item active" data-value="System">System <i class="fas fa-check" style="color: var(--text-primary)"></i></div>
+                <div class="dropdown-item active" data-value="System">System <i class="fas fa-check"></i></div>
                 <div class="dropdown-item" data-value="Dark">Dark <i></i></div>
                 <div class="dropdown-item" data-value="Light">Light <i></i></div>
               </div>
             </div>
           </div>
-          
           <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Language</span>
-            </div>
+            <div class="settings-row-left"><span class="settings-row-title">Language</span></div>
             <div class="settings-row-right">
               <div class="settings-dropdown" id="languageDropdownBtn">
                 <span id="languageSelected">Auto-detect</span> <i class="fas fa-chevron-down"></i>
               </div>
               <div class="settings-dropdown-menu" id="languageDropdownMenu">
-                <div class="dropdown-item active" data-value="Auto-detect">Auto-detect <i class="fas fa-check" style="color: var(--text-primary)"></i></div>
+                <div class="dropdown-item active" data-value="Auto-detect">Auto-detect <i class="fas fa-check"></i></div>
                 <div class="dropdown-item" data-value="English">English <i></i></div>
                 <div class="dropdown-item" data-value="Spanish">Spanish <i></i></div>
                 <div class="dropdown-item" data-value="French">French <i></i></div>
               </div>
             </div>
           </div>
-          
           <div class="settings-row">
             <div class="settings-row-left">
               <span class="settings-row-title">Spoken language</span>
-              <div class="settings-row-desc">For best results, select the language you mainly speak. If it's not listed, it may still be supported via auto-detection.</div>
+              <div class="settings-row-desc">For best results, select your main language.</div>
             </div>
-            <div class="settings-row-right">
-              <div class="settings-dropdown">Auto-detect <i class="fas fa-chevron-down"></i></div>
-            </div>
+            <div class="settings-row-right"><div class="settings-dropdown">Auto-detect <i class="fas fa-chevron-down"></i></div></div>
           </div>
-          
           <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Voice</span>
-            </div>
+            <div class="settings-row-left"><span class="settings-row-title">Voice</span></div>
             <div class="settings-row-right">
               <div class="play-btn"><i class="fas fa-play"></i> Play</div>
               <div class="settings-dropdown">Breeze <i class="fas fa-chevron-down"></i></div>
             </div>
           </div>
-          
           <div class="settings-row">
             <div class="settings-row-left">
               <span class="settings-row-title">Separate Voice</span>
-              <div class="settings-row-desc">Keep ChatGPT Voice in a separate full screen, without real time transcripts and visuals.</div>
+              <div class="settings-row-desc">Keep ChatGPT Voice in a separate full screen.</div>
             </div>
-            <div class="settings-row-right" style="padding-top: 8px;">
-              <div class="settings-toggle" id="settingsToggleBtn"></div>
-            </div>
+            <div class="settings-row-right"><div class="settings-toggle" id="settingsToggleBtn"></div></div>
           </div>
         </div>
       </div>
     </div>
   </div>`;
-
   document.body.insertAdjacentHTML('beforeend', settingsModalHTML);
 
+  // Configuración del modal de settings
   const settingsOverlay = document.getElementById('settingsModalOverlay');
-  const btnCloseSettings = document.getElementById('closeSettingsBtn');
+  const closeSettings = document.getElementById('closeSettingsBtn');
   const toggleBtn = document.getElementById('settingsToggleBtn');
 
-  function openSettingsModal() {
-    settingsOverlay.classList.remove('hidden');
-    setTimeout(() => {
-      settingsOverlay.classList.add('active');
-    }, 10);
-  }
+  // Función global para abrir settings
+  window.openSettingsModal = function() {
+    if (settingsOverlay) {
+      settingsOverlay.classList.remove('hidden');
+      setTimeout(() => settingsOverlay.classList.add('active'), 10);
+    } else {
+      console.error('settingsOverlay no encontrado');
+    }
+  };
 
   function closeSettingsModal() {
-    settingsOverlay.classList.remove('active');
-    setTimeout(() => {
-      settingsOverlay.classList.add('hidden');
-    }, 300);
+    if (settingsOverlay) {
+      settingsOverlay.classList.remove('active');
+      setTimeout(() => settingsOverlay.classList.add('hidden'), 300);
+    }
   }
 
-  btnCloseSettings.addEventListener('click', closeSettingsModal);
+  if (closeSettings) closeSettings.addEventListener('click', closeSettingsModal);
+  if (settingsOverlay) {
+    settingsOverlay.addEventListener('click', (e) => {
+      if (e.target === settingsOverlay) closeSettingsModal();
+    });
+  }
+  if (toggleBtn) toggleBtn.addEventListener('click', () => toggleBtn.classList.toggle('on'));
 
-  settingsOverlay.addEventListener('click', (e) => {
-    if (e.target === settingsOverlay) {
-      closeSettingsModal();
-    }
-  });
-
-  toggleBtn.addEventListener('click', () => {
-    toggleBtn.classList.toggle('on');
-  });
-
+  // ============================================================
+  // 5. LÓGICA DE TEMA (Appearance)
+  // ============================================================
   const appearanceBtn = document.getElementById('appearanceDropdownBtn');
   const appearanceMenu = document.getElementById('appearanceDropdownMenu');
   const appearanceSelected = document.getElementById('appearanceSelected');
+
+  function applyTheme(theme) {
+    if (theme === 'Light') document.documentElement.classList.add('light-theme');
+    else if (theme === 'Dark') document.documentElement.classList.remove('light-theme');
+    else {
+      const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.documentElement.classList.toggle('light-theme', isLight);
+    }
+  }
 
   if (appearanceBtn && appearanceMenu) {
     appearanceBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       appearanceMenu.classList.toggle('active');
     });
-
     appearanceMenu.addEventListener('click', (e) => {
       const item = e.target.closest('.dropdown-item');
       if (item) {
-        appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => {
-          el.classList.remove('active');
-          const icon = el.querySelector('i');
-          if (icon) {
-            icon.classList.remove('fa-check');
-            icon.style.color = 'transparent';
-          }
-        });
-
+        const val = item.dataset.value;
+        appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-        const icon = item.querySelector('i');
-        if (icon) {
-          icon.classList.add('fa-check');
-          icon.style.color = 'var(--text-primary)';
-        }
-
-        appearanceSelected.textContent = item.dataset.value;
-
-        // --- NATIVE THEME APPLY LOGIC ---
-        const theme = item.dataset.value;
-        localStorage.setItem('hpe_theme_pref', theme);
-        applyTheme(theme);
+        appearanceSelected.textContent = val;
+        localStorage.setItem('hpe_theme_pref', val);
+        applyTheme(val);
       }
     });
-
-    document.addEventListener('click', () => {
-      appearanceMenu.classList.remove('active');
-    });
-
-    // Theme logic handler
-    function applyTheme(theme) {
-      if (theme === 'Light') {
-        document.documentElement.classList.add('light-theme');
-      } else if (theme === 'Dark') {
-        document.documentElement.classList.remove('light-theme');
-      } else {
-        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-          document.documentElement.classList.add('light-theme');
-        } else {
-          document.documentElement.classList.remove('light-theme');
-        }
-      }
-    }
-
-    // Initial setup of dropdown UI based on saved preference
-    const pref = localStorage.getItem('hpe_theme_pref') || 'System';
-    appearanceSelected.textContent = pref;
-    appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => {
-      el.classList.remove('active');
-      const icon = el.querySelector('i');
-      if (icon) {
-        icon.classList.remove('fa-check');
-        icon.style.color = 'transparent';
-      }
-    });
-    const activeItem = appearanceMenu.querySelector(`.dropdown-item[data-value="${pref}"]`);
-    if (activeItem) {
-      activeItem.classList.add('active');
-      const icon = activeItem.querySelector('i');
-      if (icon) {
-        icon.classList.add('fa-check');
-        icon.style.color = 'var(--text-primary)';
-      }
-    }
-
-    // Listen to OS-level theme changes natively
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+    document.addEventListener('click', () => appearanceMenu.classList.remove('active'));
+    const savedTheme = localStorage.getItem('hpe_theme_pref') || 'System';
+    appearanceSelected.textContent = savedTheme;
+    const activeItem = appearanceMenu.querySelector(`.dropdown-item[data-value="${savedTheme}"]`);
+    if (activeItem) activeItem.classList.add('active');
+    applyTheme(savedTheme);
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
       if ((localStorage.getItem('hpe_theme_pref') || 'System') === 'System') {
-        document.documentElement.classList.toggle('light-theme', e.matches);
+        const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.classList.toggle('light-theme', isLight);
       }
     });
   }
 
-  // --- LANGUAGE DROPDOWN LOGIC ---
+  // ============================================================
+  // 6. LÓGICA DE IDIOMA (integración con translator.js)
+  // ============================================================
   const languageBtn = document.getElementById('languageDropdownBtn');
   const languageMenu = document.getElementById('languageDropdownMenu');
   const languageSelected = document.getElementById('languageSelected');
@@ -481,61 +395,27 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       languageMenu.classList.toggle('active');
     });
-
     languageMenu.addEventListener('click', (e) => {
       const item = e.target.closest('.dropdown-item');
       if (item) {
-        languageMenu.querySelectorAll('.dropdown-item').forEach(el => {
-          el.classList.remove('active');
-          const icon = el.querySelector('i');
-          if (icon) {
-            icon.classList.remove('fa-check');
-            icon.style.color = 'transparent';
-          }
-        });
-
+        languageMenu.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-        const icon = item.querySelector('i');
-        if (icon) {
-          icon.classList.add('fa-check');
-          icon.style.color = 'var(--text-primary)';
-        }
-
         languageSelected.textContent = item.dataset.value;
-
-        // Save preference and trigger translator engine
-        const lang = item.dataset.value;
-        localStorage.setItem('hpe_language_pref', lang);
+        localStorage.setItem('hpe_language_pref', item.dataset.value);
         if (typeof window.applyTranslation === 'function') {
-          window.applyTranslation(lang);
+          window.applyTranslation(item.dataset.value);
+        } else {
+          console.warn('applyTranslation no está disponible. Asegúrate de cargar translator.js');
         }
       }
     });
-
-    document.addEventListener('click', () => {
-      languageMenu.classList.remove('active');
-    });
-
-    // Initial setup of Language dropdown UI
-    const langPref = localStorage.getItem('hpe_language_pref') || 'Auto-detect';
-    languageSelected.textContent = langPref;
-    languageMenu.querySelectorAll('.dropdown-item').forEach(el => {
-      el.classList.remove('active');
-      const icon = el.querySelector('i');
-      if (icon) {
-        icon.classList.remove('fa-check');
-        icon.style.color = 'transparent';
-      }
-    });
-    const activeLangItem = languageMenu.querySelector(`.dropdown-item[data-value="${langPref}"]`);
-    if (activeLangItem) {
-      activeLangItem.classList.add('active');
-      const icon = activeLangItem.querySelector('i');
-      if (icon) {
-        icon.classList.add('fa-check');
-        icon.style.color = 'var(--text-primary)';
-      }
-    }
+    document.addEventListener('click', () => languageMenu.classList.remove('active'));
+    const savedLang = localStorage.getItem('hpe_language_pref') || 'Auto-detect';
+    languageSelected.textContent = savedLang;
+    const activeLang = languageMenu.querySelector(`.dropdown-item[data-value="${savedLang}"]`);
+    if (activeLang) activeLang.classList.add('active');
   }
 
+  // Inicializar perfil
+  updateProfileUI();
 });

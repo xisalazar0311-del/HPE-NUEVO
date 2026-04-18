@@ -210,13 +210,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Navegación activa + toggle perfiles
+// ========================
+// COMPANIES SUBMENU TOGGLE
+// ========================
+const companiesBtn = document.getElementById('companiesBtn');
+const companiesSubmenu = document.getElementById('companiesSubmenu');
+
+if (companiesBtn && companiesSubmenu) {
+  companiesBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    companiesSubmenu.classList.toggle('open');
+    // Cerrar otros submenús si los hubiera
+    const profileSubmenu = document.querySelector('.profile-submenu');
+    if (profileSubmenu && profileSubmenu.classList.contains('open')) {
+      profileSubmenu.classList.remove('open');
+      const profileToggle = document.getElementById('profileToggleBtn');
+      if (profileToggle) profileToggle.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!companiesBtn.contains(e.target) && !companiesSubmenu.contains(e.target)) {
+      companiesSubmenu.classList.remove('open');
+    }
+  });
+
+  // Manejar clics en los items del submenú
+  document.querySelectorAll('.nav-submenu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const url = item.getAttribute('data-url');
+      if (url) {
+        window.location.href = url;  // Navegar a la URL especificada
+      } else {
+        console.log(`Companies submenu clicked: ${item.textContent}`);
+        // Aquí puedes agregar más lógica si es necesario
+      }
+      companiesSubmenu.classList.remove('open');
+    });
+  });
+}
+
+  // Navegación activa + toggle perfiles (mantenemos el código existente)
   const navItems = document.querySelectorAll('.nav-item');
   const profileToggleBtn = document.getElementById('profileToggleBtn');
   const profileSubmenu = document.getElementById('profileSubmenu');
   const profileSubItems = document.querySelectorAll('.nav-subitem');
 
   navItems.forEach(item => {
+    // Excluir el botón de companies porque ya tiene su propio handler
+    if (item.id === 'companiesBtn') return;
     item.addEventListener('click', () => {
       const isProfileToggle = item.id === 'profileToggleBtn';
 
@@ -258,3 +301,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// En script.js, dentro del DOMContentLoaded
+const footerBtn = document.getElementById('sidebarFooterBtn');
+const userPopup = document.getElementById('userMenuPopup');
+
+if (footerBtn && userPopup) {
+  footerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userPopup.classList.toggle('active');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!userPopup.contains(e.target) && !footerBtn.contains(e.target)) {
+      userPopup.classList.remove('active');
+    }
+  });
+}
