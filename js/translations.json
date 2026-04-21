@@ -690,17 +690,7 @@
     "coke.prod1.title": "Coca Cola",
     "coke.prod1.body": "Es el producto insignia y símbolo de la marca. Es la bebida más famosa del mundo.",
     "coke.prod2.title": "Fanta",
-    "coke.prod2.body": "Es el segundo producto más importante de Coca-Cola. Es uno de los refrescos más vendidos a nivel mundial.",
-    "Consumer & Edge": "Consumo & Edge",
-    "Samsung": "Samsung",
-    "Revenue: $210B+": "Ingresos: $210B+",
-    "Smart Devices: 1B+": "Dispositivos int.: 1B+",
-    "Samsung's aggressive expansion into enterprise edge computing and sovereign IoT aligns with HPE GreenLake for Edge. High priority for localized data processing.": "La agresiva expansión de Samsung hacia el edge computing empresarial e IoT soberano se alinea con HPE GreenLake para Edge. Alta prioridad para el procesamiento de datos localizado.",
-    "Edge Analytics: +45%": "Analítica Edge: +45%",
-    "Security: Knox": "Seguridad: Knox",
-    "GreenLake for Edge + Aruba": "GreenLake para Edge + Aruba",
-    "HPE Edge-to-Cloud Solution": "Solución HPE Edge-to-Cloud",
-    "Edge Sovereignty": "Soberanía Edge"
+    "coke.prod2.body": "Es el segundo producto más importante de Coca-Cola. Es uno de los refrescos más vendidos a nivel mundial."
   },
   "English": {
     "Chat": "Chat",
@@ -1353,17 +1343,7 @@
     "coke.prod1.title": "Coca Cola",
     "coke.prod1.body": "It is the flagship product and symbol of the brand. It is the world's most famous drink.",
     "coke.prod2.title": "Fanta",
-    "coke.prod2.body": "It is Coca-Cola's second most important product. It is one of the best-selling soft drinks worldwide.",
-    "Consumer & Edge": "Consumer & Edge",
-    "Samsung": "Samsung",
-    "Revenue: $210B+": "Revenue: $210B+",
-    "Smart Devices: 1B+": "Smart Devices: 1B+",
-    "Samsung's aggressive expansion into enterprise edge computing and sovereign IoT aligns with HPE GreenLake for Edge. High priority for localized data processing.": "Samsung's aggressive expansion into enterprise edge computing and sovereign IoT aligns with HPE GreenLake for Edge. High priority for localized data processing.",
-    "Edge Analytics: +45%": "Edge Analytics: +45%",
-    "Security: Knox": "Security: Knox",
-    "GreenLake for Edge + Aruba": "GreenLake for Edge + Aruba",
-    "HPE Edge-to-Cloud Solution": "HPE Edge-to-Cloud Solution",
-    "Edge Sovereignty": "Edge Sovereignty"
+    "coke.prod2.body": "It is Coca-Cola's second most important product. It is one of the best-selling soft drinks worldwide."
   },
   "French": {
     "Chat": "Discussion",
@@ -2016,16 +1996,6 @@
     "coke.prod1.title": "Coca Cola",
     "coke.prod1.body": "C'est le produit phare et le symbole de la marque. C'est la boisson la plus célèbre au monde.",
     "coke.prod2.title": "Fanta",
-    "coke.prod2.body": "C'est le deuxième produit le plus important de Coca-Cola. C'est l'une des boissons gazeuses les plus vendues au monde.",
-    "Consumer & Edge": "Consommation et Edge",
-    "Samsung": "Samsung",
-    "Revenue: $210B+": "Revenus : 210B$+",
-    "Smart Devices: 1B+": "Appareils int. : 1B+",
-    "Samsung's aggressive expansion into enterprise edge computing and sovereign IoT aligns with HPE GreenLake for Edge. High priority for localized data processing.": "L'expansion agressive de Samsung dans l'edge computing d'entreprise et l'IoT souverain s'aligne avec HPE GreenLake for Edge. Haute priorité pour le traitement des données localisé.",
-    "Edge Analytics: +45%": "Analytique Edge : +45%",
-    "Security: Knox": "Sécurité : Knox",
-    "GreenLake for Edge + Aruba": "GreenLake for Edge + Aruba",
-    "HPE Edge-to-Cloud Solution": "Solution HPE Edge-to-Cloud",
-    "Edge Sovereignty": "Souveraineté Edge"
+    "coke.prod2.body": "C'est le deuxième produit le plus important de Coca-Cola. C'est l'une des boissons gazeuses les plus vendues au monde."
   }
 }
