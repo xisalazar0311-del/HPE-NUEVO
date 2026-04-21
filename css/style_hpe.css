@@ -38,6 +38,19 @@
   --shadow-glow: 0 0 15px rgba(0, 230, 180, 0.15);
   --font-display: 'Inter', sans-serif;
   --font-mono: 'Space Mono', monospace;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* Submenu wrapper for Companies dropdown */
+.nav-item-wrapper {
+  position: relative;
+}
+
+.nav-submenu-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* Base Settings */
@@ -1609,3 +1622,52 @@ html.light-theme .text-hpe-muted {
     border-radius: 8px;
   }
 }
+/* Submenu Styles copied from styles.css */
+.nav-submenu {
+     max-height: 0;
+     overflow: hidden;
+     transition: max-height var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
+     padding-left: 36px;
+     display: flex;
+     flex-direction: column;
+     gap: var(--space-sm);
+     margin-top: 0;
+   }
+
+   .nav-submenu.open {
+     max-height: 500px;
+     margin-top: var(--space-sm);
+   }
+
+   .nav-submenu-item {
+     background: transparent;
+     border: none;
+     color: var(--text-secondary);
+     font-family: var(--font-display);
+     font-size: 0.8rem;
+     font-weight: 500;
+     padding: var(--space-sm) var(--space-md);
+     text-align: left;
+     border-radius: var(--radius-sm);
+     cursor: pointer;
+     transition: all var(--transition-base);
+     width: 100%;
+   display: flex;
+      align-items: center;
+      gap: 8px;
+}
+
+   .nav-submenu-item:hover {
+     color: var(--accent);
+     background: rgba(255, 255, 255, 0.03);
+   }
+
+   .nav-submenu-item:focus-visible {
+     outline: 2px solid var(--accent);
+     outline-offset: 2px;
+   }
+
+   .nav-submenu-item.active {
+     color: var(--accent);
+     font-weight: 600;
+   }
