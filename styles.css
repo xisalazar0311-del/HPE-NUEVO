@@ -2308,3 +2308,78 @@
        transform: translateY(0) !important;
      }
    }
+/* Enhanced Light Mode for Pages - Fix for mucho gris */
+html.light-theme {
+    --bg-base: #ffffff !important;
+    --bg-surface: #ffffff !important;
+    --bg-card: #ffffff !important;
+    --bg-card-inner: #ffffff !important;
+    --bg-input: #ffffff !important;
+}
+
+html.light-theme body,
+html.light-theme .main-wrapper,
+html.light-theme .bg-nvidia-base,
+html.light-theme .bg-\[\#0a0f18\],
+html.light-theme .bg-\[\#11141a\],
+html.light-theme .bg-\[\#0a0c10\],
+html.light-theme .bg-gradient-radial,
+html.light-theme .bg-gradient-to-br,
+html.light-theme .from-\[\#11141a\],
+html.light-theme .to-\[\#0a0c10\] {
+    background: #ffffff !important;
+    background-image: none !important;
+}
+
+html.light-theme .glass-panel,
+html.light-theme .tech-card,
+html.light-theme .area-card,
+html.light-theme .hero-card,
+html.light-theme .glass-card-sm,
+html.light-theme .glass-card-solid {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Fix text colors */
+html.light-theme .text-white,
+html.light-theme h2,
+html.light-theme h3 {
+    color: #111827 !important;
+}
+
+html.light-theme .text-gray-400,
+html.light-theme .text-gray-300,
+html.light-theme .text-nvidia-text {
+    color: #4b5563 !important;
+}
+
+/* Fix borders and separators */
+html.light-theme .border-white\/5,
+html.light-theme .border-white\/10,
+html.light-theme .border-white\/20,
+html.light-theme .border-nvidia-border,
+html.light-theme .border-nvidia-border\/20,
+html.light-theme .bg-white\/5 {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Keep accent colored texts and icons but make sure they have contrast */
+html.light-theme .text-nvidia-accent,
+html.light-theme .text-blue-400,
+html.light-theme .text-purple-400,
+html.light-theme .text-orange-400,
+html.light-theme .text-green-400,
+html.light-theme .text-emerald-400 {
+    filter: brightness(0.8) contrast(1.2);
+}
+
+/* Fix specific gradient overlays to be less gray */
+html.light-theme .hero-card .bg-gradient-to-t {
+    background-image: linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0.4), transparent) !important;
+}
+html.light-theme .hero-card img {
+    opacity: 0.15 !important;
+}
