@@ -51,6 +51,8 @@
     // Clicking a nav item closes the sidebar on mobile
     document.querySelectorAll('.nav-item, .nav-list li a, .nav-list li').forEach(function (item) {
       item.addEventListener('click', function () {
+        // Don't close sidebar when clicking Companies (it toggles submenu)
+        if (item.id === 'companiesBtn') return;
         if (window.innerWidth <= 768) {
           setTimeout(closeSidebar, 150);
         }
@@ -74,6 +76,57 @@
         closeSidebar();
       }
     });
+
+    // ========================
+    // COMPANIES SUBMENU TOGGLE
+    // ========================
+    var companiesBtn = document.getElementById('companiesBtn');
+    var companiesSubmenu = document.getElementById('companiesSubmenu');
+
+    if (companiesBtn && companiesSubmenu) {
+      companiesBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        companiesSubmenu.classList.toggle('open');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!companiesBtn.contains(e.target) && !companiesSubmenu.contains(e.target)) {
+          companiesSubmenu.classList.remove('open');
+        }
+      });
+
+      // Handle submenu item clicks (data-url navigation)
+      var submenuItems = document.querySelectorAll('.nav-submenu-item');
+      submenuItems.forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var url = item.getAttribute('data-url');
+          if (url) {
+            window.location.href = url;
+          }
+          companiesSubmenu.classList.remove('open');
+        });
+      });
+    }
+
+    // ========================
+    // SIDEBAR FOOTER (Profile Popup)
+    // ========================
+    var footerBtn = document.getElementById('sidebarFooterBtn');
+    var userPopup = document.getElementById('userMenuPopup');
+
+    if (footerBtn && userPopup) {
+      footerBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        userPopup.classList.toggle('active');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!userPopup.contains(e.target) && !footerBtn.contains(e.target)) {
+          userPopup.classList.remove('active');
+        }
+      });
+    }
   }
 
   // Run init when DOM is ready

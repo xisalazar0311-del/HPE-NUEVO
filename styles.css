@@ -290,7 +290,10 @@
      cursor: pointer;
      transition: all var(--transition-base);
      width: 100%;
-   }
+   display: flex;
+      align-items: center;
+      gap: 8px;
+}
 
    .nav-submenu-item:hover {
      color: var(--accent);
