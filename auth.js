@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingsModalHTML = `
   <div class="settings-overlay hidden" id="settingsModalOverlay">
     <div class="settings-modal">
-      <button class="settings-close-btn" id="closeSettingsBtn"><i class="fas fa-times"></i></button>
+      <button class="settings-close-btn" id="closeSettingsBtn"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       <div class="settings-sidebar">
         <button class="settings-tab active"><i class="fas fa-paint-brush"></i> <span data-i18n="Personalization">Personalization</span></button>
       </div>
