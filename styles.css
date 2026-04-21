@@ -1137,19 +1137,16 @@
        top: var(--space-xl);
        left: calc(var(--space-lg) * 2);
        width: 100%;
-       max-width: 100px;
+       max-width: 110px;
        z-index: var(--z-mobile-menu);
        text-decoration: none;
        transition: opacity var(--transition-base);
      }
 
-     .mobile-dashboard-logo:hover {
+     * .mobile-dashboard-logo:hover {
        opacity: 0.85;
      }
 
-     .mobile-dashboard-logo {
-       display: none;
-     }
 
      /* Mobile Menu Button */
      .mobile-menu-btn {
@@ -1282,7 +1279,8 @@
    @media (min-width: 769px) {
 
      .mobile-menu-btn,
-     .menu-overlay {
+     .menu-overlay,
+     .mobile-dashboard-logo {
        display: none;
      }
    }
