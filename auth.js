@@ -80,14 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const stored = localStorage.getItem(STORAGE_USERS);
       if (stored) return { ...defaultUsers, ...JSON.parse(stored) };
-    } catch (e) {}
+    } catch (e) { }
     return defaultUsers;
   }
 
   function saveUsers(users) {
     try {
       localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function getActiveUser() {
@@ -280,27 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             </div>
           </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Spoken language</span>
-              <div class="settings-row-desc">For best results, select your main language.</div>
-            </div>
-            <div class="settings-row-right"><div class="settings-dropdown">Auto-detect <i class="fas fa-chevron-down"></i></div></div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-left"><span class="settings-row-title">Voice</span></div>
-            <div class="settings-row-right">
-              <div class="play-btn"><i class="fas fa-play"></i> Play</div>
-              <div class="settings-dropdown">Breeze <i class="fas fa-chevron-down"></i></div>
-            </div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <span class="settings-row-title">Separate Voice</span>
-              <div class="settings-row-desc">Keep ChatGPT Voice in a separate full screen.</div>
-            </div>
-            <div class="settings-row-right"><div class="settings-toggle" id="settingsToggleBtn"></div></div>
-          </div>
         </div>
       </div>
     </div>
@@ -313,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('settingsToggleBtn');
 
   // Función global para abrir settings
-  window.openSettingsModal = function() {
+  window.openSettingsModal = function () {
     if (settingsOverlay) {
       settingsOverlay.classList.remove('hidden');
       setTimeout(() => settingsOverlay.classList.add('active'), 10);

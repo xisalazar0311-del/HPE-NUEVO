@@ -43,7 +43,7 @@
   </script>
 
   <!-- Custom CSS (HPE theme) -->
-  <link rel="stylesheet" href="../css/style_hpe.css"> <!-- Ajusta la ruta según tu estructura -->
+  <link rel="stylesheet" href="../css/style_hpe.css"> <!-- Ajusta la ruta segï¿½n tu estructura -->
 
   <style>
     /* Ajustes adicionales para que el main content se comporte igual que en hpe.html */
@@ -80,7 +80,7 @@
       }
     }
 
-    /* Mantener las cards del dashboard con su diseño original, pero adaptadas al tema */
+    /* Mantener las cards del dashboard con su diseï¿½o original, pero adaptadas al tema */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -169,14 +169,14 @@
         0 0 40px #0ff;
     }
 
-    /* Estilo para botones tipo menú (usado en header) */
+    /* Estilo para botones tipo menï¿½ (usado en header) */
     .nav-btn {
       display: inline-flex;
-      /* Para alinear ícono si se agrega después */
+      /* Para alinear ï¿½cono si se agrega despuï¿½s */
       align-items: center;
       padding: 12px 16px;
       color: #94a3b8;
-      /* Mismo color que los items del menú */
+      /* Mismo color que los items del menï¿½ */
       font-weight: 600;
       text-decoration: none;
       /* Quitar subrayado */
@@ -192,7 +192,7 @@
       /* Blanco al hacer hover */
     }
 
-    /* Opcional: si quieres que tenga el mismo efecto en el texto que en el icono del menú */
+    /* Opcional: si quieres que tenga el mismo efecto en el texto que en el icono del menï¿½ */
     .nav-btn:hover {
       text-shadow: 0 0 8px var(--hpe-accent);
     }
@@ -205,9 +205,9 @@
       /* Compensar el borde para que no se mueva el texto */
     }
 
-    /* ===== MEJORA DEL MENÚ CON EFECTO NEON ===== */
+    /* ===== MEJORA DEL MENï¿½ CON EFECTO NEON ===== */
     .nav-list li {
-      /* Mantén los estilos existentes y añade transiciones suaves */
+      /* Mantï¿½n los estilos existentes y aï¿½ade transiciones suaves */
       transition: all 0.3s ease;
       position: relative;
       z-index: 1;
@@ -215,7 +215,7 @@
 
     .nav-list li:hover {
       background: rgba(0, 243, 255, 0.25) !important;
-      /* Más opaco */
+      /* Mï¿½s opaco */
       color: white !important;
       box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
       /* Resplandor exterior */
@@ -251,7 +251,7 @@
       text-decoration: none;
     }
 
-    /* ===== BOTÓN DE CAMBIO DE IDIOMA - translator.js ===== */
+    /* ===== BOTï¿½N DE CAMBIO DE IDIOMA - translator.js ===== */
     #lang-toggle-btn {
       display: inline-flex;
       align-items: center;
@@ -368,16 +368,16 @@
     }
   </style>
 
-    <!-- HPE Theme Loader (Anti-FOUC) -->
-    <script>
-      (function(){
+  <!-- HPE Theme Loader (Anti-FOUC) -->
+  <script>
+      (function () {
         try {
           var pref = localStorage.getItem('hpe_theme_pref') || 'System';
           var isLight = pref === 'Light' || (pref === 'System' && window.matchMedia('(prefers-color-scheme: light)').matches);
           if (isLight) document.documentElement.classList.add('light-theme');
-        } catch(e) {}
+        } catch (e) { }
       })();
-    </script>
+  </script>
 </head>
 
 <body class="bg-hpe-base text-hpe-text font-sans">
@@ -947,7 +947,8 @@
           <span class="nav-label" data-i18n="Technology">Technology</span>
         </a>
       </div>
-            <div class="sidebar-footer-container" style="position: relative; padding: 16px; border-top: 1px solid rgba(255,255,255,0.07);">
+      <div class="sidebar-footer-container"
+        style="position: relative; padding: 16px; border-top: 1px solid rgba(255,255,255,0.07);">
         <!-- Popup Menu -->
         <div class="user-menu-popup" id="userMenuPopup">
           <div class="popup-header">
@@ -957,34 +958,29 @@
               <div class="user-role" style="color: #aaa; font-size: 0.75rem;">Free</div>
             </div>
           </div>
-          
+
           <button class="menu-item mt-1">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
             <span data-action="add-account">Add another account</span>
           </button>
           <div class="menu-divider"></div>
           <button class="menu-item">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+            </svg>
             <span data-action="personalization">Personalization</span>
           </button>
-          <button class="menu-item">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span>Profile</span>
-          </button>
-          <button class="menu-item">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            <span>Settings</span>
-          </button>
           <div class="menu-divider"></div>
-          <button class="menu-item menu-item-between">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg>
-              <span>Help</span>
-            </div>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
           <button class="menu-item">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
             <span data-action="logout">Log out</span>
           </button>
         </div>
@@ -997,18 +993,18 @@
           </div>
         </button>
       </div>
-      
+
       <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
           const btn = document.getElementById('sidebarFooterBtn');
           const popup = document.getElementById('userMenuPopup');
-          if(btn && popup) {
-            btn.addEventListener('click', function(e) {
+          if (btn && popup) {
+            btn.addEventListener('click', function (e) {
               e.stopPropagation();
               popup.classList.toggle('active');
             });
-            document.addEventListener('click', function(e) {
-              if(!popup.contains(e.target) && !btn.contains(e.target)) {
+            document.addEventListener('click', function (e) {
+              if (!popup.contains(e.target) && !btn.contains(e.target)) {
                 popup.classList.remove('active');
               }
             });
@@ -1023,20 +1019,20 @@
       <!-- Header opcional (similar al de hpe pero simplificado) -->
       <header class="glass-header h-20 flex items-center justify-end px-8 w-full">
         <div class="flex items-center gap-6 ml-auto">
-          <!-- Botón cambio de idioma ES <-> EN -->
+          <!-- Botï¿½n cambio de idioma ES <-> EN -->
           <button id="lang-toggle-btn" title="Cambiar a ingles" aria-label="Toggle language"><span
               data-i18n="lang.btn.label">&#x1F310; EN</span></button>
         </div>
       </header>
 
 
-      <!-- Título de página -->
+      <!-- Tï¿½tulo de pï¿½gina -->
       <div class="px-8 pt-6">
         <h2 class="text-2xl font-tech font-bold text-white" data-i18n="menu.alim.title">ALIMENTARIO</h2>
         <p class="text-hpe-muted text-sm" data-i18n="menu.alim.sub">Directorio Alimentario</p>
       </div>
 
-      <!-- Grid de tarjetas (mismo contenido que tenías) -->
+      <!-- Grid de tarjetas (mismo contenido que tenï¿½as) -->
       <div class="cards-grid">
         <a href="../pages/bimbo.html" class="card-btn">
           <div class="bg-image"
@@ -1044,7 +1040,7 @@
           </div>
           <div class="content">
             <h3>Bimbo</h3>
-            <span data-i18n="card.see_more">Ver más ?</span>
+            <span data-i18n="card.see_more">Ver mï¿½s ?</span>
           </div>
         </a>
 
@@ -1054,7 +1050,7 @@
           </div>
           <div class="content">
             <h3>Coca Cola</h3>
-            <span data-i18n="card.see_more">Ver más ?</span>
+            <span data-i18n="card.see_more">Ver mï¿½s ?</span>
           </div>
         </a>
 
@@ -1064,11 +1060,11 @@
     </main>
   </div>
 
-  <!-- Script para la interactividad del menú (marcar activo) -->
-  <!-- Script de traducción ES ? EN -->
+  <!-- Script para la interactividad del menï¿½ (marcar activo) -->
+  <!-- Script de traducciï¿½n ES ? EN -->
   <script src="../js/translator.js"></script>
 
-  <!-- Script para la interactividad del menú -->
+  <!-- Script para la interactividad del menï¿½ -->
   <script>
     document.querySelectorAll('.nav-list li').forEach(item => {
       item.addEventListener('click', function (e) {
