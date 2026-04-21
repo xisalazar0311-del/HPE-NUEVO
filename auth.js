@@ -249,34 +249,34 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="settings-modal">
       <button class="settings-close-btn" id="closeSettingsBtn"><i class="fas fa-times"></i></button>
       <div class="settings-sidebar">
-        <button class="settings-tab active"><i class="fas fa-paint-brush"></i> Personalization</button>
+        <button class="settings-tab active"><i class="fas fa-paint-brush"></i> <span data-i18n="Personalization">Personalization</span></button>
       </div>
       <div class="settings-content-wrapper">
         <div class="settings-scroll-area">
           <div class="settings-row">
-            <div class="settings-row-left"><span class="settings-row-title">Appearance</span></div>
+            <div class="settings-row-left"><span class="settings-row-title" data-i18n="Appearance">Appearance</span></div>
             <div class="settings-row-right">
               <div class="settings-dropdown" id="appearanceDropdownBtn">
-                <span id="appearanceSelected">System</span> <i class="fas fa-chevron-down"></i>
+                <span id="appearanceSelected" data-i18n="System">System</span> <i class="fas fa-chevron-down"></i>
               </div>
               <div class="settings-dropdown-menu" id="appearanceDropdownMenu">
-                <div class="dropdown-item active" data-value="System">System <i class="fas fa-check"></i></div>
-                <div class="dropdown-item" data-value="Dark">Dark <i></i></div>
-                <div class="dropdown-item" data-value="Light">Light <i></i></div>
+                <div class="dropdown-item active" data-value="System"><span data-i18n="System">System</span> <i class="fas fa-check"></i></div>
+                <div class="dropdown-item" data-value="Dark"><span data-i18n="Dark">Dark</span> <i></i></div>
+                <div class="dropdown-item" data-value="Light"><span data-i18n="Light">Light</span> <i></i></div>
               </div>
             </div>
           </div>
           <div class="settings-row">
-            <div class="settings-row-left"><span class="settings-row-title">Language</span></div>
+            <div class="settings-row-left"><span class="settings-row-title" data-i18n="Language">Language</span></div>
             <div class="settings-row-right">
               <div class="settings-dropdown" id="languageDropdownBtn">
-                <span id="languageSelected">Auto-detect</span> <i class="fas fa-chevron-down"></i>
+                <span id="languageSelected" data-i18n="Auto-detect">Auto-detect</span> <i class="fas fa-chevron-down"></i>
               </div>
               <div class="settings-dropdown-menu" id="languageDropdownMenu">
-                <div class="dropdown-item active" data-value="Auto-detect">Auto-detect <i class="fas fa-check"></i></div>
-                <div class="dropdown-item" data-value="English">English <i></i></div>
-                <div class="dropdown-item" data-value="Spanish">Spanish <i></i></div>
-                <div class="dropdown-item" data-value="French">French <i></i></div>
+                <div class="dropdown-item active" data-value="Auto-detect"><span data-i18n="Auto-detect">Auto-detect</span> <i class="fas fa-check"></i></div>
+                <div class="dropdown-item" data-value="English"><span data-i18n="English">English</span> <i></i></div>
+                <div class="dropdown-item" data-value="Spanish"><span data-i18n="Spanish">Spanish</span> <i></i></div>
+                <div class="dropdown-item" data-value="French"><span data-i18n="French">French</span> <i></i></div>
               </div>
             </div>
           </div>
@@ -343,13 +343,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const val = item.dataset.value;
         appearanceMenu.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
+        appearanceSelected.setAttribute('data-i18n', val);
         appearanceSelected.textContent = val;
         localStorage.setItem('hpe_theme_pref', val);
         applyTheme(val);
+        if (typeof window.applyTranslation === 'function') {
+          window.applyTranslation(localStorage.getItem('hpe_language_pref') || 'Auto-detect');
+        }
       }
     });
     document.addEventListener('click', () => appearanceMenu.classList.remove('active'));
     const savedTheme = localStorage.getItem('hpe_theme_pref') || 'System';
+    appearanceSelected.setAttribute('data-i18n', savedTheme);
     appearanceSelected.textContent = savedTheme;
     const activeItem = appearanceMenu.querySelector(`.dropdown-item[data-value="${savedTheme}"]`);
     if (activeItem) activeItem.classList.add('active');
@@ -379,6 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (item) {
         languageMenu.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
+        languageSelected.setAttribute('data-i18n', item.dataset.value);
         languageSelected.textContent = item.dataset.value;
         localStorage.setItem('hpe_language_pref', item.dataset.value);
         if (typeof window.applyTranslation === 'function') {
@@ -390,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.addEventListener('click', () => languageMenu.classList.remove('active'));
     const savedLang = localStorage.getItem('hpe_language_pref') || 'Auto-detect';
+    languageSelected.setAttribute('data-i18n', savedLang);
     languageSelected.textContent = savedLang;
     const activeLang = languageMenu.querySelector(`.dropdown-item[data-value="${savedLang}"]`);
     if (activeLang) activeLang.classList.add('active');
