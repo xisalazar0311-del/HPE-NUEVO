@@ -1047,10 +1047,12 @@
             return data;
         }
         
-        function onLoginSuccess(email) {
-            // Guardar sesión y redirigir directo al dashboard
-            localStorage.setItem('hpe_auth', 'true');
-            localStorage.setItem('hpe_user_email', email);
+        function onLoginSuccess(data) {
+            // Guardar token JWT en sessionStorage (se borra al cerrar el navegador)
+            sessionStorage.setItem('hpe_token',  data.token);
+            sessionStorage.setItem('hpe_email',  data.email);
+            sessionStorage.setItem('hpe_nombre', data.nombre || data.email.split('@')[0]);
+            sessionStorage.setItem('hpe_role',   data.role || 'user');
             window.location.href = '../../INDEX.HTML';
         }
         
@@ -1097,7 +1099,7 @@
                 if (isLoginMode) {
                     const result = await loginUser(email, password);
                     if (result.success) {
-                        onLoginSuccess(email);
+                        onLoginSuccess(result);
                     } else {
                         showError(result.message || "⛔ Authentication failed.");
                         const container = document.querySelector('.login-container');

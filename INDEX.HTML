@@ -23,36 +23,37 @@
     })();
   </script>
   <script src="js/translator.js" defer></script>
+  <!-- PROXY SECRET: reemplaza el valor con el que pusiste en PROXY_SECRET de tu .env -->
+  <script>
+    window.PROXY_SECRET = '07f4598bf71c8716c51ab6431c3239ada8f8cebcecea4a99fe879e12401dae40ee9cf8d50d17d53f35d4ae227af2baa7';
+  </script>
 </head>
 
 <body>
   <body>
 <script>
     (function() {
-        // Verificar autenticación
-        const isAuth = localStorage.getItem('hpe_auth');
-        if (!isAuth) {
+        // Verificar autenticación con token JWT (sessionStorage)
+        const token = sessionStorage.getItem('hpe_token');
+        if (!token) {
             window.location.href = 'inicio_sesion/inicio_sesion/index copy.html';
             return;
         }
-        // Mostrar nombre de usuario
-        const userEmail = localStorage.getItem('hpe_user_email') || 'Guest';
-        const userName = userEmail.split('@')[0];
-        const avatars = document.querySelectorAll('#footerAvatar, #popupAvatar');
-        const userNames = document.querySelectorAll('#footerUserName, #popupUserName');
-        // Esperar a que el DOM esté listo para actualizar
+        // Mostrar nombre de usuario desde sessionStorage
+        const userEmail = sessionStorage.getItem('hpe_email') || 'Guest';
+        const userName  = sessionStorage.getItem('hpe_nombre') || userEmail.split('@')[0];
         document.addEventListener('DOMContentLoaded', () => {
-            userNames.forEach(el => { if (el) el.innerText = userName; });
-            avatars.forEach(el => { if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase(); });
+            document.querySelectorAll('#footerUserName, #popupUserName')
+              .forEach(el => { if (el) el.innerText = userName; });
+            document.querySelectorAll('#footerAvatar, #popupAvatar')
+              .forEach(el => { if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase(); });
         });
-        // Logout (se ejecutará cuando el DOM esté listo)
         document.addEventListener('click', (e) => {
             const logoutBtn = e.target.closest('[data-action="logout"]');
             if (logoutBtn) {
                 e.preventDefault();
-                localStorage.removeItem('hpe_auth');
-                localStorage.removeItem('hpe_user_email');
-                window.location.href = 'index copy.html';
+                sessionStorage.clear();
+                window.location.href = 'inicio_sesion/inicio_sesion/index copy.html';
             }
         });
     })();
@@ -1040,7 +1041,10 @@
         try {
           const ctrl = new AbortController();
           const tid  = setTimeout(() => ctrl.abort(), 3000);
-          const res  = await fetch('http://localhost:8080/v1/models', { signal: ctrl.signal });
+          const res  = await fetch('http://localhost:8080/v1/models', {
+            signal: ctrl.signal,
+            headers: { 'X-API-Key': window.PROXY_SECRET || '' }
+          });
           clearTimeout(tid);
           setStatus(res.ok, res.ok ? 'LM Studio Live' : 'LM Studio Error');
         } catch (_) {
@@ -1080,7 +1084,10 @@
       async function callLMStudio(systemPrompt, userContent) {
         const resp = await fetch(LM_STUDIO_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': window.PROXY_SECRET || ''
+          },
           body: JSON.stringify({
             model: LM_MODEL,
             messages: [
@@ -1329,27 +1336,18 @@ RESPONDE ÚNICAMENTE CON ESTE FORMATO (sin texto adicional antes ni después):
     }
   </style>
   <script>
-    // Mostrar el email o nombre del usuario logueado
-    const userEmail = localStorage.getItem('hpe_user_email') || 'Guest';
-    const userName = userEmail.split('@')[0];
-    
-    // Actualizar elementos donde aparece "Guest"
-    const guestSpans = document.querySelectorAll('#footerUserName, #popupUserName');
-    guestSpans.forEach(el => {
-        if (el) el.innerText = userName;
-    });
-    
-    // Actualizar avatares (GU → iniciales del usuario)
-    const avatars = document.querySelectorAll('#footerAvatar, #popupAvatar');
-    avatars.forEach(el => {
-        if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase();
-    });
+    // Mostrar nombre del usuario logueado desde sessionStorage
+    const userEmail = sessionStorage.getItem('hpe_email') || 'Guest';
+    const userName  = sessionStorage.getItem('hpe_nombre') || userEmail.split('@')[0];
+    document.querySelectorAll('#footerUserName, #popupUserName')
+      .forEach(el => { if (el) el.innerText = userName; });
+    document.querySelectorAll('#footerAvatar, #popupAvatar')
+      .forEach(el => { if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase(); });
     document.querySelectorAll('[data-action="logout"]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.removeItem('hpe_auth');
-            localStorage.removeItem('hpe_user_email');
-            window.location.href = 'index copy.html';
+            sessionStorage.clear();
+            window.location.href = 'inicio_sesion/inicio_sesion/index copy.html';
         });
     });
 </script>
