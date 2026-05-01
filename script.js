@@ -64,12 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCarousel();
 
   // =============================================================
-  // 3. CHAT
+  // 3. CHAT con LM Studio (a través del proxy CORS en puerto 8080)
   // =============================================================
   const chatInput    = document.getElementById('chatInput');
   const sendBtn      = document.getElementById('sendBtn');
   const chatMessages = document.getElementById('chatMessages');
 
+  // Respuestas de respaldo (fallback)
   const aiReplies = [
     "Analyzing market positioning data… HPE GreenLake's key differentiators are cost predictability, data sovereignty, and compliance readiness.",
     "Based on current quarterly signals, lead with the <strong>Total Cost of Ownership</strong> narrative — CTO audiences respond strongly to 5-year CAPEX vs OPEX comparisons.",
@@ -77,6 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
     "Cross-referencing competitive intelligence… HPE's sovereign cloud narrative presents a compelling counter to hyperscaler lock-in concerns.",
   ];
   let replyIndex = 0;
+
+  // URL del proxy que reenvía a LM Studio (debe estar corriendo en puerto 8080)
+  const LM_STUDIO_PROXY_URL = 'http://localhost:8080/v1/chat/completions';
+
+  // Elementos del estado del chat (añadimos un indicador visual en el header del chat)
+  const chatStatusSpan = document.querySelector('.chat-status');
+  let statusDot = null;
+  let statusTextSpan = null;
+
+  function initChatStatus() {
+    if (!chatStatusSpan) return;
+    // Limpiar contenido existente y añadir nuestros elementos
+    chatStatusSpan.innerHTML = '';
+    statusDot = document.createElement('span');
+    statusDot.className = 'status-dot';
+    statusTextSpan = document.createElement('span');
+    statusTextSpan.textContent = 'Conectando...';
+    chatStatusSpan.appendChild(statusDot);
+    chatStatusSpan.appendChild(statusTextSpan);
+  }
+
+  function updateChatStatus(connected, errorMsg = '') {
+  const statusDot = document.querySelector('.chat-status .status-dot');
+  const statusText = document.querySelector('.chat-status span:last-child');
+  if (!statusDot || !statusText) return;
+  if (connected) {
+    statusDot.style.backgroundColor = '#00e0af';
+    statusText.textContent = 'LM Studio Live';
+  } else {
+    statusDot.style.backgroundColor = '#ff4d4d';
+    statusText.textContent = errorMsg || 'LM Studio Offline';
+  }
+}
 
   function addMessage(text, type) {
     const msg = document.createElement('div');
@@ -86,40 +120,129 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
   }
 
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-    addMessage(text, 'user');
-    chatInput.value = '';
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  chatInput.value = '';
 
-    const typing = document.createElement('div');
-    typing.classList.add('message', 'ai-message');
-    typing.id = 'typing';
-    typing.innerHTML = '<p class="typing-dots"><span>·</span><span>·</span><span>·</span></p>';
-    chatMessages.appendChild(typing);
-    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+  const typing = document.createElement('div');
+  typing.classList.add('message', 'ai-message');
+  typing.id = 'typing';
+  typing.innerHTML = '<p class="typing-dots"><span>·</span><span>·</span><span>·</span></p>';
+  chatMessages.appendChild(typing);
+  chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
 
-    // Intentar server.js (LM Studio) primero; si falla, respuesta local
+  // URLs posibles (prueba con /v1/chat/completions primero, luego /completions)
+  const urlsToTry = [
+    'http://localhost:8080/v1/chat/completions',
+    'http://localhost:8080/completions',
+    'http://localhost:8080/v1/completions'
+  ];
+
+  let reply = null;
+  let lastError = null;
+
+  for (const url of urlsToTry) {
     try {
-      const res  = await fetch('http://localhost:3000/api/chat', {
+      console.log(`Intentando con: ${url}`);
+      
+      // Determinar el payload según la URL
+      let payload;
+      if (url.includes('/chat/completions')) {
+        payload = {
+          model: "local-model",
+          messages: [
+            { role: "system", content: "Eres un asistente experto en HPE y sovereign cloud. Responde en español, conciso y profesional." },
+            { role: "user", content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 500,
+          stream: false
+        };
+      } else {
+        // Formato de completion simple
+        payload = {
+          model: "local-model",
+          prompt: text,
+          temperature: 0.7,
+          max_tokens: 500,
+          stream: false
+        };
+      }
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text }),
-        signal: AbortSignal.timeout(8000),
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(15000)
       });
-      const data = await res.json();
-      typing.remove();
-      addMessage(data.reply, 'ai');
-    } catch {
-      setTimeout(() => {
-        typing.remove();
-        addMessage(aiReplies[replyIndex++ % aiReplies.length], 'ai');
-      }, 1100 + Math.random() * 700);
+
+      const data = await response.json();
+      console.log(`Respuesta de ${url}:`, data);
+
+      // Intentar extraer el texto de respuesta según diferentes formatos
+      let extracted = null;
+      if (data.choices && data.choices[0]) {
+        if (data.choices[0].message && data.choices[0].message.content) {
+          extracted = data.choices[0].message.content;
+        } else if (data.choices[0].text) {
+          extracted = data.choices[0].text;
+        }
+      } else if (data.content) {
+        extracted = data.content;
+      } else if (data.response) {
+        extracted = data.response;
+      }
+
+      if (extracted && extracted.trim()) {
+        reply = extracted;
+        break; // éxito, salimos del bucle
+      } else {
+        console.warn(`Formato no reconocido en ${url}, se intenta la siguiente`);
+      }
+    } catch (err) {
+      console.warn(`Error con ${url}:`, err.message);
+      lastError = err;
     }
   }
 
-  sendBtn?.addEventListener('click', sendMessage);
-  chatInput?.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  typing.remove();
+
+  if (reply) {
+    addMessage(reply, 'ai');
+    updateChatStatus(true);
+  } else {
+    // Fallback a respuestas predefinidas
+    console.error("No se pudo obtener respuesta de LM Studio", lastError);
+    addMessage(aiReplies[replyIndex++ % aiReplies.length], 'ai');
+    updateChatStatus(false, 'LM Studio no responde');
+  }
+}
+
+  
+
+  // Inicializar indicador de estado del chat y comprobar conexión periódicamente
+  initChatStatus();
+
+  async function checkLMStudioConnection() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      const res = await fetch('http://localhost:8080/health', { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        updateChatStatus(true);
+      } else {
+        updateChatStatus(false);
+      }
+    } catch (err) {
+      updateChatStatus(false);
+    }
+  }
+
+  checkLMStudioConnection();
+  setInterval(checkLMStudioConnection, 30000); // revisar cada 30 segundos
 
   // =============================================================
   // 4. SIDEBAR MÓVIL
@@ -248,17 +371,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // =============================================================
   // 8. INTEGRACIÓN IA LOCAL — actualiza cards desde IA.py (:5000)
+  //    (NO SE MODIFICA — sigue funcionando igual)
   // =============================================================
 
-  /**
-   * Mapa: texto del .company-logo en el HTML → ticker que usa IA.py
-   * Si modificas las empresas en EMPRESAS_TARGET (IA.py), actualiza aquí.
-   */
   const TICKER_MAP = {
     'MSFT': 'MSFT',
     'NVDA': 'NVDA',
     'SNOW': 'SNOW',
-    'AWS':  'AMZN',         // La card muestra "AWS" pero el ticker real es AMZN
+    'AWS':  'AMZN',
     'SMSN': '005930.KS',
   };
 
@@ -270,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
     LOW:    'rgba(  0, 201, 141, 0.40)',
   };
 
-  // ── Estilos inyectados una sola vez ──────────────────────────
   function injectStyles() {
     if (document.getElementById('siah-styles')) return;
     const s = document.createElement('style');
@@ -333,7 +452,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(s);
   }
 
-  // ── Construir mapa ticker → elemento card ────────────────────
   function buildCardMap() {
     const map = {};
     document.querySelectorAll('.intel-card').forEach(card => {
@@ -343,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return map;
   }
 
-  // ── Loading spinner en card ──────────────────────────────────
   function setLoading(card, on) {
     if (on) {
       if (!card.querySelector('.siah-loading-bar')) {
@@ -359,18 +476,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── Aplicar datos de IA a una card ───────────────────────────
   function applyToCard(card, d) {
     const pri    = (d.priority || 'LOW').toUpperCase();
     const color  = PRIORITY_COLOR[pri]  || '#00c98d';
     const border = PRIORITY_BORDER[pri] || 'rgba(0,201,141,.4)';
     const lbl    = PRIORITY_LABEL[pri]  || pri;
 
-    // Borde de la card
     card.style.transition  = 'border-color .5s ease';
     card.style.borderColor = border;
 
-    // Badge AI
     card.querySelector('.siah-badge')?.remove();
     const badge = document.createElement('span');
     badge.className = 'siah-badge';
@@ -379,7 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const top = card.querySelector('.card-top');
     if (top) { top.style.position = 'relative'; top.appendChild(badge); }
 
-    // Solución en card cerrada
     const solEl = card.querySelector('.card-solution .solution-name');
     if (solEl && d.solution) {
       solEl.style.transition = 'opacity .35s';
@@ -390,7 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 350);
     }
 
-    // Tag footer
     const tagEl = card.querySelector('.card-tag');
     if (tagEl && d.tag) {
       tagEl.style.transition = 'opacity .35s';
@@ -398,7 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { tagEl.textContent = d.tag; tagEl.style.opacity = '1'; }, 450);
     }
 
-    // Precio + variación (pill debajo del logo)
     if (d.precio_actual) {
       const logoEl = card.querySelector('.company-logo');
       if (logoEl) {
@@ -411,14 +522,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Stats del detail-header (Market Cap, Revenue, etc.)
     const stats = card.querySelectorAll('.company-stats span');
     if (stats.length >= 2) {
       if (d.stat1_label && d.stat1_value) stats[0].textContent = `${d.stat1_label}: ${d.stat1_value}`;
       if (d.stat2_label && d.stat2_value) stats[1].textContent = `${d.stat2_label}: ${d.stat2_value}`;
     }
 
-    // Bloque insight + pitch en detail-body
     const body = card.querySelector('.detail-body');
     if (body) {
       body.querySelector('.siah-insight')?.remove();
@@ -433,12 +542,10 @@ document.addEventListener('DOMContentLoaded', () => {
       body.appendChild(block);
     }
 
-    // Solución óptima en detail-footer
     const detSol = card.querySelector('.detail-footer .solution-name');
     if (detSol && d.solution_full) detSol.textContent = d.solution_full;
   }
 
-  // ── Indicador de estado en el header del dashboard ───────────
   function mkStatus() {
     const header = document.querySelector('.section-header');
     if (!header || header.querySelector('.siah-status')) return header?.querySelector('.siah-status');
@@ -456,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (s) s.textContent = txt;
   }
 
-  // ── Pipeline principal ───────────────────────────────────────
   async function loadCardsFromIA() {
     injectStyles();
     const cardMap  = buildCardMap();
@@ -464,7 +570,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!Object.keys(cardMap).length) return;
 
-    // Activar loading
     Object.values(cardMap).forEach(c => setLoading(c, true));
 
     try {
@@ -486,9 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         n++;
       });
 
-      // Quitar loading de las que no vinieron en la respuesta
       Object.values(cardMap).forEach(c => setLoading(c, false));
-
       setStatus(statusEl, `${n} empresas · ${payload.fecha || '—'}`, true);
       console.info(`[SIAH] ✓ ${n} cards actualizadas — ${payload.fecha}`);
 
@@ -496,7 +599,6 @@ document.addEventListener('DOMContentLoaded', () => {
       Object.values(cardMap).forEach(c => setLoading(c, false));
       setStatus(statusEl, 'IA local no disponible', true);
       console.warn('[SIAH] IA.py no responde en localhost:5000 —', err.message);
-      // Las cards conservan su contenido estático; nada se rompe
     }
   }
 

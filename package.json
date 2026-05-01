@@ -1,7 +1,31 @@
 {
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
     "express": "^5.2.1",
-    "mongodb": "^7.2.0"
-  }
+    "http-proxy-middleware": "^3.0.5",
+    "mongodb": "^7.2.0",
+    "mongoose": "^8.23.1"
+  },
+  "name": "hpe-ns-copia6-remake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "auth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xisalazar0311-del/HPE-NUEVO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/xisalazar0311-del/HPE-NUEVO/issues"
+  },
+  "homepage": "https://github.com/xisalazar0311-del/HPE-NUEVO#readme"
 }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sovereign AI | Market Explorer</title>
+  <title>HPE | IA Explorer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -26,454 +26,43 @@
 </head>
 
 <body>
+  <body>
+<script>
+    (function() {
+        // Verificar autenticación
+        const isAuth = localStorage.getItem('hpe_auth');
+        if (!isAuth) {
+            window.location.href = 'inicio_sesion/inicio_sesion/index copy.html';
+            return;
+        }
+        // Mostrar nombre de usuario
+        const userEmail = localStorage.getItem('hpe_user_email') || 'Guest';
+        const userName = userEmail.split('@')[0];
+        const avatars = document.querySelectorAll('#footerAvatar, #popupAvatar');
+        const userNames = document.querySelectorAll('#footerUserName, #popupUserName');
+        // Esperar a que el DOM esté listo para actualizar
+        document.addEventListener('DOMContentLoaded', () => {
+            userNames.forEach(el => { if (el) el.innerText = userName; });
+            avatars.forEach(el => { if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase(); });
+        });
+        // Logout (se ejecutará cuando el DOM esté listo)
+        document.addEventListener('click', (e) => {
+            const logoutBtn = e.target.closest('[data-action="logout"]');
+            if (logoutBtn) {
+                e.preventDefault();
+                localStorage.removeItem('hpe_auth');
+                localStorage.removeItem('hpe_user_email');
+                window.location.href = 'index copy.html';
+            }
+        });
+    })();
+</script>
+<!-- El resto del HTML (todo el layout) sigue igual -->
   <div class="app-layout">
     <!-- Logo para móviles (Dashboard) -->
     <a class="mobile-dashboard-logo hpe-logo-small" href="https://www.hpe.com/mx/es/home.html"
       title="Hewlett Packard Enterprise">
-      <svg xmlns="http://www.w3.org/2000/svg" aria-label="Hewlett Packard Enterprise"
-        class="hpe-logo gn-logo-animated css-animation gn-icon gn-icon-logo play" focusable="false"
-        viewBox="0 0 630 180">
-        <!-- [CONTENIDO DEL LOGO HPE - MANTENIDO ÍNTEGRO] -->
-        <style>
-          .hpe-logo {
-            --hpe-logo-bg: var(--bg-base, #0a0c0f);
-            --hpe-logo-color: #fff
-          }
-
-          .hpe-logo path {
-            fill: none;
-            stroke-width: 36;
-            stroke-dashoffset: var(--_stroke-dashoffset, 0)
-          }
-
-          .hpe-logo.play .hpe-logo-element {
-            animation: hpe-logo-element 2s linear 0.3s forwards
-          }
-
-          @keyframes hpe-logo-element {
-            0% {
-              opacity: 1
-            }
-
-            100% {
-              opacity: 0
-            }
-          }
-
-          .hpe-logo .hpe-logo-snake {
-            opacity: 0
-          }
-
-          .hpe-logo.play .hpe-logo-snake {
-            animation: hpe-logo-snake 5s linear 0s forwards
-          }
-
-          @keyframes hpe-logo-snake {
-            10% {
-              opacity: .1
-            }
-
-            20% {
-              opacity: .4
-            }
-
-            30% {
-              opacity: 1
-            }
-
-            40% {
-              stroke-dashoffset: 550
-            }
-
-            43.5% {
-              stroke-dashoffset: 750
-            }
-
-            45% {
-              stroke-dashoffset: 1230
-            }
-
-            50% {
-              stroke-dashoffset: 1590
-            }
-
-            51% {
-              stroke-dashoffset: 1600
-            }
-
-            55% {
-              stroke-dashoffset: 1600
-            }
-
-            100% {
-              stroke-dashoffset: 1600;
-              opacity: 1
-            }
-          }
-
-          .hpe-logo .hpe-logo-snake2 {
-            opacity: 0
-          }
-
-          .hpe-logo.play .hpe-logo-snake2 {
-            animation: hpe-logo-snake2 5s linear 0s forwards
-          }
-
-          @keyframes hpe-logo-snake2 {
-            20% {
-              opacity: .5
-            }
-
-            30% {
-              opacity: 1
-            }
-
-            40% {
-              opacity: .8
-            }
-
-            43%,
-            100% {
-              opacity: 0
-            }
-          }
-
-          .hpe-logo .hpe-logo-H1 {
-            --_stroke-dashoffset: 180
-          }
-
-          .hpe-logo.play .hpe-logo-H1 {
-            animation: hpe-logo-dashoffset-reduce 0.458s ease-out 2.167s forwards
-          }
-
-          .hpe-logo .hpe-logo-H2 {
-            --_stroke-dashoffset: 180
-          }
-
-          .hpe-logo.play .hpe-logo-H2 {
-            animation: hpe-logo-dashoffset-reduce 0.583s cubic-bezier(0, 0.7, 0.1, 1) 2.292s forwards
-          }
-
-          .hpe-logo .hpe-logo-H3 {
-            --_stroke-dashoffset: 140
-          }
-
-          .hpe-logo.play .hpe-logo-H3 {
-            animation: hpe-logo-dashoffset-reduce 0.37s cubic-bezier(0, 0.7, 0.1, 1) 2.34s forwards
-          }
-
-          .hpe-logo .hpe-logo-P1 {
-            --_stroke-dashoffset: 180
-          }
-
-          .hpe-logo.play .hpe-logo-P1 {
-            animation: hpe-logo-dashoffset-reduce 0.25s cubic-bezier(0, 0.7, 0.1, 1) 2.167s forwards
-          }
-
-          .hpe-logo .hpe-logo-P2 {
-            --_stroke-dashoffset: 370
-          }
-
-          .hpe-logo.play .hpe-logo-P2 {
-            animation: hpe-logo-dashoffset-reduce 0.333s ease-out 2.5s forwards
-          }
-
-          .hpe-logo .hpe-logo-E1 {
-            --_stroke-dashoffset: 220
-          }
-
-          .hpe-logo.play .hpe-logo-E1 {
-            animation: hpe-logo-dashoffset-reduce 0.458s ease-out 2.417s forwards
-          }
-
-          .hpe-logo .hpe-logo-E2 {
-            --_stroke-dashoffset: 168;
-            opacity: 0;
-            filter: brightness(1) contrast(2)
-          }
-
-          .hpe-logo.play .hpe-logo-E2 {
-            animation: hpe-logo-E2 1s ease-out 2.533s forwards
-          }
-
-          @keyframes hpe-logo-E2 {
-            0% {
-              stroke-dashoffset: var(--_stroke-dashoffset, 0)
-            }
-
-            40% {
-              filter: brightness(0.8) contrast(1)
-            }
-
-            50% {
-              opacity: 1
-            }
-
-            100% {
-              stroke-dashoffset: 0;
-              opacity: 0;
-              filter: brightness(1) contrast(2)
-            }
-          }
-
-          .hpe-logo .hpe-logo-half {
-            opacity: 0
-          }
-
-          .hpe-logo.play .hpe-logo-half {
-            animation: hpe-logo-half 0.4s ease-out 3s forwards;
-            opacity: 0
-          }
-
-          @keyframes hpe-logo-half {
-            to {
-              opacity: 1
-            }
-          }
-
-          .hpe-logo.play.css-animation #hpe-logo-gradient {
-            animation: hpe-logo-gradient 5s linear 0s forwards
-          }
-
-          @keyframes hpe-logo-gradient {
-            0% {
-              transform: translateX(-70%) rotate(70deg)
-            }
-
-            5% {
-              transform: translateX(-70%) rotate(50deg)
-            }
-
-            17.5% {
-              transform: translateX(-55%) rotate(-20deg)
-            }
-
-            22.5% {
-              transform: translateX(-55%) rotate(-33deg)
-            }
-
-            30% {
-              transform: translateX(-60%) rotate(-16deg)
-            }
-
-            40% {
-              transform: translateX(-60%) rotate(30deg)
-            }
-
-            50% {
-              transform: translateX(-20%) rotate(30deg)
-            }
-
-            55%,
-            100% {
-              transform: translateX(0%) rotate(37deg)
-            }
-          }
-
-          .hpe-logo.play.css-animation #hpe-logo-gradient2 {
-            animation: hpe-logo-gradient2 5s linear 0s forwards
-          }
-
-          @keyframes hpe-logo-gradient2 {
-            0% {
-              transform: scale(.2)
-            }
-
-            30% {
-              transform: scale(.8)
-            }
-
-            40% {
-              transform: scale(.3)
-            }
-
-            43%,
-            100% {
-              transform: scale(0)
-            }
-          }
-
-          .hpe-logo.play.css-animation #hpe-half-gradient {
-            animation: hpe-half-gradient 5s linear 0s forwards;
-            scale: 1.2
-          }
-
-          @keyframes hpe-half-gradient {
-            0% {
-              transform: translate(100%, 47%)
-            }
-
-            50% {
-              transform: translate(62%, 47%)
-            }
-
-            55% {
-              transform: translate(26%, 43%)
-            }
-
-            62% {
-              transform: translate(3%, 11%)
-            }
-
-            65%,
-            100% {
-              transform: translate(6%, -16%)
-            }
-          }
-
-          .hpe-logo.play.css-animation #hpe-logo-fade1 {
-            animation: hpe-fade1-gradient 5s linear 0s forwards
-          }
-
-          @keyframes hpe-fade1-gradient {
-            0% {
-              transform: translateX(60%)
-            }
-
-            17.5% {
-              transform: translateX(10%)
-            }
-
-            22.5% {
-              transform: translateX(5%)
-            }
-
-            30% {
-              transform: translateX(7%)
-            }
-
-            40% {
-              transform: translateX(60%)
-            }
-
-            45%,
-            100% {
-              transform: translateX(100%)
-            }
-          }
-
-          .hpe-logo.play.css-animation #hpe-logo-fade2 {
-            animation: hpe-fade2-gradient 5s linear 0s forwards
-          }
-
-          @keyframes hpe-fade2-gradient {
-            0% {
-              transform: translateX(100%)
-            }
-
-            32% {
-              transform: translateX(5%)
-            }
-
-            43%,
-            100% {
-              transform: translateX(0%)
-            }
-          }
-
-          @keyframes hpe-logo-dashoffset-reduce {
-            0% {
-              stroke-dashoffset: var(--_stroke-dashoffset, 0)
-            }
-
-            100% {
-              stroke-dashoffset: 0
-            }
-          }
-        </style>
-        <defs>
-          <linearGradient gradientUnits="userSpaceOnUse" id="hpe-logo-gradient" x1="0" x2="630" y1="0" y2="180">
-            <stop offset="0%" stop-color="var(--hpe-logo-bg)" stop-opacity="0"></stop>
-            <stop offset="8%" stop-color="#05cc93"></stop>
-            <stop offset="16%" stop-color="#00e0af"></stop>
-            <stop offset="24%" stop-color="#62e5f6"></stop>
-            <stop offset="32%" stop-color="#0070f8"></stop>
-            <stop offset="46%" stop-color="#7764fc"></stop>
-            <stop offset="54%" stop-color="#7764fc"></stop>
-            <stop offset="68%" stop-color="#0070f8"></stop>
-            <stop offset="76%" stop-color="#62e5f6"></stop>
-            <stop offset="92%" stop-color="#00e0af"></stop>
-            <stop offset="100%" stop-color="#00e0af00" stop-opacity="0"></stop>
-            <animate attributeName="x1" begin="indefinite" dur="5s" fill="freeze" id="hpe-logo-gradient-animate"
-              keyTimes="0;0.05;0.175;0.225;0.3;0.4;0.5;0.55;1" repeatCount="1"
-              values="-441;-441;-347;-346;-378;-378;-126;0;0"></animate>
-            <animate attributeName="y1" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.05;0.175;0.225;0.3;0.4;0.5;0.55;1" repeatCount="1" values="0;0;0;0;0;0;0;0;0">
-            </animate>
-            <animate attributeName="x2" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.05;0.175;0.225;0.3;0.4;0.5;0.55;1" repeatCount="1"
-              values="-394.67;-175.66;306.88;280.77;277.21;79.32;329.24;394.81;394.81"></animate>
-            <animate attributeName="y2" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.05;0.175;0.225;0.3;0.4;0.5;0.55;1" repeatCount="1"
-              values="653.57;599.08;-42.55;-189.30;1.32;469.21;470.88;522.90;522.90"></animate>
-          </linearGradient>
-          <linearGradient gradientUnits="userSpaceOnUse" id="hpe-logo-gradient2" x1="0" x2="630" y1="0" y2="0">
-            <stop offset="0%" stop-color="#00e0af00" stop-opacity="0"></stop>
-            <stop offset="20%" stop-color="#00e0af"></stop>
-            <stop offset="60%" stop-color="#00e0af"></stop>
-            <stop offset="100%" stop-color="#00e0af00" stop-opacity="0"></stop>
-            <animate attributeName="x2" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.3;0.4;0.43;1" repeatCount="1" values="126;504;189;0;0"></animate>
-          </linearGradient>
-          <radialGradient cx="315" cy="90" gradientTransform="scale(1.2)" gradientUnits="userSpaceOnUse"
-            id="hpe-half-gradient">
-            <stop offset="0%" stop-color="#7764fc"></stop>
-            <stop offset="3%" stop-color="#7764fc"></stop>
-            <stop offset="12%" stop-color="#0070f8"></stop>
-            <stop offset="30%" stop-color="#62e5f6"></stop>
-            <stop offset="45%" stop-color="#00e0af"></stop>
-            <stop offset="55%" stop-color="#00e0af"></stop>
-            <stop offset="100%" stop-color="var(--hpe-logo-bg)" stop-opacity="0"></stop>
-            <animate attributeName="cx" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.5;0.55;0.62;0.65;1" repeatCount="1" values="720;720;470;337;351;351"></animate>
-            <animate attributeName="cy" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.5;0.55;0.62;0.65;1" repeatCount="1" values="180;180;177;110;56;56"></animate>
-          </radialGradient>
-          <linearGradient gradientUnits="userSpaceOnUse" id="hpe-logo-fade1" x1="0" x2="630" y1="0" y2="0">
-            <stop offset="3%" stop-color="white" stop-opacity="1"></stop>
-            <stop offset="12%" stop-color="white" stop-opacity="0"></stop>
-            <animate attributeName="x1" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.175;0.225;0.3;0.4;0.45;1" repeatCount="1" values="378;63;31.5;44.1;378;630;630">
-            </animate>
-            <animate attributeName="x2" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.175;0.225;0.3;0.4;0.45;1" repeatCount="1" values="1008;693;661.5;674.1;1008;1260;1260">
-            </animate>
-          </linearGradient>
-          <linearGradient gradientUnits="userSpaceOnUse" id="hpe-logo-fade2" x1="0" x2="630" y1="0" y2="0">
-            <stop offset="3%" stop-color="white" stop-opacity="1"></stop>
-            <stop offset="12%" stop-color="white" stop-opacity="0"></stop>
-            <animate attributeName="x1" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.32;0.43;1" repeatCount="1" values="630;31.5;0;0"></animate>
-            <animate attributeName="x2" begin="hpe-logo-gradient-animate.begin+0s" dur="5s" fill="freeze"
-              keyTimes="0;0.32;0.43;1" repeatCount="1" values="1260;661.5;630;630"></animate>
-          </linearGradient>
-          <linearGradient gradientUnits="userSpaceOnUse" id="hpe-logo-fade3" x1="0" x2="630" y1="0" y2="0">
-            <stop offset="67%" stop-color="white" stop-opacity="1"></stop>
-            <stop offset="93%" stop-color="white" stop-opacity="0"></stop>
-          </linearGradient>
-          <mask id="hpe-logo-mask" maskUnits="userSpaceOnUse">
-            <rect fill="url(#hpe-logo-fade1)" height="36.5" width="630"></rect>
-            <rect fill="white" height="108" width="630" y="36"></rect>
-            <rect fill="url(#hpe-logo-fade2)" height="36.5" width="630" y="143.5"></rect>
-          </mask>
-        </defs>
-        <path class="hpe-logo-element" d="M612 180 V18 H18 V162 H630" stroke="#03a883"></path>
-        <path class="hpe-logo-snake2" d="M630 162 H0" stroke="url(#hpe-logo-gradient2)"></path>
-        <path class="hpe-logo-snake" d="M612 180 V18 H18 V162 H630" mask="url(#hpe-logo-mask)"
-          stroke="url(#hpe-logo-gradient)" stroke-dasharray="1600"></path>
-        <path class="hpe-logo-H1" d="M18 180 V0" stroke="var(--hpe-logo-color)" stroke-dasharray="180"></path>
-        <path class="hpe-logo-H2" d="M172 180 V0" stroke="var(--hpe-logo-color)" stroke-dasharray="180"></path>
-        <path class="hpe-logo-H3" d="M18 89 H155" stroke="var(--hpe-logo-color)" stroke-dasharray="140"></path>
-        <path class="hpe-logo-P1" d="M250 180 V0" stroke="var(--hpe-logo-color)" stroke-dasharray="180"></path>
-        <path class="hpe-logo-P2" d="M250 18 H352 A32 32 0 0 1 352 118 H250" stroke="var(--hpe-logo-color)"
-          stroke-dasharray="370"></path>
-        <path class="hpe-logo-E1" d="M472 51 V18 H630" stroke="var(--hpe-logo-color)" stroke-dasharray="220">
-        </path>
-        <path class="hpe-logo-half" d="M630 162 H472 V86 H630" stroke="#03a883"></path>
-        <path class="hpe-logo-E2" d="M630 162 H472 V86 H630" stroke="url(#hpe-half-gradient)" stroke-dasharray="420">
-        </path>
-        <title>Hewlett Packard Enterprise</title>
-      </svg>
+      
     </a>
 
     <!-- Botón hamburguesa para móvil -->
@@ -1055,7 +644,8 @@
           <div class="popup-header">
             <div class="avatar-sm" id="popupAvatar">GU</div>
             <div class="user-info">
-              <div class="user-name" id="popupUserName" data-i18n="Guest">Guest</div>
+              <div class="user-name" id="popupUserName" data-i18n="Guest">Guest
+              </div>
               <div class="user-role" id="popupUserRole" data-i18n="Visitor">Visitor</div>
             </div>
           </div>
@@ -1076,13 +666,13 @@
           </button>
           <div class="menu-divider"></div>
           <button class="menu-item" data-action="logout">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            <span data-i18n="Log out">Log out</span>
-          </button>
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+    <span data-i18n="Log out">Log out</span>
+</button>
         </div>
 
         <button class="sidebar-footer-btn" id="sidebarFooterBtn">
@@ -1305,22 +895,18 @@
               <div class="chat-icon"><svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
                     stroke-width="1.8" />
-                </svg></div><span class="chat-title" data-i18n="Sovereign Intelligence">Sovereign Intelligence</span>
-              <div class="chat-status"><span class="status-dot"></span><span data-i18n="Live">Live</span></div>
+                </svg></div><span class="chat-title" data-i18n="HELPY">HELPY</span>
+              <div class="chat-status"><span class="status-dot" id="lmStudioStatusDot"></span><span
+                  id="lmStudioStatusText" data-i18n="Live">Live</span></div>
             </div>
             <div class="chat-messages" id="chatMessages">
               <div class="message ai-message">
-                <p
-                  data-i18n="I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly with HPE GreenLake. I recommend positioning our private cloud offering as a differentiated sovereign alternative to hyperscaler dependency.">
-                  I have analyzed the current Microsoft quarterlies. Their shift toward edge computing aligns perfectly
-                  with <a href="#" class="highlight-link" data-i18n="HPE GreenLake">HPE GreenLake</a>. I recommend
-                  positioning our private cloud
-                  offering as a differentiated sovereign alternative to hyperscaler dependency.</p>
-              </div>
-              <div class="message user-message">
-                <p
-                  data-i18n="What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?">
-                  What specific value drivers should I emphasize for their CTO during next Tuesday's briefing?</p>
+                <p>¡Bienvenido a <strong>HELPY</strong> — Strategic Intelligence of HPE! 🚀<br><br>
+                Escribe el <strong>nombre</strong> o <strong>ticker</strong> de cualquier empresa y recibirás:<br><br>
+                📊 <strong>Análisis de problemáticas actuales</strong> de TI e infraestructura<br>
+                🟢 <strong>Soluciones HPE recomendadas</strong> para esa empresa<br>
+                💬 <strong>Speech de ventas de 140 palabras</strong> listo para usar<br><br>
+                Ejemplos: <em>NVDA · Tesla · Cemex · Grupo Bimbo · DXC</em></p>
               </div>
             </div>
             <div class="chat-input-area">
@@ -1352,6 +938,421 @@
 
   <script src="script.js"></script>
   <script src="auth.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // (Código de reubicación de .detail-card que ya pusiste arriba)
+
+      const cards = document.querySelectorAll('.intel-card');
+
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          const detailCard = card.querySelector('.detail-card');
+          if (!detailCard) return;
+
+          // Detectar si el clic fue en el pseudo-elemento de cerrar (::after)
+          const rect = detailCard.getBoundingClientRect();
+          const isCloseClick = (
+            e.clientX >= rect.right - 40 &&
+            e.clientX <= rect.right &&
+            e.clientY >= rect.top &&
+            e.clientY <= rect.top + 40
+          );
+
+          if (isCloseClick) {
+            e.stopPropagation();
+            card.classList.remove('expanded');
+            return;
+          }
+
+
+          card.classList.toggle('expanded');
+          e.stopPropagation();
+        });
+
+
+        const detail = card.querySelector('.detail-card');
+        if (detail) {
+          detail.addEventListener('click', (e) => e.stopPropagation());
+        }
+      });
+
+
+      document.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('expanded'));
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.intel-card').forEach(card => {
+        const detail = card.querySelector('.detail-card');
+        if (detail) {
+          card.appendChild(detail);
+        }
+      });
+
+    });
+
+  </script>
+
+  <!-- Integración con Claude AI + Yahoo Finance para Speech de Ventas HPE -->
+  <script>
+    (function () {
+      // ─── CONFIGURACIÓN ────────────────────────────────────────────────────────
+      // LM Studio corre localmente — asegúrate de tener el servidor API activo
+      const LM_STUDIO_URL = 'http://localhost:8080/v1/chat/completions'; // pasa por tu proxy CORS
+      const LM_MODEL      = 'local-model'; // LM Studio ignora este campo
+
+      // ─── CATÁLOGO COMPLETO HPE ────────────────────────────────────────────────
+      const SOLUCIONES_HPE = {
+        "Infraestructura y Servidores":   "HPE ProLiant Gen11 — Servidores optimizados para IA, virtualización y cargas críticas",
+        "Nube Híbrida por Consumo":       "HPE GreenLake — Infraestructura on-premise con modelo de pago por uso tipo nube",
+        "Almacenamiento Empresarial":     "HPE Alletra — Almacenamiento All-Flash con garantía de disponibilidad 100%",
+        "Analítica y Gestión de Datos":   "HPE Ezmeral Data Fabric — Gestión unificada de datos en entornos híbridos y multi-nube",
+        "Redes Empresariales":            "HPE Aruba Networking — Redes seguras, SD-WAN y conectividad para entornos distribuidos",
+        "Cómputo de Alto Rendimiento":    "HPE Cray EX — Supercomputadoras y HPC para investigación, IA y simulaciones",
+        "Edge Computing / IoT":           "HPE Edgeline — Cómputo en el borde para manufactura, retail e industria 4.0",
+        "Seguridad de Firmware":          "HPE Silicon Root of Trust — Protección a nivel de silicio contra ataques de firmware",
+        "Soporte y Servicios Gestionados":"HPE Pointnext Tech Care — Soporte proactivo con expertos HPE 24/7"
+      };
+
+      // ─── ELEMENTOS DEL DOM ────────────────────────────────────────────────────
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput    = document.getElementById('chatInput');
+      const sendBtn      = document.getElementById('sendBtn');
+      const statusDot    = document.getElementById('lmStudioStatusDot');
+      const statusText   = document.getElementById('lmStudioStatusText');
+
+      let isLoading = false;
+
+      // ─── ESTADO VISUAL ────────────────────────────────────────────────────────
+      function setStatus(active, label) {
+        if (statusDot) {
+          statusDot.style.backgroundColor = active ? '#00e0af' : '#ff4d4d';
+          statusDot.style.boxShadow = active ? '0 0 6px #00e0af' : 'none';
+        }
+        if (statusText) statusText.textContent = label || (active ? 'LM Studio Live' : 'LM Studio Offline');
+      }
+      setStatus(false, 'Conectando…');
+
+      // ─── HEALTH CHECK LM STUDIO ───────────────────────────────────────────────
+      async function checkLMStudio() {
+        try {
+          const ctrl = new AbortController();
+          const tid  = setTimeout(() => ctrl.abort(), 3000);
+          const res  = await fetch('http://localhost:8080/v1/models', { signal: ctrl.signal });
+          clearTimeout(tid);
+          setStatus(res.ok, res.ok ? 'LM Studio Live' : 'LM Studio Error');
+        } catch (_) {
+          setStatus(false, 'LM Studio Offline');
+        }
+      }
+      checkLMStudio();
+      setInterval(checkLMStudio, 30000);
+
+      // ─── HELPERS DE UI ────────────────────────────────────────────────────────
+      function addMessage(content, type = 'ai') {
+        if (!chatMessages) return;
+        const div = document.createElement('div');
+        div.className = `message ${type === 'user' ? 'user-message' : 'ai-message'}`;
+        const p = document.createElement('p');
+        p.innerHTML = content.replace(/\n/g, '<br>');
+        div.appendChild(p);
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      let loadingEl = null;
+      function showTyping() {
+        if (!chatMessages) return;
+        if (loadingEl) removeTyping();
+        loadingEl = document.createElement('div');
+        loadingEl.className = 'message ai-message typing-indicator';
+        loadingEl.innerHTML = '<p><span class="dot"></span><span class="dot"></span><span class="dot"></span></p>';
+        chatMessages.appendChild(loadingEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      function removeTyping() {
+        if (loadingEl && loadingEl.parentNode) { loadingEl.parentNode.removeChild(loadingEl); loadingEl = null; }
+      }
+
+      // ─── LLAMADA A LM STUDIO ─────────────────────────────────────────────────
+      async function callLMStudio(systemPrompt, userContent) {
+        const resp = await fetch(LM_STUDIO_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: LM_MODEL,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user',   content: userContent  }
+            ],
+            temperature: 0.4,
+            max_tokens: 1200,
+            stream: false
+          })
+        });
+        if (!resp.ok) throw new Error(`LM Studio ${resp.status}: ${await resp.text()}`);
+        const data = await resp.json();
+        return data?.choices?.[0]?.message?.content || 'Sin respuesta.';
+      }
+
+      // ─── FETCH YAHOO FINANCE (por ticker) ────────────────────────────────────
+      async function fetchYahooData(input) {
+        // Detecta si parece un ticker bursátil (1-5 letras mayúsculas, sin espacios)
+        const tickerMatch = input.trim().match(/^([A-Z]{1,5})$/);
+        if (!tickerMatch) return null; // No es ticker → la IA usará su propio conocimiento
+
+        const ticker = tickerMatch[1];
+        try {
+          // Endpoint público de Yahoo Finance — Chart API
+          const r = await fetch(
+            `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=5d&includePrePost=false`
+          );
+          if (!r.ok) return null;
+          const d    = await r.json();
+          const meta = d?.chart?.result?.[0]?.meta || {};
+          if (!meta.symbol) return null;
+
+          return {
+            ticker:    meta.symbol,
+            nombre:    meta.longName || meta.shortName || ticker,
+            sector:    meta.sector   || 'N/D',
+            exchange:  meta.exchangeName || '',
+            precio:    meta.regularMarketPrice,
+            moneda:    meta.currency || 'USD',
+            min52:     meta.fiftyTwoWeekLow,
+            max52:     meta.fiftyTwoWeekHigh,
+            marketCap: meta.marketCap,
+          };
+        } catch (_) { return null; }
+      }
+
+      // ─── ANÁLISIS + SPEECH HPE ────────────────────────────────────────────────
+      async function analyzeCompany(input) {
+        const inputClean = input.trim();
+
+        // 1. Intentar enriquecer con datos de Yahoo Finance
+        setStatus(true, '📡 Consultando Yahoo Finance…');
+        const yf = await fetchYahooData(inputClean);
+
+        // 2. Construir contexto financiero para el modelo
+        // — si Yahoo Finance responde, usamos datos reales
+        // — si no, el nombre/ticker del usuario es suficiente para que Qwen use su conocimiento
+        let empresaNombre, financialContext;
+
+        if (yf && yf.nombre) {
+          empresaNombre    = `${yf.nombre} (ticker: ${yf.ticker})`;
+          financialContext = `
+EMPRESA OBJETIVO: ${yf.nombre}
+TICKER BURSÁTIL: ${yf.ticker} — cotiza en ${yf.exchange}
+PRECIO ACTUAL: ${yf.precio} ${yf.moneda}
+RANGO 52 SEMANAS: ${yf.min52} – ${yf.max52} ${yf.moneda}
+MARKET CAP: ${yf.marketCap ? (yf.marketCap / 1e9).toFixed(1) + ' B ' + yf.moneda : 'No disponible'}
+SECTOR: ${yf.sector}
+
+Analiza esta empresa usando los datos anteriores más tu conocimiento sobre su industria, competencia y desafíos tecnológicos actuales.
+`.trim();
+        } else {
+          // Sin datos de Yahoo: pasamos el nombre tal cual y dejamos que Qwen use su conocimiento
+          empresaNombre    = inputClean;
+          financialContext = `
+EMPRESA OBJETIVO: "${inputClean}"
+No se obtuvieron datos bursátiles en tiempo real. Usa tu conocimiento sobre esta empresa — su industria, tamaño, retos tecnológicos conocidos, noticias recientes y competidores — para hacer el análisis.
+`.trim();
+        }
+
+        // 3. Prompt principal — análisis profundo + speech 140 palabras
+        const systemPrompt = `
+Eres SIAH, el motor estratégico de inteligencia comercial de Hewlett Packard Enterprise.
+Tu ÚNICA función es analizar la empresa que se te indique e identificar oportunidades de venta reales para HPE.
+
+IMPORTANTE: La empresa a analizar es "${empresaNombre}". No la confundas con ninguna otra empresa, software o producto con nombre similar. Analiza SOLO esta organización empresarial.
+
+PORTAFOLIO HPE DISPONIBLE:
+${Object.entries(SOLUCIONES_HPE).map(([k,v]) => `• ${k}: ${v}`).join('\n')}
+
+INSTRUCCIONES:
+1. Identifica 2-3 PROBLEMÁTICAS ACTUALES reales de esta empresa: infraestructura TI, costos operativos, seguridad, escalabilidad, deuda tecnológica o transformación digital. Sé específico con datos o contexto conocido.
+2. Selecciona las 2-3 soluciones HPE del portafolio que mejor resuelvan esas problemáticas. Explica por qué aplica a esta empresa en particular.
+3. Escribe un SPEECH DE VENTAS de EXACTAMENTE 140 PALABRAS en español. Tono consultivo, directo al CTO o CIO. Debe sonar como un vendedor experto, no como un robot. Cuenta las palabras antes de responder.
+
+RESPONDE ÚNICAMENTE CON ESTE FORMATO (sin texto adicional antes ni después):
+
+🏢 [NOMBRE COMPLETO DE LA EMPRESA] · [TICKER o SECTOR]
+
+📊 ANÁLISIS DE PROBLEMÁTICAS ACTUALES
+• [Problemática 1 con dato o contexto concreto de esta empresa]
+• [Problemática 2 con dato o contexto concreto de esta empresa]
+• [Problemática 3 si aplica]
+
+🟢 SOLUCIONES HPE RECOMENDADAS
+• [Nombre Solución HPE 1]: [Justificación específica para esta empresa]
+• [Nombre Solución HPE 2]: [Justificación específica para esta empresa]
+
+💬 SPEECH DE VENTAS (140 palabras):
+[Discurso — empieza directamente con el saludo, exactamente 140 palabras]
+`.trim();
+
+        setStatus(true, '🧠 Analizando con Qwen…');
+        return callLMStudio(systemPrompt, financialContext);
+      }
+
+      // ─── ENVÍO DE MENSAJE ─────────────────────────────────────────────────────
+      async function handleSend() {
+        if (isLoading) return;
+        const inputEl = document.getElementById('chatInput');
+        const msgEl   = document.getElementById('chatMessages');
+        const btnEl   = document.getElementById('sendBtn');
+        const input   = inputEl ? inputEl.value.trim() : '';
+        if (!input) return;
+
+        isLoading = true;
+        if (inputEl) inputEl.disabled = true;
+        if (btnEl)   btnEl.disabled   = true;
+
+        addMessage(input, 'user');
+        showTyping();
+
+        try {
+          const reply = await analyzeCompany(input);
+          removeTyping();
+          addMessage(reply, 'ai');
+          setStatus(true, 'LM Studio Live');
+        } catch (err) {
+          console.error('SIAH error:', err);
+          removeTyping();
+          addMessage(`⚠️ Error al conectar con LM Studio: ${err.message}\n\nAsegúrate de que LM Studio y proxy.js estén activos.`, 'ai');
+          setStatus(false, 'LM Studio Offline');
+        } finally {
+          if (inputEl) { inputEl.disabled = false; inputEl.value = ''; inputEl.focus(); }
+          if (btnEl)   btnEl.disabled = false;
+          isLoading = false;
+        }
+      }
+
+      // ─── EVENTOS ──────────────────────────────────────────────────────────────
+      // Clonamos los elementos para eliminar TODOS los listeners previos
+      // (script.js registra su propio sendMessage en click y keydown — esto los neutraliza)
+      const cleanBtn   = sendBtn.cloneNode(true);
+      const cleanInput = chatInput.cloneNode(true);
+      sendBtn.replaceWith(cleanBtn);
+      chatInput.replaceWith(cleanInput);
+
+      // Ahora re-apuntamos las variables a los elementos limpios
+      const freshBtn   = document.getElementById('sendBtn');
+      const freshInput = document.getElementById('chatInput');
+
+      freshBtn.addEventListener('click', handleSend);
+      freshInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !isLoading) { e.preventDefault(); handleSend(); }
+      });
+
+      // Reasignamos chatInput para que handleSend lo encuentre
+      Object.defineProperty(window, '_siahInput', { get: () => freshInput });
+
+      // Placeholder rotativo con ejemplos de empresas
+      const hints = [
+        'Escribe el nombre o ticker de una empresa…',
+        'Ej: NVDA · NVIDIA',
+        'Ej: Tesla',
+        'Ej: DXC Technology',
+        'Ej: MSFT · Microsoft',
+        'Ej: Cemex',
+        'Ej: Grupo Bimbo',
+      ];
+      let hintIdx = 0;
+      setInterval(() => {
+        if (!freshInput.value) { freshInput.placeholder = hints[hintIdx++ % hints.length]; }
+      }, 3000);
+
+    })();
+  </script>
+  <style>
+    /* Estilos para el indicador de escritura (typing dots) */
+    .typing-indicator p {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin: 0;
+    }
+
+    .typing-indicator .dot {
+      width: 8px;
+      height: 8px;
+      background-color: currentColor;
+      border-radius: 50%;
+      display: inline-block;
+      animation: typingAnimation 1.2s infinite ease-in-out;
+    }
+
+    .typing-indicator .dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-indicator .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.4;
+      }
+
+      30% {
+        transform: translateY(-6px);
+        opacity: 1;
+      }
+    }
+
+    /* Ajuste para el indicador de estado en el header del chat */
+    .chat-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #lmStudioStatusDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ff4d4d;
+      transition: background-color 0.2s;
+    }
+  </style>
+  <script>
+    // Mostrar el email o nombre del usuario logueado
+    const userEmail = localStorage.getItem('hpe_user_email') || 'Guest';
+    const userName = userEmail.split('@')[0];
+    
+    // Actualizar elementos donde aparece "Guest"
+    const guestSpans = document.querySelectorAll('#footerUserName, #popupUserName');
+    guestSpans.forEach(el => {
+        if (el) el.innerText = userName;
+    });
+    
+    // Actualizar avatares (GU → iniciales del usuario)
+    const avatars = document.querySelectorAll('#footerAvatar, #popupAvatar');
+    avatars.forEach(el => {
+        if (el) el.innerText = (userName.substring(0,2) || 'GU').toUpperCase();
+    });
+    document.querySelectorAll('[data-action="logout"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('hpe_auth');
+            localStorage.removeItem('hpe_user_email');
+            window.location.href = 'index copy.html';
+        });
+    });
+</script>
 </body>
 
 </html>
